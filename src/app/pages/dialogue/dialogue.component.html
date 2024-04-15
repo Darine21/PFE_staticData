@@ -1,0 +1,7 @@
+<!-- dialogue.component.html -->
+<div class="dialog-container">
+  <h2 style="color: white;">Add Data</h2>
+  <input type="text" class="input-name" [(ngModel)]="dataName" placeholder="Enter data name">
+  <button class="btn btn-primary" (click)="createData(dataName)">Create</button>
+  <button class="btn btn-secondary" (click)="onClose()">Cancel</button>
+</div>
