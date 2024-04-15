@@ -1,23 +1,45 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 @Component({
-  selector: 'app-dialogue',
+  selector: 'app-dialogs',
   templateUrl: './dialogue.component.html',
   styleUrls: ['./dialogue.component.scss']
 })
-export class DialogueComponent implements OnInit {
-  dataName: string;
-  constructor(public dialogRef: MatDialogRef<DialogueComponent>) { }
+export class DialogsComponent {
+  showFirstDialog: boolean = true;
+  showSecondDialog: boolean = false;
+  dataName: string = '';
+  inputValues: string[] = [''];
 
-  onClose(): void {
-    this.dialogRef.close();
+  onNext() {
+    this.showFirstDialog = false;
+    this.showSecondDialog = true;
   }
 
-  // Méthode pour gérer la création de données
-  createData(dataName: string): void {
-    // Logique pour créer la donnée avec le nom saisi
-    console.log('Creating data with name:', dataName);
-    this.onClose(); // Fermer la boîte de dialogue après la création des données
+  onBack() {
+    this.showFirstDialog = true;
+    this.showSecondDialog = false;
+  }
+
+  onClose() {
+    // Réinitialise les valeurs et cache les deux dialogues
+    this.dataName = '';
+    this.showFirstDialog = false;
+    this.showSecondDialog = false;
+  }
+
+  onCreate() {
+    // Placez votre logique de création ici
+    console.log('Creating data:', this.dataName);
+    this.onClose(); // Ferme le dialogue après la création
+  }
+
+  addInput(index: number) {
+    this.inputValues.splice(index + 1, 0, ''); // Ajouter un champ d'entrée vide après l'index spécifié
+  }
+
+  removeInput(index: number) {
+    this.inputValues.splice(index, 1); // Supprimer le champ d'entrée à l'index spécifié
   }
 
 

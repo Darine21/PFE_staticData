@@ -1,7 +1,35 @@
-<!-- dialogue.component.html -->
-<div class="dialog-container">
-  <h2 style="color: white;">Add Data</h2>
-  <input type="text" class="input-name" [(ngModel)]="dataName" placeholder="Enter data name">
-  <button class="btn btn-primary" (click)="createData(dataName)">Create</button>
-  <button class="btn btn-secondary" (click)="onClose()">Cancel</button>
+<div *ngIf="showFirstDialog" class="dialog-container">
+  <h2 style="color: rgb(0, 0, 0);">Add Static Data</h2>
+  <label class="label-name" for="dataName" style="color: black;">Name: </label> <!-- Label for the input field -->
+  <input id="dataName" type="text" class="input-name" [(ngModel)]="dataName" placeholder="Enter data name">
+  <div class="buttons-container">
+    <button class="btn btn-primary" (click)="onNext()">Next</button>
+    <button class="btn btn-secondary" (click)="onClose()">Cancel</button>
+  </div>
 </div>
+
+
+<div *ngIf="showSecondDialog" class="dialog-container">
+  <h2 style="color: rgb(0, 0, 0);">Add Value</h2>
+  <div *ngFor="let inputValue of inputValues; let i = index" class="input-container">
+    <div class="input-group">
+      <label for="valueInput{{i}}" class="label-name">Name:</label>
+      <div class="input-wrapper">
+        <input type="text" id="valueInput{{i}}" class="input-name" [(ngModel)]="inputValues[i]" placeholder="Enter data Value">
+        <div class="input-buttons">
+          <button class="btn btn-circle btn-plus" (click)="addInput(i)">+</button>
+          <button *ngIf="i !== 0" class="btn btn-circle btn-minus" (click)="removeInput(i)">-</button> <!-- Render "-" button only if it's not the first input -->
+          
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="buttons-container">
+    <button class="btn btn-primary" (click)="onBack()">Back</button>
+    <button class="btn btn-secondary" (click)="onClose()">Cancel</button>
+    <button class="btn btn-success" (click)="onCreate()">Create</button>
+  </div>
+</div>
+
+
+

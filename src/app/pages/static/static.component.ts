@@ -1,6 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogueComponent } from '../dialogue/dialogue.component';
+import { DialogsComponent } from '../dialogue/dialogue.component';
 
 @Component({
   selector: 'app-tables',
@@ -13,8 +13,8 @@ export class StaticComponent{
   constructor(private dialog: MatDialog) { }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(DialogueComponent, {
-      width: '250px',
+    const dialogRef = this.dialog.open(DialogsComponent, {
+      width: '500px',
     });
 
     dialogRef.afterClosed().subscribe(result => {

@@ -13,7 +13,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app.routing';
 import { ComponentsModule } from './components/components.module';
 import { MatDialogModule } from '@angular/material/dialog';
-import { DialogueComponent } from './pages/dialogue/dialogue.component';
+import { DialogsComponent } from './pages/dialogue/dialogue.component';
 
 
 @NgModule({
@@ -32,7 +32,7 @@ import { DialogueComponent } from './pages/dialogue/dialogue.component';
     AppComponent,
     AdminLayoutComponent,
     AuthLayoutComponent,
-    DialogueComponent,
+    DialogsComponent,
   ],
   providers: [],
   bootstrap: [AppComponent],
