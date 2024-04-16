@@ -1,0 +1,21 @@
+.input-group-alternative {
+  width: 200px;
+  height: 43px;
+  margin-top: 15px; /* Définir la largeur souhaitée */
+}
+.custom-header {
+  height: 100px; /* Définissez la hauteur souhaitée */
+  padding: 20px; /* Ajoutez un espacement interne */
+}
+
+/* Définissez des marges pour séparer les éléments */
+.mt-4 {
+  margin-top: 3rem !important; /* Ajoutez la marge en haut */
+}
+
+.mb-4 {
+  margin-bottom: 2.5rem !important; /* Ajoutez la marge en bas */
+}
+.custom-header h3 {
+  font-size: 0.5rem; /* Ajustez cette valeur selon vos besoins */
+}

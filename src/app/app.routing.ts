@@ -38,7 +38,9 @@ const routes: Routes =[
   }, {
     path: '**',
     redirectTo: 'static'
-  },{
+  },
+  
+  {
     path: '#/register',
     redirectTo: 'register',
     pathMatch: 'full',

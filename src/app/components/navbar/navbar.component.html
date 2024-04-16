@@ -1,7 +1,15 @@
   <nav class="navbar navbar-top navbar-expand-md navbar-dark" id="navbar-main">
-    <div class="container-fluid">
+    <div class="container-fluid  d-flex justify-content-between align-items-center">
+      <!-- Brand --
+      <!-- Nouvel élément pour le chemin de fichier, au-dessus de l'élément de titre -->
       <!-- Brand -->
-      <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" routerLinkActive="active" [routerLink]="['/dashboard']">{{getTitle()}}</a>
+     <div>
+      <a class="h4 mb-2 text-white text-uppercase d-none d-lg-inline-block" routerLinkActive="active" [routerLink]="['/dashboard']">{{getTitle()}}</a>
+       <br > 
+      <p class="text-white small-font mb-0">Home > {{getTitle()}}</p>
+    </div>
+      <!-- Form -->
+      <!-- Reste du contenu de votre barre de navigation -->
       <!-- Form -->
       <form class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
         <div class="form-group mb-0" [ngClass]="{ 'focused': focus === true }">
@@ -10,7 +18,7 @@
               <span class="input-group-text"><i class="fas fa-search"></i></span>
             </div>
             <input class="form-control" placeholder="Search" type="text" (focus)="focus = true"
-            (blur)="focus = false">
+                   (blur)="focus = false">
           </div>
         </div>
       </form>
@@ -64,7 +72,7 @@
           </a>
         </li>
         <li class="nav-item btn-rotate" ngbDropdown placement="bottom-left">
-          <a class="nav-link" ngbDropdownToggle id="navbarDropdownMenuLink" >
+          <a class="nav-link" ngbDropdownToggle id="navbarDropdownMenuLink">
             <i class="fas fa-bell"></i>
           </a>
           <div ngbDropdownMenu aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu dropdown-menu-right">

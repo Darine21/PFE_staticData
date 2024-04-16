@@ -1,0 +1,9 @@
+.small-font {
+  font-size: 0.8rem; /* Réduire la taille de la police */
+}
+
+.container-fluid {
+  display: flex;
+  justify-content: space-between; /* Pour répartir les éléments de manière égale */
+  align-items: center; /* Pour aligner les éléments verticalement au centre */
+}
