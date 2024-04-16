@@ -1,0 +1,39 @@
+<div *ngIf="showFirstDialog" class="dialog-container"  style="width: 500px; height: 300px;">
+  <i class="fas fa-times close-icon" (click)="onClose()"></i>
+  <h2>Add Static Data</h2>
+  <label class="label-name" for="dataName">Name: </label>
+  <input id="dataName" type="text" class="input-name" [(ngModel)]="dataName" placeholder="Enter data name">
+  <div class="buttons-container">
+    <button class="btn btn-primary" (click)="openSecondDialog()">Next</button>
+    <button class="btn btn-secondary" (click)="onClose()">Cancel</button>
+  </div>
+</div>
+
+<div *ngIf="showSecondDialog" class="dialog-container"  style="width: 500px; height: 300px;">
+  <i class="fas fa-times close-icon" (click)="onClose()"></i>
+  <h2>Add Value</h2>
+  <div *ngFor="let inputValue of inputValues; let i = index" class="input-container">
+    <div class="input-group">
+      <label for="valueInput{{i}}" class="label-name">Value:</label>
+      <div class="input-wrapper">
+        <input type="text" id="valueInput{{i}}" class="input-name" [(ngModel)]="inputValues[i]" placeholder="Enter data value">
+        <div class="input-buttons">
+          <button class="btn btn-circle btn-plus" (click)="addInput()">+</button>
+          <button *ngIf="i !== 0" class="btn btn-circle btn-minus" (click)="removeInput(i)">-</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Insérez l'élément input de type file ici -->
+
+
+  <div class="buttons-container">
+    <button class="btn btn-primary" (click)="onBack()">Back</button>
+    <button class="btn btn-secondary" (click)="onClose()">Cancel</button>
+
+    <input type="file" id="fileInput" style="display: none;" (change)="onFileChosen($event)">
+    <button class="btn btn-primary" (click)="exportToExcel()">Export to Excel</button>
+
+  </div>
+</div>
