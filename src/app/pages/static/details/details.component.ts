@@ -7,10 +7,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap/datepicker/ngb-date-struct';
 
+
 @Component({
   selector: 'app-details',
   templateUrl: './details.component.html',
-  styleUrls: ['./details.component.scss']
+  styleUrls: ['./details.component.scss'],
 })
 export class DetailsComponent implements OnInit {
 
@@ -21,19 +22,42 @@ export class DetailsComponent implements OnInit {
   activeLineIndex: number = 0;
   selectedDate: string = '';
   creationDate: NgbDateStruct;
-
+  showForm: boolean = true; // Pour afficher soit le formulaire, soit la table
+  inputValues: string[] = []; // Tableau pour stocker les valeurs saisies
+  isValuesSelected: boolean = false;
+  showOptions: boolean[] = [];
   constructor(private dialog: MatDialog) { }
 
   ngOnInit(): void {
+    for (let i = 0; i < this.inputValues.length; i++) {
+      this.showOptions[i] = false;
+    }
     // Initialisation
   }
-  isValuesSelected: boolean = false;
 
-
-  selectValues() {
-    this.isValuesSelected = !this.isValuesSelected;
-    // Autres actions à effectuer lorsque vous cliquez sur "Values"
+  // Dans votre composant TypeScript
+  toggleOptions(index: number): void {
+    this.showOptions[index] = !this.showOptions[index];
   }
+
+  // Tableau pour stocker les valeurs saisies
+
+  // Méthode pour ajouter une nouvelle valeur
+  addInput(index: number) {
+    this.inputValues.splice(index + 1, 0, ''); // Ajouter un champ d'entrée vide après l'index spécifié
+  }
+
+  // Méthode pour supprimer une valeur à l'index spécifié
+  removeInput(index: number) {
+    this.inputValues.splice(index, 1); // Supprimer le champ d'entrée à l'index spécifié
+  }
+
+  // Méthode pour partager la valeur à l'index spécifié
+  shareValue(index: number) {
+    // Implémentez ici la logique pour partager la valeur avec une unité spécifique
+  }
+  
+
   isItemSelected(item: string): boolean {
     // Retourne true si l'élément spécifié est sélectionné, sinon false
     return item === 'Values' && this.isValuesSelected;
@@ -47,16 +71,22 @@ export class DetailsComponent implements OnInit {
     document.querySelectorAll('.line').forEach((line: HTMLElement) => {
       line.style.display = 'none';
     });
-    
-
-    // Affichez la ligne sous l'élément sur lequel vous avez cliqué
-    const line = document.getElementById(itemId + 'Line');
-    if (line) {
-      line.style.display = 'block';
-    }
   }
+    
+    
+  selectDetails() {
+    this.showForm = true; // Afficher le formulaire lorsque vous cliquez sur "Details"
+  }
+
+  selectValues() {
+    this.showForm = false; // Afficher la table lorsque vous cliquez sur "Values"
+  }
+
   moveLine(index: number) {
     this.activeLineIndex = index;
   }
 
-}
+    // Méthode pour ajouter une nouvelle valeur
+    
+  }
+    // Affichez la ligne sous l'élément sur lequel vous avez cliqué

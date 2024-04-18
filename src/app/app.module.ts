@@ -19,7 +19,6 @@ import { CollapseModule } from 'ng-uikit-pro-standard';
 //import { MdbTabsModule, MdbTabModule } from 'angular-bootstrap-md';
 //import { MdbTabsModule } from 'mdb-angular-ui-kit/tabs';
 
-
 @NgModule({
   imports: [
     BrowserAnimationsModule,

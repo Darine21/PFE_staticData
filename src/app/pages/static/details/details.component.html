@@ -22,16 +22,15 @@
     </button>
 
     <!-- Collapsible wrapper -->
-    <div class="collapse navbar-collapse ml-auto" [ngClass]="{'show': isNavbarCollapsed}" style="margin-top: 24px;">
-
+    <div class="collapse navbar-collapse ml-auto" style="margin-top: 24px;">
       <!-- Left links -->
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0 ">
         <li class="nav-item mx-5">
-          <a class="nav-link active" aria-current="page" href="#/detail">Details</a>
+          <a class="nav-link active" aria-current="page" (click)="selectDetails()">Details</a>
           <div class="line" [ngClass]="{'active': activeLineIndex === 0}"></div>
         </li>
         <li class="nav-item mx-5" (click)="selectValues()" [ngClass]="{'active': activeLineIndex === 1}">
-          <a class="nav-link" href="#/static">Values</a>
+          <a class="nav-link">Values</a>
           <div class="line"></div>
         </li>
 
@@ -58,102 +57,152 @@
           <h4 class="card-title">Edit Data</h4>
         </div>
         <div class="card-body">
-          <form>
-            <div class="row">
-              <div class="col-md-5 pr-1">
+          <div *ngIf="showForm">
+            <form>
+              <div class="row">
+                <div class="col-md-5 pr-1">
 
-              </div>
-
-            </div>
-            <div class="row">
-              <div class="col-md-10 pr-1">
-                <div class="form-group">
-                  <label>Name</label>
-                  <input type="text" class="form-control" placeholder="Company" value="Chet">
                 </div>
-              </div>
 
-            </div>
-            <div style="margin-bottom: 20px;"></div>
-            <div class="row">
-              <div class="col-md-5 pr-1">
-                <div class="form-group">
-                  <label>Status</label>
-                  <input type="text" class="form-control" placeholder="Lorem by " value="Inactive">
-                </div>
               </div>
+              <div class="row">
+                <div class="col-md-10 pr-1">
+                  <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" class="form-control" placeholder="Company" value="Chet">
+                  </div>
+                </div>
 
-              <div class="col-md-5 px-1">
-                <div class="form-group">
-                  <label>Created By</label>
-                  <input type="text" class="form-control" placeholder="Lorem by" value="Lorem by">
-                </div>
               </div>
-            </div>
-            <div style="margin-bottom: 20px;"></div>
-            <div class="row">
-              <div class="col-md-5 pr-1">
-                <div class="form-group">
-                  <label>Types</label>
-                  <input type="text" class="form-control" placeholder="Lorem by " value="null">
+              <div style="margin-bottom: 20px;"></div>
+              <div class="row">
+                <div class="col-md-5 pr-1">
+                  <div class="form-group">
+                    <label>Status</label>
+                    <input type="text" class="form-control" placeholder="Lorem by " value="Inactive">
+                  </div>
                 </div>
-              </div>
 
-              <div class="col-md-5 px-1">
-                <div class="form-group">
-                  <label>Category</label>
-                  <input type="text" class="form-control" placeholder="Country" value="client">
-                </div>
-              </div>
-            </div>
-            <div style="margin-bottom: 20px;"></div>
-            <div class="row">
-              <div class="col-md-5 pr-1">
-                <div class="form-group">
-                  <label>Creation Date</label>
-                  <div class="input-group input-group-alternative mb-3">
-                    <div class="input-group-prepend">
-                      <button class="btn btn-outline-secondary" (click)="dp.toggle()" type="button">
-                        <i class="fa fa-calendar"></i> <!-- Utilisez une icône de calendrier -->
-                      </button>
-
-                    </div>
-                    <input class="form-control" placeholder="yyyy-mm-dd"
-                           name="creationDate" [(ngModel)]="creationDate" ngbDatepicker #dp="ngbDatepicker">
+                <div class="col-md-5 px-1">
+                  <div class="form-group">
+                    <label>Created By</label>
+                    <input type="text" class="form-control" placeholder="Lorem by" value="Lorem by">
                   </div>
                 </div>
               </div>
-              <div class="col-md-5 pr-1">
-                <div class="form-group">
-                  <label>Activation Date</label>
-                  <div class="input-group input-group-alternative mb-3">
-                    <div class="input-group-prepend">
-                      <button class="btn btn-outline-secondary" (click)="dp.toggle()" type="button">
-                        <i class="fa fa-calendar"></i> <!-- Utilisez une icône de calendrier -->
-                      </button>
+              <div style="margin-bottom: 20px;"></div>
+              <div class="row">
+                <div class="col-md-5 pr-1">
+                  <div class="form-group">
+                    <label>Types</label>
+                    <input type="text" class="form-control" placeholder="Lorem by " value="null">
+                  </div>
+                </div>
 
-                    </div>
-                    <input class="form-control" placeholder="yyyy-mm-dd"
-                           name="creationDate" [(ngModel)]="creationDate" ngbDatepicker #dp="ngbDatepicker">
+                <div class="col-md-5 px-1">
+                  <div class="form-group">
+                    <label>Category</label>
+                    <input type="text" class="form-control" placeholder="Country" value="client">
                   </div>
                 </div>
               </div>
-            </div>
-            <div style="margin-bottom: 35px;"></div>
+              <div style="margin-bottom: 20px;"></div>
+              <div class="row">
+                <div class="col-md-5 pr-1">
+                  <div class="form-group">
+                    <label>Creation Date</label>
+                    <div class="input-group input-group-alternative mb-3">
+                      <div class="input-group-prepend">
+                        <button class="btn btn-outline-secondary" (click)="dp.toggle()" type="button">
+                          <i class="fa fa-calendar"></i> <!-- Utilisez une icône de calendrier -->
+                        </button>
 
-            <div class="row">
-              <div class="col-md-11">
-                <div class="d-flex justify-content-center align-items-center">
-                  <button type="submit" class="btn btn-primary  btn-lg mx-2 w-40">Save</button>
-                  <button type="submit" class="btn btn-primary  btn-lg mx-2 w-40">Submit</button>
+                      </div>
+                      <input class="form-control" placeholder="yyyy-mm-dd"
+                             name="creationDate" [(ngModel)]="creationDate" ngbDatepicker #dp="ngbDatepicker">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-5 pr-1">
+                  <div class="form-group">
+                    <label>Activation Date</label>
+                    <div class="input-group input-group-alternative mb-3">
+                      <div class="input-group-prepend">
+                        <button class="btn btn-outline-secondary" (click)="dp.toggle()" type="button">
+                          <i class="fa fa-calendar"></i> <!-- Utilisez une icône de calendrier -->
+                        </button>
 
+                      </div>
+                      <input class="form-control" placeholder="yyyy-mm-dd"
+                             name="creationDate" [(ngModel)]="creationDate" ngbDatepicker #dp="ngbDatepicker">
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
+              <div style="margin-bottom: 35px;"></div>
 
-          </form>
+              <div class="row">
+                <div class="col-md-11">
+                  <div class="d-flex justify-content-center align-items-center">
+                    <button type="submit" class="btn btn-primary  btn-lg mx-2 w-40">Save</button>
+                    <button type="submit" class="btn btn-primary  btn-lg mx-2 w-40">Submit</button>
+
+                  </div>
+                </div>
+              </div>
+
+            </form>
+            </div>
+          </div>
+        <div *ngIf="!showForm">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col" class="px-4 py-3 bg-white text-primary mx-6">#</th>
+                <th scope="col" class="px-4 py-3 bg-white text-primary mx-6">Value</th>
+                <th scope="col" class="">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let value of inputValues; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>
+                  <!-- Champ d'entrée pour la valeur -->
+                  <input type="text" class="form-control" [(ngModel)]="inputValues[i]" placeholder="Enter data value">
+                </td>
+              </tr>
+              <!-- Exemple rempli -->
+            
+              <tr>
+                <td>1</td>
+                <td>Example Value 2</td>
+                <td>
+                  <!-- Icone de trois points verticaux pour afficher les options -->
+                  <!-- app-options-menu.component.html -->
+                  <div ngbDropdown #dropdown="ngbDropdown" class="options-menu">
+                    <button class="btn btn-options" id="dropdownButton{{ index }}" ngbDropdownToggle>
+                      <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                    <div ngbDropdownMenu aria-labelledby="dropdownButton{{ index }}" class="dropdown-menu dropdown-menu-right">
+                      <button class="dropdown-item" (click)="addInput()">
+                        <i class="fas fa-plus"></i> Ajouter
+                      </button>
+                      <button class="dropdown-item" (click)="removeInput(index)">
+                        <i class="fas fa-trash-alt"></i> Supprimer
+                      </button>
+                      <button class="dropdown-item">
+                        <i class="fas fa-share"></i> Partager
+                      </button>
+                    </div>
+                  </div>
+
+</tr>
+              <!-- Ajoutez plus de lignes si nécessaire -->
+            </tbody>
+          </table>
+
         </div>
-      </div>
+        </div>
     </div>
   </div>
 </div>
