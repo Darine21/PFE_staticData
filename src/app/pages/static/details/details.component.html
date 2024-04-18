@@ -1,0 +1,160 @@
+<div class="header bg-gradient-danger custom-header" style="height: 53px;">
+  <div class="container-fluid">
+    <div class="header-body">
+      <!-- Content here -->
+    </div>
+  </div>
+</div>
+
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #f8f9fe">
+  <i class="fas fa-database navbar-icon"></i>
+  <span class="nav-text" style="font-size:14px;">StaticData</span>
+  <!-- Séparateur -->
+  <span class="separator"></span>
+  <!-- Texte descriptif -->
+  <i class="fas fa-chevron-right navbar-icon"></i>
+  <span class="nav-text" style="font-size:12px;">Edit</span>  <!-- Container wrapper -->
+  <div class="container-fluid" style="margin-left:550px ; margin-top:6px;">
+
+    <!-- Toggle button -->
+    <button class="navbar-toggler" type="button">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Collapsible wrapper -->
+    <div class="collapse navbar-collapse ml-auto" [ngClass]="{'show': isNavbarCollapsed}" style="margin-top: 24px;">
+
+      <!-- Left links -->
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 ">
+        <li class="nav-item mx-5">
+          <a class="nav-link active" aria-current="page" href="#/detail">Details</a>
+          <div class="line" [ngClass]="{'active': activeLineIndex === 0}"></div>
+        </li>
+        <li class="nav-item mx-5" (click)="selectValues()" [ngClass]="{'active': activeLineIndex === 1}">
+          <a class="nav-link" href="#/static">Values</a>
+          <div class="line"></div>
+        </li>
+
+        <li class="nav-item mx-5" (click)="moveLine(2)" [ngClass]="{'active': activeLineIndex === 2}">
+          <a class="nav-link" href="#/history">History</a>
+          <div class="line"></div>
+        </li>
+
+      </ul>
+
+      <!-- Left links -->
+    </div>
+    <!-- Collapsible wrapper -->
+  </div>
+
+  <!-- Container wrapper -->
+</nav>
+<div style="margin-bottom: 20px;"></div>
+<div class="container-fluid">
+  <div class="row justify-content-center align-items-center">
+    <div class="col-md-8">
+      <div class="card card-user">
+        <div class="card-header">
+          <h4 class="card-title">Edit Data</h4>
+        </div>
+        <div class="card-body">
+          <form>
+            <div class="row">
+              <div class="col-md-5 pr-1">
+
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="col-md-10 pr-1">
+                <div class="form-group">
+                  <label>Name</label>
+                  <input type="text" class="form-control" placeholder="Company" value="Chet">
+                </div>
+              </div>
+
+            </div>
+            <div style="margin-bottom: 20px;"></div>
+            <div class="row">
+              <div class="col-md-5 pr-1">
+                <div class="form-group">
+                  <label>Status</label>
+                  <input type="text" class="form-control" placeholder="Lorem by " value="Inactive">
+                </div>
+              </div>
+
+              <div class="col-md-5 px-1">
+                <div class="form-group">
+                  <label>Created By</label>
+                  <input type="text" class="form-control" placeholder="Lorem by" value="Lorem by">
+                </div>
+              </div>
+            </div>
+            <div style="margin-bottom: 20px;"></div>
+            <div class="row">
+              <div class="col-md-5 pr-1">
+                <div class="form-group">
+                  <label>Types</label>
+                  <input type="text" class="form-control" placeholder="Lorem by " value="null">
+                </div>
+              </div>
+
+              <div class="col-md-5 px-1">
+                <div class="form-group">
+                  <label>Category</label>
+                  <input type="text" class="form-control" placeholder="Country" value="client">
+                </div>
+              </div>
+            </div>
+            <div style="margin-bottom: 20px;"></div>
+            <div class="row">
+              <div class="col-md-5 pr-1">
+                <div class="form-group">
+                  <label>Creation Date</label>
+                  <div class="input-group input-group-alternative mb-3">
+                    <div class="input-group-prepend">
+                      <button class="btn btn-outline-secondary" (click)="dp.toggle()" type="button">
+                        <i class="fa fa-calendar"></i> <!-- Utilisez une icône de calendrier -->
+                      </button>
+
+                    </div>
+                    <input class="form-control" placeholder="yyyy-mm-dd"
+                           name="creationDate" [(ngModel)]="creationDate" ngbDatepicker #dp="ngbDatepicker">
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-5 pr-1">
+                <div class="form-group">
+                  <label>Activation Date</label>
+                  <div class="input-group input-group-alternative mb-3">
+                    <div class="input-group-prepend">
+                      <button class="btn btn-outline-secondary" (click)="dp.toggle()" type="button">
+                        <i class="fa fa-calendar"></i> <!-- Utilisez une icône de calendrier -->
+                      </button>
+
+                    </div>
+                    <input class="form-control" placeholder="yyyy-mm-dd"
+                           name="creationDate" [(ngModel)]="creationDate" ngbDatepicker #dp="ngbDatepicker">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style="margin-bottom: 35px;"></div>
+
+            <div class="row">
+              <div class="col-md-11">
+                <div class="d-flex justify-content-center align-items-center">
+                  <button type="submit" class="btn btn-primary  btn-lg mx-2 w-40">Save</button>
+                  <button type="submit" class="btn btn-primary  btn-lg mx-2 w-40">Submit</button>
+
+                </div>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

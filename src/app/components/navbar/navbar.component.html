@@ -1,37 +1,37 @@
-  <nav class="navbar navbar-top navbar-expand-md navbar-dark" id="navbar-main">
+  <nav class="navbar navbar-top navbar-expand-md navbar-dark" id="navbar-main"  style="height: 50px;">
     <div class="container-fluid  d-flex justify-content-between align-items-center">
       <!-- Brand --
-      <!-- Nouvel élément pour le chemin de fichier, au-dessus de l'élément de titre -->
+  <!-- Nouvel élément pour le chemin de fichier, au-dessus de l'élément de titre -->
       <!-- Brand -->
-     <div>
-      <a class="h4 mb-2 text-white text-uppercase d-none d-lg-inline-block" routerLinkActive="active" [routerLink]="['/dashboard']">{{getTitle()}}</a>
-       <br > 
-      <p class="text-white small-font mb-0">Home > {{getTitle()}}</p>
-    </div>
+      <div>
+        <a class="h4 mb-2 text-white text-uppercase d-none d-lg-inline-block" routerLinkActive="active" [routerLink]="['/dashboard']">{{getTitle()}}</a>
+
+      </div>
       <!-- Form -->
       <!-- Reste du contenu de votre barre de navigation -->
       <!-- Form -->
       <form class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
-        <div class="form-group mb-0" [ngClass]="{ 'focused': focus === true }">
-          <div class="input-group input-group-alternative">
+        <div class="form-group mb-0 d-flex align-items-center" [ngClass]="{ 'focused': focus === true }">
+          <div class="input-group input-group-alternative" style="height: 30px; border-radius: 4px; width:200px">
             <div class="input-group-prepend">
-              <span class="input-group-text"><i class="fas fa-search"></i></span>
+              <span class="input-group-text" style="height: 30px; border-radius: 5px;"><i class="fas fa-search"></i></span>
             </div>
-            <input class="form-control" placeholder="Search" type="text" (focus)="focus = true"
-                   (blur)="focus = false">
+            <input class="form-control" placeholder="Search" type="text" (focus)="focus = true" (blur)="focus = false" style="margin-top: -36px; font-size: 12px; border-radius: 5px; margin-left: 40px;">
           </div>
         </div>
       </form>
+
+
+
+
+
+
+
+
       <!-- User -->
       <ul class="navbar-nav align-items-center d-none d-md-flex">
         <li class="nav-item" ngbDropdown placement="bottom-right">
-          <a class="nav-link pr-0" role="button" ngbDropdownToggle>
-            <div class="media align-items-center">
-              <span class="avatar avatar-sm rounded-circle">
-                <img alt="Image placeholder" src="assets/img/theme/team-4-800x800.jpg">
-              </span>
-            </div>
-          </a>
+
           <div class="dropdown-menu-arrow dropdown-menu-right" ngbDropdownMenu>
             <div class=" dropdown-header noti-title">
               <h6 class="text-overflow m-0">Welcome!</h6>
@@ -47,6 +47,13 @@
             <a routerLinkActive="active" [routerLink]="['/notifications']" class="dropdown-item">
               <i class="ni ni-bell-55"></i>
               <span>Notifications</span>
+            </a>
+            <a class="nav-link pr-0" role="button" ngbDropdownToggle>
+              <div class="media align-items-center">
+                <span class="avatar avatar-sm rounded-circle">
+                  <img alt="Image placeholder" src="assets/img/theme/team-4-800x800.jpg">
+                </span>
+              </div>
             </a>
             <a routerLinkActive="active" [routerLink]="['/user-profile']" class="dropdown-item">
               <i class="ni ni-calendar-grid-58"></i>
@@ -79,6 +86,21 @@
             <a ngbDropdownItem href="javascript:void(0)">Action</a>
             <a ngbDropdownItem href="javascript:void(0)">Another action</a>
             <a ngbDropdownItem href="javascript:void(0)">Something else here</a>
+          </div>
+        </li>
+        <li class="nav-item btn-rotate" ngbDropdown placement="bottom-left" style="margin-top:-2px;">
+
+          <a class="nav-link" ngbDropdownToggle id="navbarDropdownMenuLink">
+            <img src="https://mdbootstrap.com/img/Photos/Avatars/img (31).webp"
+                 class="rounded-circle"
+                 height="22"
+                 alt=""
+                 loading="lazy" />
+          </a>
+          <div ngbDropdownMenu aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu dropdown-menu-right">
+            <a ngbDropdownItem href="javascript:void(0)">My profile</a>
+            <a ngbDropdownItem href="javascript:void(0)">Settings</a>
+            <a ngbDropdownItem href="javascript:void(0)">Logout</a>
           </div>
         </li>
       </ul>

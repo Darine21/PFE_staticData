@@ -9,6 +9,7 @@ import { AdminLayoutRoutes } from './admin-layout.routing';
 import { StaticComponent } from '../../pages/static/static.component';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { DetailsComponent } from '../../pages/static/details/details.component';
 // import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
@@ -19,8 +20,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     HttpClientModule,
     NgbModule,
     ClipboardModule,
-    StaticComponent
-    
+    StaticComponent,
+    //DetailsComponent
   ],
   declarations: [
     

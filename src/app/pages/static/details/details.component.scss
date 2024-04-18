@@ -1,0 +1,59 @@
+.nav-item {
+  margin-right: 10px; /* Ajustez cette valeur selon l'espace désiré */
+}
+.line {
+  border-bottom: 1px solid black; /* Style de ligne */
+  margin-top: 8px; /* Marge en haut de la ligne */
+}
+
+
+.line.active {
+  opacity: 1; /* Lorsque l'élément "Values" est actif, la ligne devient visible */
+}
+
+
+.show-line {
+  display: block; /* Affichez la ligne lorsque l'élément est sélectionné */
+}
+.nav{
+    color: black;
+}
+
+
+.separator {
+  color: #999; /* Couleur du séparateur */
+  margin: 0 5px; /* Espacement autour du séparateur */
+}
+.navbar {
+  background-color: #f8f9fa; /* Couleur de fond de la barre de navigation */
+  padding: 10px; /* Espacement autour des éléments de navigation */
+}
+
+.nav-text {
+  font-size: 16px; /* Taille de police */
+  margin-right: 10px; /* Espacement entre les éléments */
+}
+
+.navbar-icon {
+  color: grey; /* Couleur de l'icône */
+  margin-right: 5px; /* Espacement entre l'icône et le texte */
+}
+
+.nav-item {
+  position: relative; /* Assurez-vous que la position est relative pour les éléments parent des pseudo-éléments */
+}
+
+.nav-item::after {
+  content: ''; /* Ajoutez un pseudo-élément après chaque élément de navigation */
+  position: absolute; /* Position absolue pour positionner la ligne */
+  bottom: -2px; /* Aligner la ligne en bas de l'élément parent */
+  left: 0; /* Aligner la ligne à partir de la gauche de l'élément parent */
+  width: 100%; /* La largeur de la ligne */
+  height: 2px; /* La hauteur de la ligne */
+  background-color: silver; /* Couleur de la ligne */
+  display: none; /* Par défaut, cachez la ligne */
+}
+
+.nav-item.active::after {
+  display: block; /* Affichez la ligne lorsque l'élément est actif */
+}

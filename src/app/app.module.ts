@@ -14,6 +14,10 @@ import { AppRoutingModule } from './app.routing';
 import { ComponentsModule } from './components/components.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DialogsComponent } from './pages/dialogue/dialogue.component';
+import { DetailsComponent } from './pages/static/details/details.component';
+import { CollapseModule } from 'ng-uikit-pro-standard';
+//import { MdbTabsModule, MdbTabModule } from 'angular-bootstrap-md';
+//import { MdbTabsModule } from 'mdb-angular-ui-kit/tabs';
 
 
 @NgModule({
@@ -26,6 +30,9 @@ import { DialogsComponent } from './pages/dialogue/dialogue.component';
     RouterModule,
     AppRoutingModule,
     MatDialogModule,
+    CollapseModule.forRoot(),
+    //MdbTabsModule,
+    //MdbTabModule,
     
   ],
   declarations: [
@@ -33,6 +40,8 @@ import { DialogsComponent } from './pages/dialogue/dialogue.component';
     AdminLayoutComponent,
     AuthLayoutComponent,
     DialogsComponent,
+    //DetailsComponent,
+    //DetailsComponent,
   ],
   providers: [],
   bootstrap: [AppComponent],

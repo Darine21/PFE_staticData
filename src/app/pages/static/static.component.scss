@@ -1,11 +1,7 @@
 .input-group-alternative {
-  width: 200px;
+  width:180px;
   height: 43px;
   margin-top: 15px; /* Définir la largeur souhaitée */
-}
-.custom-header {
-  height: 100px; /* Définissez la hauteur souhaitée */
-  padding: 20px; /* Ajoutez un espacement interne */
 }
 
 /* Définissez des marges pour séparer les éléments */
@@ -18,4 +14,16 @@
 }
 .custom-header h3 {
   font-size: 0.5rem; /* Ajustez cette valeur selon vos besoins */
+}
+
+
+/* Styles personnalisés pour l'entête de la table */
+.custom-table thead th {
+  padding: 0.75rem 0.5rem; /* Réduire le rembourrage de l'entête */
+  height: 2rem; /* Définir une hauteur plus petite pour l'entête */
+  vertical-align: middle; /* Centrer le contenu verticalement */
+}
+.custom-container {
+  background-color: #ffffff; /* Couleur de fond blanche */
+  padding: 20px; /* Ajoutez un peu de remplissage pour l'espace autour du contenu */
 }
