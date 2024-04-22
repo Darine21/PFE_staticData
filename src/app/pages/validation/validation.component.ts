@@ -1,15 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { RejectDiaComponent } from './reject-dia/reject-dia.component';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogsComponent } from '../dialogue/dialogue.component';
-import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-tables',
-  templateUrl: './static.component.html',
-  styleUrls: ['./static.component.scss'],
-  standalone: true,
+  selector: 'app-validation',
+  templateUrl: './validation.component.html',
+  styleUrls: ['./validation.component.scss']
 })
-export class StaticComponent {
+export class ValidationComponent implements OnInit {
   data: any[] = [];
   filteredData: any[];
   items: any[] = [
@@ -17,13 +15,13 @@ export class StaticComponent {
       id: 1,
       name: "currency",
       status: "Inactive",
-      category: "null",
-      types: ["null"],
+      category: "Category 1",
+      types: ["global"],
       createDate: "2022-04-20",
-      createdBy: "null",
+      createdBy: "User 1",
       checked: false // Ajoutez une propriété pour la case à cocher
-    },
-
+    }
+   
     // Ajoutez plus d'exemples si nécessaire
   ];
   showRejectDialog: boolean = false;
@@ -32,21 +30,30 @@ export class StaticComponent {
   showConfirmationDialog: boolean = true;
   dataName: string = '';
   isItemSelected: boolean = false;
-  deleteItem(index: number) {
-    this.items.splice(index, 1); // Supprime l'élément du tableau à l'index donné
+
+  constructor(private dialog: MatDialog) { }
+ 
+  
+  
+
+  openDialog(): void {
+    //this.showRejectDialog = true;
+    const dialogRef = this.dialog.open(RejectDiaComponent, {
+      width: '500px',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
   }
 
-  constructor(private dialog: MatDialog, private router: Router) {  }
   // Méthode pour gérer le changement de la case à cocher
   onCheckboxChange(checked: boolean, item: any) {
     item.checked = checked;
     // Mettre à jour le drapeau en fonction de l'état de la sélection
     this.isItemSelected = this.items.some(item => item.checked);
   }
-  goToDetails(id: number) {
-    // Naviguer vers la page de détails en utilisant l'ID de l'élément
-    this.router.navigate(['/details', id]);
-  }
+
   // Méthode pour gérer l'action de validation
   valider(item: any) {
     // Logique pour la validation
@@ -58,7 +65,7 @@ export class StaticComponent {
     // Logique pour le rejet
     console.log("Rejecting item:", item);
   }
-
+  
   applyFilter(filterValue: string) {
     filterValue = filterValue.trim(); // Supprimer les espaces vides
     filterValue = filterValue.toLowerCase(); // Mettre en minuscule
@@ -81,13 +88,5 @@ export class StaticComponent {
 
   ngOnInit(): void {
   }
-  openDialog(): void {
-    const dialogRef = this.dialog.open(DialogsComponent, {
-      width: '500px',
-    });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
-  }
 }

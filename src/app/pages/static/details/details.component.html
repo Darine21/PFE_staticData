@@ -13,7 +13,7 @@
   <span class="separator"></span>
   <!-- Texte descriptif -->
   <i class="fas fa-chevron-right navbar-icon"></i>
-  <span class="nav-text" style="font-size:12px;">Edit</span>  <!-- Container wrapper -->
+  <span class="nav-text" style="font-size:14px;">Edit</span>  <!-- Container wrapper -->
   <div class="container-fluid" style="margin-left:550px ; margin-top:6px;">
 
     <!-- Toggle button -->
@@ -69,7 +69,7 @@
                 <div class="col-md-10 pr-1">
                   <div class="form-group">
                     <label>Name</label>
-                    <input type="text" class="form-control" placeholder="Company" value="Chet">
+                    <input type="text" class="form-control" placeholder="Company" value="currency">
                   </div>
                 </div>
 
@@ -86,7 +86,7 @@
                 <div class="col-md-5 px-1">
                   <div class="form-group">
                     <label>Created By</label>
-                    <input type="text" class="form-control" placeholder="Lorem by" value="Lorem by">
+                    <input type="text" class="form-control" placeholder="Lorem by" value="Null ">
                   </div>
                 </div>
               </div>
@@ -102,7 +102,7 @@
                 <div class="col-md-5 px-1">
                   <div class="form-group">
                     <label>Category</label>
-                    <input type="text" class="form-control" placeholder="Country" value="client">
+                    <input type="text" class="form-control" placeholder="Country" value="null">
                   </div>
                 </div>
               </div>
@@ -113,13 +113,11 @@
                     <label>Creation Date</label>
                     <div class="input-group input-group-alternative mb-3">
                       <div class="input-group-prepend">
-                        <button class="btn btn-outline-secondary" (click)="dp.toggle()" type="button">
+                        <button class="btn btn-outline-secondary" (click)="dpCreation.toggle()" type="button">
                           <i class="fa fa-calendar"></i> <!-- Utilisez une icône de calendrier -->
                         </button>
-
                       </div>
-                      <input class="form-control" placeholder="yyyy-mm-dd"
-                             name="creationDate" [(ngModel)]="creationDate" ngbDatepicker #dp="ngbDatepicker">
+                      <input class="form-control" placeholder="2024-02-08" name="creationDate" [(ngModel)]="creationDate" ngbDatepicker #dpCreation="ngbDatepicker">
                     </div>
                   </div>
                 </div>
@@ -128,17 +126,16 @@
                     <label>Activation Date</label>
                     <div class="input-group input-group-alternative mb-3">
                       <div class="input-group-prepend">
-                        <button class="btn btn-outline-secondary" (click)="dp.toggle()" type="button">
+                        <button class="btn btn-outline-secondary" (click)="dpActivation.toggle()" type="button">
                           <i class="fa fa-calendar"></i> <!-- Utilisez une icône de calendrier -->
                         </button>
-
                       </div>
-                      <input class="form-control" placeholder="yyyy-mm-dd"
-                             name="creationDate" [(ngModel)]="creationDate" ngbDatepicker #dp="ngbDatepicker">
+                      <input class="form-control" placeholder="2024-02-10" name="activationDate" [(ngModel)]="activationDate" ngbDatepicker #dpActivation="ngbDatepicker">
                     </div>
                   </div>
                 </div>
               </div>
+
               <div style="margin-bottom: 35px;"></div>
 
               <div class="row">
@@ -152,8 +149,8 @@
               </div>
 
             </form>
-            </div>
           </div>
+        </div>
         <div *ngIf="!showForm">
           <table class="table">
             <thead>
@@ -164,45 +161,53 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let value of inputValues; let i = index">
-                <td>{{ i + 1 }}</td>
-                <td>
-                  <!-- Champ d'entrée pour la valeur -->
-                  <input type="text" class="form-control" [(ngModel)]="inputValues[i]" placeholder="Enter data value">
-                </td>
-              </tr>
-              <!-- Exemple rempli -->
-            
-              <tr>
-                <td>1</td>
-                <td>Example Value 2</td>
-                <td>
-                  <!-- Icone de trois points verticaux pour afficher les options -->
-                  <!-- app-options-menu.component.html -->
-                  <div ngbDropdown #dropdown="ngbDropdown" class="options-menu">
-                    <button class="btn btn-options" id="dropdownButton{{ index }}" ngbDropdownToggle>
-                      <i class="fas fa-ellipsis-v"></i>
-                    </button>
-                    <div ngbDropdownMenu aria-labelledby="dropdownButton{{ index }}" class="dropdown-menu dropdown-menu-right">
-                      <button class="dropdown-item" (click)="addInput()">
-                        <i class="fas fa-plus"></i> Ajouter
+              <ng-container *ngFor="let value of inputValues; let i = index">
+                <tr>
+                  <td>{{ i + 1 }}</td>
+                  <td>
+                    <!-- Champ d'entrée pour la valeur -->
+                    <input type="text" class="form-control" [(ngModel)]="inputValues[i]" placeholder="Enter data value">
+                  </td>
+                  <td>
+                    <!-- Icone de trois points verticaux pour afficher les options -->
+                    <!-- app-options-menu.component.html -->
+                    <div ngbDropdown #dropdown="ngbDropdown" class="options-menu">
+                      <button class="btn btn-options" id="dropdownButton{{ i }}" ngbDropdownToggle>
+                        <i class="fas fa-ellipsis-v"></i>
                       </button>
-                      <button class="dropdown-item" (click)="removeInput(index)">
-                        <i class="fas fa-trash-alt"></i> Supprimer
-                      </button>
-                      <button class="dropdown-item">
-                        <i class="fas fa-share"></i> Partager
-                      </button>
-                    </div>
-                  </div>
+                      <div ngbDropdownMenu aria-labelledby="dropdownButton{{ i }}" class="dropdown-menu dropdown-menu-right">
+                        <button class="dropdown-item" (click)="addInput(i)">
+                          <i class="fas fa-plus"></i> Ajouter
+                        </button>
+                        <button class="dropdown-item" (click)="removeInput(i)">
+                          <i class="fas fa-trash-alt"></i> Supprimer
+                        </button>
+                        <button class="dropdown-item" (click)="shareOptions()">
+                          <i class="fas fa-share"></i> Partager
+                        </button>
 
-</tr>
-              <!-- Ajoutez plus de lignes si nécessaire -->
+                      </div>
+                      <div *ngIf="showShareOptions">
+                        <label for="options">Options:</label>
+                        <select id="options" name="options" multiple [(ngModel)]="selectedOptions" class="custom-select">
+                          <option *ngFor="let option of options" [value]="option">{{option}}</option>
+                          <option>E2</option>
+                          <option>E3</option>
+                        </select>
+                        <button (click)="submit()" class="btn-submit">Submit</button>
+                      </div>
+
+
+                    </div>
+                  </td>
+                </tr>
+              </ng-container>
             </tbody>
           </table>
+        </div>
 
-        </div>
-        </div>
+
+      </div>
     </div>
   </div>
 </div>

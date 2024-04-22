@@ -16,8 +16,15 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { DialogsComponent } from './pages/dialogue/dialogue.component';
 import { DetailsComponent } from './pages/static/details/details.component';
 import { CollapseModule } from 'ng-uikit-pro-standard';
+import { ShareDiaComponent } from './pages/static/share-dia/share-dia.component';
+import { ValidationComponent } from './pages/validation/validation.component';
+import { RejectDiaComponent } from './pages/validation/reject-dia/reject-dia.component';
+//import { ValidDiaComponent } from './pages/validation/valid-dia/valid-dia.component';
 //import { MdbTabsModule, MdbTabModule } from 'angular-bootstrap-md';
 //import { MdbTabsModule } from 'mdb-angular-ui-kit/tabs';
+
+
+
 
 @NgModule({
   imports: [
@@ -39,6 +46,10 @@ import { CollapseModule } from 'ng-uikit-pro-standard';
     AdminLayoutComponent,
     AuthLayoutComponent,
     DialogsComponent,
+    ValidationComponent,
+    RejectDiaComponent,
+    //ValidDiaComponent,
+    //ShareDiaComponent,
     //DetailsComponent,
     //DetailsComponent,
   ],

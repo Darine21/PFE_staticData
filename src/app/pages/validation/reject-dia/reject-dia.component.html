@@ -1,0 +1,9 @@
+<div *ngIf="showFirstDialog" class="dialog-container right-dialog" style="width: 400px; height: 250px; margin-top:20px;">
+  <i class="fas fa-times close-icon" (click)="onClose()"></i>
+  <h2 class="dialog-title" style=" text-align: center;">Are you sure , you want to reject this data?</h2>
+ 
+  <div class="buttons-container" style=" text-align: center; margin-top:60px">
+    <button class="btn btn-primary" (click)="onYesClick()">oui</button>
+    <button class="btn btn-secondary" (click)="onClose()">Non </button>
+  </div>
+</div>

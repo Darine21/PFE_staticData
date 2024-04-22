@@ -1,4 +1,4 @@
-<div class="header bg-gradient-danger custom-header" style="height: 53px;" >
+<div class="header bg-gradient-danger custom-header" style="height: 53px;">
   <div class="container-fluid">
     <div class="header-body">
       <!-- Content here -->
@@ -9,12 +9,14 @@
   <i class="fas fa-database navbar-icon"></i>
   <span class="nav-text" style="font-size:15px; margin-left:10px;">StaticData</span>
   <!-- Séparateur -->
+  <span class="separator"  ></span>
   <!-- Texte descriptif -->
-  
+  <i class="fas fa-chevron-right navbar-icon"></i>
+  <span class="nav-text" style="font-size:15px; margin-left:10px;">Validation</span>
 </div>
-
 <!-- Page content -->
 <div class="container-fluid mt-4 mb-4">
+
   <!-- Table -->
   <div class="row">
     <div class="col">
@@ -31,13 +33,6 @@
                 <input type="text" class="form-control form-control-sm custom-filter-input" placeholder="Filter..." style="margin-top: 4px;" (input)="applyFilter($event.target.value)">
               </div>
             </div>
-
-            <button class="btn btn-md"
-                    (click)="openDialog()"
-                    style="font-size: 12px; background-color: #f55044; color: #fff;">
-              <i class="fa fa-plus" aria-hidden="true" style="font-size: 14px;"></i> Add Data
-            </button>
-
           </div>
         </div>
       </div>
@@ -53,7 +48,7 @@
           <thead>
             <tr>
               <!-- Colonne pour la case à cocher -->
-         
+              <th scope="col" class="px-4 py-3 bg-white text-primary mx-6"></th>
               <!-- Autres colonnes -->
               <th scope="col" class="px-4 py-3 bg-white text-primary mx-6">ID</th>
               <th scope="col" class="px-4 py-3 bg-white text-primary mx-6">Name</th>
@@ -69,26 +64,30 @@
           <!-- Corps de tableau -->
           <tbody>
             <!-- Boucle sur les données pour afficher les lignes de la table -->
-            <tr>
+            <tr *ngFor="let item of items">
               <!-- Case à cocher -->
+              <td class="px-4 py-3 mx-6">
+                <input type="checkbox" [checked]="item.checked" (change)="onCheckboxChange($event.target.checked, item)">
+              </td>
               <!-- Autres colonnes avec les données de l'élément -->
-              <td class="px-4 py-3 mx-6">{{ items[0].id }}</td>
-              <td class="px-4 py-3 mx-6" (click)="goToDetails(items[0].id)">{{ items[0].name }}</td>
-
-              <td class="px-4 py-3 mx-6">{{ items[0].status }}</td>
-              <td class="px-4 py-3 mx-6">{{ items[0].category || 'Null' }}</td>
-              <td class="px-4 py-3 mx-6">{{ items[0].types.join(', ') || 'Null' }}</td>
-              <td class="px-4 py-3 mx-6">{{ items[0].createDate || 'Null' }}</td>
-              <td class="px-4 py-3 mx-6">{{ items[0].createdBy || 'Null' }}</td>
+              <td class="px-4 py-3 mx-6">{{ item.id }}</td>
+              <td class="px-4 py-3 mx-6">{{ item.name }}</td>
+              <td class="px-4 py-3 mx-6">{{ item.status }}</td>
+              <td class="px-4 py-3 mx-6">{{ item.category || 'Null' }}</td>
+              <td class="px-4 py-3 mx-6">{{ item.types.join(', ') || 'Null' }}</td>
+              <td class="px-4 py-3 mx-6">{{ item.createDate }}</td>
+              <td class="px-4 py-3 mx-6">{{ item.createdBy || 'Null' }}</td>
               <!-- Colonne Actions avec les boutons Valider et Rejeter -->
               <td class="px-4 py-3 mx-4 ml-4 ">
-                <button class="btn btn-danger btn-sm" (click)="deleteItem(0)">Delete</button>
+                <button *ngIf="isItemSelected" class="btn btn-success btn-sm" (click)="valider(item)">Valider</button>
+                <button *ngIf="isItemSelected" class="btn btn-danger btn-sm" (click)="showRejectDialog = true">Rejeter</button>
 
               </td>
 
-
-</tbody>
+            </tr>
+          </tbody>
         </table>
+        <app-reject-dia *ngIf="showRejectDialog" (statusUpdate)="updateStatus($event)"></app-reject-dia>
       </div>
 
       <div class="card-footer py-4 " style="height: 68px;">

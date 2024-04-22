@@ -5,6 +5,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { StaticComponent } from './pages/static/static.component'
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
+import { ValidationComponent } from './pages/validation/validation.component';
+import { DetailsComponent } from './pages/static/details/details.component';
 
 const routes: Routes =[
   {
@@ -25,7 +27,11 @@ const routes: Routes =[
     path: 'static',
     component: StaticComponent,
   },
-
+  {
+    path: 'valide',
+    component: ValidationComponent,
+  },
+  { path: 'details/:id', component: DetailsComponent },
   {
     path: '',
     component: AuthLayoutComponent,

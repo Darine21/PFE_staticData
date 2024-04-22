@@ -1,0 +1,7 @@
+<div>
+  <label for="options">Options:</label>
+  <select id="options" name="options" multiple [(ngModel)]="selectedOptions">
+    <option *ngFor="let option of options" [value]="option">{{option}}</option>
+  </select>
+  <button (click)="submit()">Submit</button>
+</div>

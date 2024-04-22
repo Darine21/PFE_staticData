@@ -9,7 +9,8 @@ declare interface RouteInfo {
 }
 export const ROUTES: RouteInfo[] = [
   { path: '/static', title: 'Static Data', icon: 'ni-bullet-list-67 text-red', class: '' },
-  { path: '/detail', title: 'details Data', icon:'ni-bullet-list-67 text-red' , class:''},
+  { path: '/ details/: id', title: '', icon: '', class: '' },
+  { path: '/valide', title: 'validation Data', icon: 'fa fa-check text-red', class: '' },
 ]
 
 
@@ -30,5 +31,5 @@ export class SidebarComponent implements OnInit {
     this.router.events.subscribe((event) => {
       this.isCollapsed = true;
    });
-  }
+  }          
 }
