@@ -8,7 +8,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ShareDiaComponent } from '../share-dia/share-dia.component';
+//import { ShareDiaComponent } from '../share-dia/share-dia.component';
 
 @NgModule({
   declarations: [

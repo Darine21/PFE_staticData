@@ -7,6 +7,8 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
 import { ValidationComponent } from './pages/validation/validation.component';
 import { DetailsComponent } from './pages/static/details/details.component';
+import { ValidDiaComponent } from './pages/validation/valid-dia/valid-dia.component';
+import { ShareComponent } from './pages/validation/share/share.component';
 
 const routes: Routes =[
   {
@@ -26,6 +28,14 @@ const routes: Routes =[
   {
     path: 'static',
     component: StaticComponent,
+  },
+  {
+    path: 'share',
+    component: ShareComponent,
+  },
+  {
+    path: 'valid-dia',
+    component: ValidDiaComponent
   },
   {
     path: 'valide',

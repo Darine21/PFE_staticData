@@ -1,12 +1,13 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { DialogsComponent } from '../../dialogue/dialogue.component';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { DialogsComponent } from '../dialogue/dialogue.component';
 import { MatDialog } from '@angular/material/dialog';
 import { CollapseModule } from 'ng-uikit-pro-standard';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap/datepicker/ngb-date-struct';
-import { ShareDiaComponent } from '../share-dia/share-dia.component';
+import { Router } from '@angular/router';
+//import { ShareDiaComponent } from '../share-dia/share-dia.component';
 
 @Component({
   selector: 'app-details',
@@ -28,18 +29,55 @@ export class DetailsComponent implements OnInit {
   showOptions: boolean[] = [];
   entitiesToShareWith: string[] = ['Entity 1', 'Entity 2', 'Entity 3'];
   //@ViewChild(ShareDiaComponent) multiselectComponent: ShareDiaComponent;
+  // Définissez la liste des valeurs prédéfinies
+  predefinedValues: string[] = ['Val1', 'Val2', 'Val3'];
+  selectedValue: string = '';
+  newValue: string = '';
+    options: any;
 
-  constructor(private dialog: MatDialog) { }
+  constructor(private dialog: MatDialog, private router: Router) { }
+  checkAndAddValue() {
+    // Vérifiez si la valeur saisie correspond à l'une des valeurs prédéfinies
+    if (this.predefinedValues.includes(this.newValue)) {
+      // Ajoutez la valeur saisie à la liste inputValues
+      this.inputValues.push(this.newValue);
+      // Réinitialisez la valeur saisie à une chaîne vide
+      this.newValue = '';
+    }
+  }
+  // Déclarez la variable newValue dans la classe de composant
 
+
+  // Définissez la méthode addNewValue pour ajouter une nouvelle valeur
+  addNewValue(value: string) {
+    if (value.trim() !== '') {
+      this.options.push(value);
+      // Réinitialisez la valeur du champ de saisie
+      this.newValue = '';
+    }
+  }
+  naviguerVersValide() {
+    this.router.navigate(['/valide']);
+  }
   sharedEntities: string[] = [];
- 
+  addSelectedValue() {
+    // Vérifiez si une valeur est sélectionnée
+    if (this.selectedValue) {
+      // Ajoutez la valeur sélectionnée à la liste inputValues
+      this.inputValues.push(this.selectedValue);
+      // Réinitialisez la valeur sélectionnée à une chaîne vide
+      this.selectedValue = '';
+    }
+  }
+
+
   showShareOptions: boolean = false
   ngOnInit(): void {
     this.inputValues.push(''); // Ajoute une valeur initiale vide
     this.showOptions.push(false); // Initialise showOptions pour la première valeur
   }
  // Initialisation
-  
+
   
   shareOptions() {
     this.showShareOptions = !this.showShareOptions; // Bascule la valeur de showShareOptions

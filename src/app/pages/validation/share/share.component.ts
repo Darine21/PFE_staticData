@@ -1,16 +1,16 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { RejectDiaComponent } from './reject-dia/reject-dia.component';
+import { SelectedItemService } from '../communiation.service';
+import { ValidDiaComponent } from '../valid-dia/valid-dia.component';
+import { RejectDiaComponent } from '../reject-dia/reject-dia.component';
 import { MatDialog } from '@angular/material/dialog';
-import { ValidDiaComponent } from './valid-dia/valid-dia.component';
-import { Console } from 'console';
-import { SelectedItemService } from './communiation.service';
 
 @Component({
-  selector: 'app-validation',
-  templateUrl: './validation.component.html',
-  styleUrls: ['./validation.component.scss']
+  selector: 'app-share',
+  templateUrl: './share.component.html',
+  styleUrls: ['./share.component.scss']
 })
-export class ValidationComponent implements OnInit {
+export class ShareComponent implements OnInit {
+  selectedItemName: string = '';
   data: any[] = [];
   filteredData: any[];
   items: any[] = [
@@ -24,42 +24,33 @@ export class ValidationComponent implements OnInit {
       createdBy: "User 1",
       checked: false // Ajoutez une propriété pour la case à cocher
     }
-   
+
     // Ajoutez plus d'exemples si nécessaire
   ];
   showRejectDialog: boolean = false;
- // selectedItemName: string = '';
+  // selectedItemName: string = '';
   showFirstDialog: boolean = false;
   showConfirmationDialog: boolean = true;
   dataName: string = '';
   isItemSelected: boolean = false;
-  @Input() selectedItemName: string = '';
-  @Output() itemNameChange: EventEmitter<string> = new EventEmitter<string>();
-  constructor(private dialog: MatDialog, private selectedItemService: SelectedItemService ) { }
  
+  @Output() itemNameChange: EventEmitter<string> = new EventEmitter<string>();
+  constructor(private dialog: MatDialog, private selectedItemService: SelectedItemService) { }
+
   logName(name: string) {
     console.log("Name clicked:", name);
   }
- 
+
+
+
   
-
-  openDialog(): void {
-    //this.showRejectDialog = true;
-    const dialogRef = this.dialog.open(RejectDiaComponent, {
-      width: '500px',
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
-  }
   updateSelectedItemName(name: string): void {
     this.selectedItemService.updateSelectedItem(name);
   }
   valider(item: any) {
     // Ouvrir le dialogue
     const dialogRef = this.dialog.open(ValidDiaComponent);
-  
+
 
     // Gérer la réponse du dialogue
     dialogRef.afterClosed().subscribe(result => {
@@ -72,7 +63,7 @@ export class ValidationComponent implements OnInit {
         console.log('Cancelled');
       }
     });
-  
+
   }
   // Méthode pour gérer le changement de la case à cocher
   onCheckboxChange(checked: boolean, item: any) {
@@ -81,13 +72,13 @@ export class ValidationComponent implements OnInit {
     this.isItemSelected = this.items.some(item => item.checked);
   }
 
- 
+
   // Méthode pour gérer l'action de rejet
   rejeter(item: any) {
     // Logique pour le rejet
     console.log("Rejecting item:", item);
   }
-  
+
   applyFilter(filterValue: string) {
     filterValue = filterValue.trim(); // Supprimer les espaces vides
     filterValue = filterValue.toLowerCase(); // Mettre en minuscule
@@ -106,9 +97,15 @@ export class ValidationComponent implements OnInit {
       }
     });
   }
-
+ 
 
   ngOnInit(): void {
+    this.selectedItemService.selectedItem$.subscribe(name => {
+      this.selectedItemName = name;
+    });
   }
 
 }
+
+
+

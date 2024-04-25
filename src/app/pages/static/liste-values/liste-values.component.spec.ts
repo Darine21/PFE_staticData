@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ShareDiaComponent } from './share-dia.component';
+import { ListeValuesComponent } from './liste-values.component';
 
-describe('ShareDiaComponent', () => {
-  let component: ShareDiaComponent;
-  let fixture: ComponentFixture<ShareDiaComponent>;
+describe('ListeValuesComponent', () => {
+  let component: ListeValuesComponent;
+  let fixture: ComponentFixture<ListeValuesComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ShareDiaComponent ]
+      declarations: [ ListeValuesComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ShareDiaComponent);
+    fixture = TestBed.createComponent(ListeValuesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,0 +1,35 @@
+<div *ngFor="let key of keys">
+  <div class="row">
+    <div class="col-md-5 pr-1">
+      <div class="form-group">
+        <label>{{ key }}</label>
+        <input type="text" class="form-control" [(ngModel)]="itemDictionary[key]" placeholder="Enter data value">
+      </div>
+    </div>
+    <div class="col-md-1">
+      <div class="form-group">
+        <button class="btn btn-danger" (click)="removeItem(key)">Supprimer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-5 pr-1">
+    <div class="form-group">
+      <label>Nouvelle clé</label>
+      <input type="text" class="form-control" #newKey placeholder="Enter new key">
+    </div>
+  </div>
+  <div class="col-md-5 px-1">
+    <div class="form-group">
+      <label>Nouvelle valeur</label>
+      <input type="text" class="form-control" #newValue placeholder="Enter new value">
+    </div>
+  </div>
+  <div class="col-md-1">
+    <div class="form-group">
+      <button class="btn btn-primary" (click)="addItem(newKey.value, newValue.value)">Ajouter</button>
+    </div>
+  </div>
+</div>

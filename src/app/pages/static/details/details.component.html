@@ -13,7 +13,7 @@
   <span class="separator"></span>
   <!-- Texte descriptif -->
   <i class="fas fa-chevron-right navbar-icon"></i>
-  <span class="nav-text" style="font-size:14px;">Edit</span>  <!-- Container wrapper -->
+  <span class="nav-text" style="font-size:14px;">Edit </span>  <!-- Container wrapper -->
   <div class="container-fluid" style="margin-left:550px ; margin-top:6px;">
 
     <!-- Toggle button -->
@@ -59,105 +59,162 @@
         <div class="card-body">
           <div *ngIf="showForm">
             <form>
-              <div class="row">
-                <div class="col-md-5 pr-1">
-
-                </div>
-
-              </div>
-              <div class="row">
-                <div class="col-md-10 pr-1">
-                  <div class="form-group">
-                    <label>Name</label>
-                    <input type="text" class="form-control" placeholder="Company" value="currency">
+              <div id="detailsContent">
+                <div class="row">
+                  <div class="col-md-5 pr-1">
+                    <div class="form-group">
+                      <label>Name</label>
+                      <input type="text" class="form-control" placeholder="Company" value="currency">
+                    </div>
                   </div>
-                </div>
 
-              </div>
-              <div style="margin-bottom: 20px;"></div>
-              <div class="row">
-                <div class="col-md-5 pr-1">
-                  <div class="form-group">
-                    <label>Status</label>
-                    <input type="text" class="form-control" placeholder="Lorem by " value="Inactive">
-                  </div>
-                </div>
 
-                <div class="col-md-5 px-1">
-                  <div class="form-group">
-                    <label>Created By</label>
-                    <input type="text" class="form-control" placeholder="Lorem by" value="Null ">
-                  </div>
-                </div>
-              </div>
-              <div style="margin-bottom: 20px;"></div>
-              <div class="row">
-                <div class="col-md-5 pr-1">
-                  <div class="form-group">
-                    <label>Types</label>
-                    <input type="text" class="form-control" placeholder="Lorem by " value="null">
-                  </div>
-                </div>
+                  <div class="col-md-5 px-1">
+                    <div class="form-group">
+                      <label>Values</label>
 
-                <div class="col-md-5 px-1">
-                  <div class="form-group">
-                    <label>Category</label>
-                    <input type="text" class="form-control" placeholder="Country" value="null">
-                  </div>
-                </div>
-              </div>
-              <div style="margin-bottom: 20px;"></div>
-              <div class="row">
-                <div class="col-md-5 pr-1">
-                  <div class="form-group">
-                    <label>Creation Date</label>
-                    <div class="input-group input-group-alternative mb-3">
-                      <div class="input-group-prepend">
-                        <button class="btn btn-outline-secondary" (click)="dpCreation.toggle()" type="button">
-                          <i class="fa fa-calendar"></i> <!-- Utilisez une icône de calendrier -->
-                        </button>
-                      </div>
-                      <input class="form-control" placeholder="2024-02-08" name="creationDate" [(ngModel)]="creationDate" ngbDatepicker #dpCreation="ngbDatepicker">
+
+                      <ng-container *ngFor="let value of inputValues; let i = index">
+
+                        <tr>
+
+                          <td>{{ i + 1 }}</td>
+                          <div style="margin-left: 10px;"></div>
+                          <td>
+
+                            <input type="text" class="form-control" [(ngModel)]="inputValues[i]" placeholder="Enter data value" style="width:300px;">
+                          </td>
+                          <td>
+                            <!-- Icone de trois points verticaux pour afficher les options -->
+                            <!-- app-options-menu.component.html -->
+                            <div ngbDropdown #dropdown="ngbDropdown" class="options-menu">
+                              <button class="btn btn-options" id="dropdownButton{{ i }}" ngbDropdownToggle>
+                                <i class="fas fa-ellipsis-v"></i>
+                              </button>
+                              <div ngbDropdownMenu aria-labelledby="dropdownButton{{ i }}" class="dropdown-menu dropdown-menu-right">
+                                <button class="dropdown-item" (click)="addInput(i)">
+                                  <i class="fas fa-plus"></i> Ajouter
+                                </button>
+                                <button class="dropdown-item" (click)="removeInput(i)">
+                                  <i class="fas fa-trash-alt"></i> Supprimer
+                                </button>
+                                <button class="dropdown-item" (click)="shareOptions()">
+                                  <i class="fas fa-share"></i> Partager
+                                </button>
+
+                              </div>
+                              <div *ngIf="showShareOptions">
+                                <label for="options">Options:</label>
+                                <select id="options" name="options" multiple [(ngModel)]="selectedOptions" class="custom-select">
+                                  <option *ngFor="let option of options" [value]="option">{{option}}</option>
+                                  <option>E2</option>
+                                  <option>E3</option>
+                                </select>
+                                <button (click)="submit()" class="btn-submit">Submit</button>
+                              </div>
+
+
+                            </div>
+                          </td>
+                        </tr>
+                      </ng-container>
+
                     </div>
                   </div>
                 </div>
-                <div class="col-md-5 pr-1">
-                  <div class="form-group">
-                    <label>Activation Date</label>
-                    <div class="input-group input-group-alternative mb-3">
-                      <div class="input-group-prepend">
-                        <button class="btn btn-outline-secondary" (click)="dpActivation.toggle()" type="button">
-                          <i class="fa fa-calendar"></i> <!-- Utilisez une icône de calendrier -->
-                        </button>
-                      </div>
-                      <input class="form-control" placeholder="2024-02-10" name="activationDate" [(ngModel)]="activationDate" ngbDatepicker #dpActivation="ngbDatepicker">
+
+
+                <div style="margin-bottom: 20px;"></div>
+                <div class="row">
+                  <div class="col-md-5 pr-1">
+                    <div class="form-group">
+                      <label>Status</label>
+                      <input type="text" class="form-control" placeholder="Lorem by " value="Inactive">
+                    </div>
+                  </div>
+
+                  <div class="col-md-5 px-1">
+                    <div class="form-group">
+                      <label>Created By</label>
+                      <input type="text" class="form-control" placeholder="Lorem by" value="Null ">
                     </div>
                   </div>
                 </div>
-              </div>
+                <div style="margin-bottom: 20px;"></div>
+                <div class="row">
+                  <div class="col-md-5 pr-1">
+                    <div class="form-group">
+                      <label>Types</label>
+                      <input type="text" class="form-control" placeholder="Lorem by " value="null">
+                    </div>
+                  </div>
 
-              <div style="margin-bottom: 35px;"></div>
-
-              <div class="row">
-                <div class="col-md-11">
-                  <div class="d-flex justify-content-center align-items-center">
-                    <button type="submit" class="btn btn-primary  btn-lg mx-2 w-40">Save</button>
-                    <button type="submit" class="btn btn-primary  btn-lg mx-2 w-40">Submit</button>
-
+                  <div class="col-md-5 px-1">
+                    <div class="form-group">
+                      <label>Category</label>
+                      <input type="text" class="form-control" placeholder="Country" value="null">
+                    </div>
                   </div>
                 </div>
-              </div>
+                <div style="margin-bottom: 20px;"></div>
+                <div class="row">
+                  <div class="col-md-5 pr-1">
+                    <div class="form-group">
+                      <label>Creation Date</label>
+                      <div class="input-group input-group-alternative mb-3">
+                        <div class="input-group-prepend">
+                          <button class="btn btn-outline-secondary" (click)="dpCreation.toggle()" type="button">
+                            <i class="fa fa-calendar"></i> <!-- Utilisez une icône de calendrier -->
+                          </button>
+                        </div>
+                        <input class="form-control" placeholder="2024-02-08" name="creationDate" [(ngModel)]="creationDate" ngbDatepicker #dpCreation="ngbDatepicker">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-5 pr-1">
+                    <div class="form-group">
+                      <label>Activation Date</label>
+                      <div class="input-group input-group-alternative mb-3">
+                        <div class="input-group-prepend">
+                          <button class="btn btn-outline-secondary" (click)="dpActivation.toggle()" type="button">
+                            <i class="fa fa-calendar"></i> <!-- Utilisez une icône de calendrier -->
+                          </button>
+                        </div>
+                        <input class="form-control" placeholder="2024-02-10" name="activationDate" [(ngModel)]="activationDate" ngbDatepicker #dpActivation="ngbDatepicker">
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
+
+                <div>
+                  <!-- Autres éléments de votre application -->
+                  <app-liste-values></app-liste-values>
+                </div>
+                <div class="row">
+                  <div class="col-md-11">
+                    <div class="d-flex justify-content-center align-items-center">
+                      <button type="submit" class="btn btn-primary  btn-lg mx-2 w-40">Save</button>
+                      <button type="submit" class="btn btn-primary  btn-lg mx-2 w-40">Submit</button>
+
+
+                    </div>
+                  </div>
+                </div>
+                </div>
             </form>
           </div>
         </div>
+        
+
+
         <div *ngIf="!showForm">
           <table class="table">
             <thead>
               <tr>
                 <th scope="col" class="px-4 py-3 bg-white text-primary mx-6">#</th>
                 <th scope="col" class="px-4 py-3 bg-white text-primary mx-6">Value</th>
-                <th scope="col" class="">Actions</th>
+
               </tr>
             </thead>
             <tbody>
@@ -202,6 +259,8 @@
                   </td>
                 </tr>
               </ng-container>
+
+              <button class="btn btn-success btn-sm" (click)="naviguerVersValide()">OK</button>
             </tbody>
           </table>
         </div>

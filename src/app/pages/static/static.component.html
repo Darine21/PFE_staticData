@@ -53,7 +53,6 @@
           <thead>
             <tr>
               <!-- Colonne pour la case à cocher -->
-         
               <!-- Autres colonnes -->
               <th scope="col" class="px-4 py-3 bg-white text-primary mx-6">ID</th>
               <th scope="col" class="px-4 py-3 bg-white text-primary mx-6">Name</th>
@@ -66,28 +65,30 @@
               <th scope="col"></th>
             </tr>
           </thead>
+
+
           <!-- Corps de tableau -->
           <tbody>
-            <!-- Boucle sur les données pour afficher les lignes de la table -->
-            <tr>
-              <!-- Case à cocher -->
-              <!-- Autres colonnes avec les données de l'élément -->
-              <td class="px-4 py-3 mx-6">{{ items[0].id }}</td>
-              <td class="px-4 py-3 mx-6" (click)="goToDetails(items[0].id)">{{ items[0].name }}</td>
+           <tr> <!-- Boucle sur les données pour afficher les lignes de la table -->
+            <!-- Utilisez une boucle *ngFor pour itérer sur chaque élément dans le tableau items -->
+          <td class="px-4 py-3 mx-6">{{ items[0].id }}</td>
+          <td class="px-4 py-3 mx-6" (click)="goToDetails(items[0].id)">{{ items[0].name }}</td>
 
-              <td class="px-4 py-3 mx-6">{{ items[0].status }}</td>
-              <td class="px-4 py-3 mx-6">{{ items[0].category || 'Null' }}</td>
-              <td class="px-4 py-3 mx-6">{{ items[0].types.join(', ') || 'Null' }}</td>
-              <td class="px-4 py-3 mx-6">{{ items[0].createDate || 'Null' }}</td>
-              <td class="px-4 py-3 mx-6">{{ items[0].createdBy || 'Null' }}</td>
-              <!-- Colonne Actions avec les boutons Valider et Rejeter -->
-              <td class="px-4 py-3 mx-4 ml-4 ">
-                <button class="btn btn-danger btn-sm" (click)="deleteItem(0)">Delete</button>
+          <td class="px-4 py-3 mx-6">{{ items[0].status }}</td>
+          <td class="px-4 py-3 mx-6">{{ items[0].category }}</td>
+          <td class="px-4 py-3 mx-6">{{ items[0].types.join(', ') }}</td>
+          <td class="px-4 py-3 mx-6">{{ items[0].createDate  }}</td>
+          <td class="px-4 py-3 mx-6">{{ items[0].createdBy }}</td>
+          <!-- Colonne Actions avec les boutons Valider et Rejeter -->
+          <td class="px-4 py-3 mx-4 ml-4 ">
+            <button class="btn btn-danger btn-sm">Delete</button>
 
-              </td>
+          </td>
+          </tr>
 
 
-</tbody>
+
+          </tbody>
         </table>
       </div>
 
