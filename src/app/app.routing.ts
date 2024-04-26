@@ -9,6 +9,7 @@ import { ValidationComponent } from './pages/validation/validation.component';
 import { DetailsComponent } from './pages/static/details/details.component';
 import { ValidDiaComponent } from './pages/validation/valid-dia/valid-dia.component';
 import { ShareComponent } from './pages/validation/share/share.component';
+import { SelectMultiComponent } from './pages/validation/select-multi/select-multi.component';
 
 const routes: Routes =[
   {
@@ -32,6 +33,10 @@ const routes: Routes =[
   {
     path: 'share',
     component: ShareComponent,
+  },
+  {
+    path: 'select',
+    component: SelectMultiComponent,
   },
   {
     path: 'valid-dia',

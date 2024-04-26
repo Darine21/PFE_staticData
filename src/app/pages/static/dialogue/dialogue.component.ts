@@ -5,6 +5,7 @@ import { StaticData } from '../../models/staticdata';
 import { StaticService } from '../static.service';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+
 @Component({
   selector: 'app-dialogs',
   templateUrl: './dialogue.component.html',

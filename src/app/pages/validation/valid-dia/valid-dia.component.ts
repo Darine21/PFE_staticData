@@ -37,21 +37,21 @@ export class ValidDiaComponent implements OnInit {
   showConfirmationMessage: boolean = false;
   generatedPDFDate: string = '';
   index: number = 2;
-  versions:any[]=[];
+  versions: any[] = [
+  ];
+  @Output() publishVersion: EventEmitter<any> = new EventEmitter<any>();
+    selectedVersion: any;
 
   constructor(private dialogue: StaticService, private fb: FormBuilder, private toastr: ToastrService, private router: Router, private selectedItemService: SelectedItemService, private dialogRef: MatDialogRef<any> ) { }
   ngOnInit() {
-    this.versions = this.versions = [
-      
-      
-    ];
     
+
     this.selectedItemService.selectedItem$.subscribe(name => {
       this.selectedItemName = name;
     });
   }
-   
-  publish(closeDialog: boolean = true) {
+ 
+  publish() {
     // Effectuez les actions nécessaires pour publier la donnée
     // Supposons que newCurrencyVersionLink soit l'URL de la nouvelle version
     this.newCurrencyVersionLink = '/details/' + this.itemId;
@@ -59,18 +59,26 @@ export class ValidDiaComponent implements OnInit {
 
     // Naviguer vers la page /details/id après la génération du PDF
     this.router.navigate(['/details', staticDataId]);
+
     const currentDate = new Date();
+    const formattedDate = currentDate.toLocaleString('fr-FR', {
+      hour12: false, // Utiliser un format 24 heures
+      timeZone: 'UTC' // Spécifier le fuseau horaire UTC
+    });
 
-    const hours = currentDate.getHours().toString().padStart(2, '0'); // Récupérer les heures et les formater avec deux chiffres
-    const minutes = currentDate.getMinutes().toString().padStart(2, '0'); // Récupérer les minutes et les formater avec deux chiffres
-    const secondes = currentDate.getSeconds().toString().padStart(2, '0');
-    this.generatedPDFDate = hours + ':' + minutes + ':' + secondes; // Concaténer les heures et les minutes avec un deux-points
-    this.versions.push({ versionNumber: this.versions.length + 1, url: this.newCurrencyVersionLink });
+    this.generatedPDFDate = formattedDate;
 
+    this.versions.push({ versionNumber: this.versions.length + 1, url: this.newCurrencyVersionLink, generatedPDFDate: formattedDate });
+    console.log("sss", this.versions);
+    const newVersion = { versionNumber: this.versions.length , url: this.newCurrencyVersionLink, generatedPDFDate: this.generatedPDFDate };
+
+    // Mettre à jour le service avec la nouvelle version
+    this.selectedItemService.updateSelectedVersion(newVersion);
+    this.selectedItemService.publishVersion(newVersion);
     // Si closeDialog est true, fermez le dialogue
-    if (closeDialog) {
-      this.onClose();
-    }
+  }
+  updateSelectedVersion(version: number): void {
+    this.selectedItemService.updateSelectedVersion(version);
   }
   closeDialog(): void {
     this.dialogRef.close();

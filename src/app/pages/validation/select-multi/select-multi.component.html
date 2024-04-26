@@ -1,0 +1,16 @@
+<!-- select-multi.component.html -->
+
+<div class="container">
+  <div class="row justify-content-center mt-4">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Filtering</h4>
+          <ejs-multiselect id="multiselect-filtering" [dataSource]="data" [fields]="fields"
+                           (filtering)="onFiltering($event)" [allowFiltering]="true"
+                           [placeholder]="watermarks"></ejs-multiselect>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

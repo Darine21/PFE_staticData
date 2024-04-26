@@ -1,4 +1,4 @@
-<p>share works!</p>
+
 <div class="header bg-gradient-danger custom-header" style="height: 53px;">
   <div class="container-fluid">
     <div class="header-body">
@@ -14,9 +14,13 @@
 
   <i class="fas fa-chevron-right navbar-icon"></i>
   <span class="nav-text" style="font-size:15px; margin-left:10px;">Validation</span>
-  <span class="separator"></span>
+  <span class="separator" style="margin-right:-15px"></span>
+  <i class="fas fa-chevron-right navbar-icon"></i>
   <span class="nav-text" style="font-size:15px; margin-left:10px;">Share</span>
 </div>
+
+
+
 <!-- Page content -->
 <div class="container-fluid mt-4 mb-4">
 
@@ -46,12 +50,12 @@
           <!-- Entête de tableau -->
           <thead>
             <tr>
-              <!-- Colonne pour la case à cocher -->
-              <th scope="col" class="px-4 py-3 bg-white text-primary mx-6"></th>
+            
               <!-- Autres colonnes -->
               <th scope="col" class="px-4 py-3 bg-white text-primary mx-6">ID</th>
               <th scope="col" class="px-4 py-3 bg-white text-primary mx-6">Version</th>
-              <th scope="col" class="px-4 py-3 bg-white text-primary mx-6">CreatedDate</th>   
+              <th scope="col" class="px-4 py-3 bg-white text-primary mx-6">CreatedDate</th>
+              <th scope="col" class="px-4 py-3 bg-white text-primary mx-6">Share</th>
               <th scope="col" class="px-4 py-3 bg-white text-primary mx-6 ml-6">Actions</th>
               <th scope="col"></th>
             </tr>
@@ -59,30 +63,38 @@
           <!-- Corps de tableau -->
           <tbody>
             <!-- Boucle sur les données pour afficher les lignes de la table -->
-            <tr *ngFor="let item of items">
-              <!-- Case à cocher -->
-              <td class="px-4 py-3 mx-6">
-                <input type="checkbox" [checked]="item.checked" (change)="onCheckboxChange($event.target.checked, item)">
+            <tr *ngFor="let version of publishedVersions">
+              <td class="px-4 py-3 mx-6">{{ version.versionNumber }}</td>
+
+              <td class="px-4 py-3 mx-6"> New version V {{ version.versionNumber }}</td>
+              <td class="px-4 py-3 mx-6">{{ version.generatedPDFDate }}</td>
+              <!-- Ajoutez les autres colonnes si nécessaire -->
+
+
+
+              <td class="colonne-multiselect">
+                <angular2-multiselect [data]="dropdownList" [(ngModel)]="selectedItems"
+                                      [settings]="dropdownSettings"
+                                      (onSelect)="onItemSelect($event)"
+                                      (onDeSelect)="OnItemDeSelect($event)"
+                                      (onSelectAll)="onSelectAll($event)"
+                                      (onDeSelectAll)="onDeSelectAll($event)"></angular2-multiselect>
               </td>
-              <!-- Autres colonnes avec les données de l'élément -->
-              <td class="px-4 py-3 mx-6">{{ item.id }}</td>
-              <td class="px-4 py-3 mx-6" (click)="logName(item.name)">{{ item.Version }}</td>
-              <td class="px-4 py-3 mx-6">{{ item.CreatedDate}}</td>
+
               <td class="px-4 py-3 mx-4 ml-4">
-                <button class="btn btn-circle btn-plus" style="margin-left: 5px;" (click)="addInput()">+</button>
+                <button class="btn btn-success btn-sm" (click)="valider(item)">Submit</button>
 
               </td>
-              <button *ngIf="isItemSelected" class="btn btn-success btn-sm" (click)="valider(item)">Submit</button>
+
             </tr>
           </tbody>
         </table>
-        
-      </div>
 
-    
+      </div>
     </div>
   </div>
 </div>
+
 
 <!-- Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

@@ -10,18 +10,19 @@
   </div>
 
   <div class="dialog-actions">
-    <button mat-button class="action-button" (click)="publish(true)"><i class="fas fa-check-circle button-icon"></i>Publish</button>
+    <button mat-button class="action-button" (click)="publish()"><i class="fas fa-check-circle button-icon"></i>Publish</button>
   </div>
-  <div *ngFor="let version of versions; let i = index">
+  <div *ngFor="let version of versions"  >
     <div *ngIf="version.url">
       <a (click)="generatePDF(version)" class="new-version-link">
-        <i class="far fa-file-pdf icon"></i>New Version PDF V{{ version.versionNumber }}
+
+        <i class="far fa-file-pdf icon" ></i>New Version  V{{ version.versionNumber }}
         <span class="pdf-date" *ngIf="version.generatedPDFDate">({{ version.generatedPDFDate }})</span>
       </a>
     </div>
   </div>
 
-    <!-- Boutons de soumission et d'annulation -->
+    
   <div class="button-container">
     <button class="btn btn-success submit-button" (click)="closeDialog()" [routerLink]="['/share']">Share</button>
     <button class="btn btn-danger cancel-button" (click)="onClose()">Cancel</button>

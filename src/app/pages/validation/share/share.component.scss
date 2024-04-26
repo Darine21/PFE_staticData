@@ -1,0 +1,5 @@
+/* Styles CSS pour limiter la taille de la colonne */
+.colonne-multiselect {
+  max-width: 200px; /* Définissez la largeur maximale souhaitée */
+  overflow-x: auto; /* Activer le défilement horizontal si nécessaire */
+}

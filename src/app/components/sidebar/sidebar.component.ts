@@ -11,6 +11,7 @@ export const ROUTES: RouteInfo[] = [
   { path: '/static', title: 'Static Data', icon: 'ni-bullet-list-67 text-red', class: '' },
   { path: '/ details/: id', title: '', icon: '', class: '' },
   { path: '/valide', title: 'validation Data', icon: 'fa fa-check text-red', class: '' },
+  {path: '/share', title: 'share Data', icon: 'fa fa-check text-red', class: '' },
 ]
 
 

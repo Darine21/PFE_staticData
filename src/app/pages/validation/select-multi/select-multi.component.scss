@@ -1,0 +1,50 @@
+/* select-multi.component.scss */
+
+/* Style pour le conteneur principal */
+.container {
+  padding: 20px;
+}
+
+/* Style pour la carte */
+.card {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Style pour le titre de la carte */
+.card-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+/* Style pour le corps de la carte */
+.card-body {
+  padding: 20px;
+}
+
+/* Style pour le MultiSelect */
+#multiselect-filtering {
+  width: 100%;
+}
+
+/* Style pour le placeholder */
+.e-input-group-icon.e-icons::before {
+  color: #888;
+}
+
+/* Style pour les options filtrées */
+.e-list-parent.e-popup::before {
+  border-bottom: 1px solid #ccc;
+}
+
+.e-list-item {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.e-list-item:hover {
+  background-color: #f0f0f0;
+}
