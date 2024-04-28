@@ -10,6 +10,11 @@ interface City {
   name: string,
   code: string
 }
+interface Version {
+  id: number;
+  // Autres propriétés de votre modèle de données...
+  selectedItems: any[]; // Déclaration de la propriété selectedItems
+}
 @Component({
   selector: 'app-share',
   templateUrl: './share.component.html',
@@ -50,20 +55,21 @@ export class ShareComponent implements OnInit {
     { id: 3, name: 'Entity 3', selected: false },
     // Ajoutez d'autres entités si nécessaire
   ];
-    publishedVersions: any[];
+  publishedVersions: Version[] = [];
     showStatusField: boolean=false;
   
 
   getselectedEntities(): string[] {
     return this.entities.filter(entity => entity.selected).map(entity => entity.name);
   }
-  showShareField: boolean = false;
+  showShareField: boolean = true;
   isEditing: boolean = false; // 
   valider(item: any): void {
     // Activer le mode édition
     this.isEditing = true;
+    
     // Afficher le champ Share
-    this.showShareField = true;
+    this.showShareField =false;
     this.showStatusField = true;
     // Remplir le champ Share avec les entités sélectionnées
     this.selectedEntities = this.selectedItems.map(item => item.itemName);
@@ -75,19 +81,33 @@ export class ShareComponent implements OnInit {
   updateSelectedEntities(): void {
     this.selectedEntities = this.selectedItems.map(item => item.itemName);
   }
-  onItemSelect(item: any) {
+  onItemSelect(item: any, version: Version) {
     if (!this.showShareField) {
       console.log(item);
       console.log(this.selectedItems);
-      this.updateSelectedEntities(); // Mettre à jour selectedEntities
+      this.updateSelectedEntities();
+      version.selectedItems.push(item);
+// Mettre à jour selectedEntities
     }
   }
 
-  OnItemDeSelect(item: any) {
+  loadPublishedVersions(): void {
+    // Simulons trois versions publiées avec des identifiants uniques
+    for (let i = 1; i <= 3; i++) {
+      this.publishedVersions.push({
+        id: i,
+      
+        selectedItems: [] // Initialisation des entités sélectionnées à vide
+      });
+    }
+  }
+  OnItemDeSelect(item: any, version: Version) {
     if (!this.showShareField) {
       console.log(item);
       console.log(this.selectedItems);
-      this.updateSelectedEntities(); // Mettre à jour selectedEntities
+      this.updateSelectedEntities();
+      version.selectedItems = version.selectedItems.filter(selectedItem => selectedItem !== item);
+// Mettre à jour selectedEntities
     }
   }
 
@@ -98,7 +118,7 @@ export class ShareComponent implements OnInit {
     this.selectedItemService.selectedItem$.subscribe(name => {
       this.selectedItemName = name; // Mettre à jour le selectedItemName lorsque des mises à jour sont émises
     });
-    
+    this.loadPublishedVersions();
     this.selectedItemService.selectedVersion$.subscribe((newVersion: any) => {
       this.selectedVersion = newVersion;
     });

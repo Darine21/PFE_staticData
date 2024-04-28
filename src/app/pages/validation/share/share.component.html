@@ -59,44 +59,57 @@
               <th scope="col" class="px-4 py-3 bg-white text-primary mx-6">Version</th>
               <th scope="col" class="px-4 py-3 bg-white text-primary mx-6">CreatedDate</th>
               <th scope="col" class="px-4 py-3 bg-white text-primary mx-6">Share</th>
-              <th scope="col" class="px-4 py-3 bg-white text-primary mx-6 ml-6" *ngIf="!showShareField">Actions</th>
-              <th scope="col" class="px-4 py-3 bg-white text-primary mx-6 ml-6" *ngIf="showShareField">Status</th>
+              <th scope="col" class="px-4 py-3 bg-white text-primary mx-6 ml-6" *ngIf="showShareField">Actions</th>
+              <th scope="col" class="px-4 py-3 bg-white text-primary mx-6 ml-6" *ngIf="showShareField"></th>
+              <th scope="col" class="px-4 py-3 bg-white text-primary mx-6 ml-6" *ngIf="!showShareField">Status</th>
               <th scope="col"></th>
             </tr>
           </thead>
+          <!-- Corps de tableau -->
           <!-- Corps de tableau -->
           <tbody>
             <!-- Boucle sur les données pour afficher les lignes de la table -->
             <tr *ngFor="let version of publishedVersions">
               <td class="px-4 py-3 mx-6">{{ version.versionNumber }}</td>
-              <td class="px-4 py-3 mx-6"> New version V {{ version.versionNumber }}</td>
+              <td class="px-4 py-3 mx-6">New version V {{ version.versionNumber }}</td>
               <td class="px-4 py-3 mx-6">{{ version.generatedPDFDate }}</td>
               <!-- Ajoutez les autres colonnes si nécessaire -->
-              <td class="colonne-multiselect" *ngIf="!showShareField">
-                <angular2-multiselect [data]="dropdownList" [(ngModel)]="selectedItems"
-                                      [settings]="dropdownSettings"
+              <td class="colonne-multiselect" *ngIf="showShareField">
+                <angular2-multiselect [data]="dropdownList" [(ngModel)]="version.selectedItems"
                                       (onSelect)="onItemSelect($event)"
-                                      (onDeSelect)="OnItemDeSelect($event)"
-                                      (onSelectAll)="onSelectAll($event)"
-                                      (onDeSelectAll)="onDeSelectAll($event)"></angular2-multiselect>
+                                      (onDeSelect)="onItemDeSelect($event)"></angular2-multiselect>
               </td>
-              <td *ngIf="showShareField">
-                <!-- Champ Share -->
-                <input type="text" class="form-control" [(ngModel)]="selectedEntities" />
-              </td>
-              <td class="px-4 py-3 mx-4 ml-4" *ngIf="!showStatusField">
-                <button class="btn btn-success btn-sm" (click)="valider(item)">Submit</button>
-              </td>
-            
 
-            <!-- Champ de statut -->
-          
               <td colspan="6" *ngIf="showStatusField">
                 <!-- Colspan pour fusionner toutes les colonnes -->
-               <a>shareable </a>
+                <ng-container *ngIf="version.selectedItems && version.selectedItems.length > 0">
+                  <a *ngFor="let selectedItem of version.selectedItems">{{ selectedItem.itemName }} | </a>
+                </ng-container>
+                <ng-container *ngIf="!(version.selectedItems && version.selectedItems.length > 0)">
+                  <span>No items selected</span>
+                </ng-container>
               </td>
+
+
+              <td class="px-4 py-3 mx-4 ml-4" *ngIf="!showStatusField">
+                <button class="btn btn-success btn-sm" (click)="valider(version)">Submit</button>
+              </td>
+
+              <ng-container *ngIf="showStatusField">
+                <td colspan="2">
+                  <ng-container *ngIf="version.selectedItems && version.selectedItems.length > 0">
+                    <a>shareable</a>
+                  </ng-container>
+                  <ng-container *ngIf="!(version.selectedItems && version.selectedItems.length > 0)">
+                    <span>No Shareable</span>
+                  </ng-container>
+                </td>
+              </ng-container>
+              <!-- Afficher les entités sélectionnées -->
+
             </tr>
           </tbody>
+
         </table>
 
       </div>
