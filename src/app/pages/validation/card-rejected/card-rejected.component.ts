@@ -1,31 +1,44 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { RejectDiaComponent } from './reject-dia/reject-dia.component';
+import { Component, OnInit } from '@angular/core';
+import {  EventEmitter, Input, Output } from '@angular/core';
+import { RejectDiaComponent } from '../reject-dia/reject-dia.component';
 import { MatDialog } from '@angular/material/dialog';
-import { ValidDiaComponent } from './valid-dia/valid-dia.component';
+import { ValidDiaComponent } from '../valid-dia/valid-dia.component';
 import { Console } from 'console';
-import { SelectedItemService } from './communiation.service';
+import { SelectedItemService } from '../communiation.service';
 import Chart from 'chart.js';
 import { Router } from '@angular/router';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { CommentDialogComponent } from './dialogue/dialogue.component';
 @Component({
-  selector: 'app-validation',
-  templateUrl: './validation.component.html',
-  styleUrls: ['./validation.component.scss']
+  selector: 'app-card-rejected',
+  templateUrl: './card-rejected.component.html',
+  styleUrls: ['./card-rejected.component.scss']
 })
-export class ValidationComponent implements OnInit {
+export class CardRejectedComponent implements OnInit {
   data: any[] = [];
   filteredData: any[];
   items: any[] = [
     {
       id: 1,
       name: "currency",
-      status: "Inactive",
+      status: "Rejected",
       category: "Category 1",
       types: ["global"],
       createDate: "2022-04-20",
       createdBy: "User 1",
       checked: false // Ajoutez une propriété pour la case à cocher
+    },
+    {
+      id: 1,
+      name: "Conutry",
+      status: "Rejected",
+      category: "Category 4",
+      types: ["global"],
+      createDate: "2022-04-20",
+      createdBy: "User 4",
+      checked: false // Ajoutez une propriété pour la case à cocher
     }
-   
+
     // Ajoutez plus d'exemples si nécessaire
   ];
   public canvas: any;
@@ -34,29 +47,29 @@ export class ValidationComponent implements OnInit {
   public chartEmail;
   public chartHours;
   showRejectDialog: boolean = false;
- // selectedItemName: string = '';
+  // selectedItemName: string = '';
   showFirstDialog: boolean = false;
   showConfirmationDialog: boolean = true;
   dataName: string = '';
   isItemSelected: boolean = false;
   @Input() selectedItemName: string = '';
+  panelOpenState = false;
   @Output() itemNameChange: EventEmitter<string> = new EventEmitter<string>();
-  constructor(private dialog: MatDialog, private selectedItemService: SelectedItemService , private router : Router ) { }
- 
+  constructor(private dialog: MatDialog, private selectedItemService: SelectedItemService, private router: Router) { }
   logName(name: string) {
     console.log("Name clicked:", name);
   }
- 
-  
+
+
 
   openDialog(): void {
-    //this.showRejectDialog = true;
-    const dialogRef = this.dialog.open(RejectDiaComponent, {
-      width: '500px',
+    const dialogRef = this.dialog.open(CommentDialogComponent, {
+      width: '550px',
+      data: { comment: 'The static data lacks consistency across various characteristics' }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      console.log('Dialog fermé');
     });
   }
   updateSelectedItemName(name: string): void {
@@ -65,7 +78,7 @@ export class ValidationComponent implements OnInit {
   valider(item: any) {
     // Ouvrir le dialogue
     const dialogRef = this.dialog.open(ValidDiaComponent);
-  
+
 
     // Gérer la réponse du dialogue
     dialogRef.afterClosed().subscribe(result => {
@@ -78,7 +91,7 @@ export class ValidationComponent implements OnInit {
         console.log('Cancelled');
       }
     });
-  
+
   }
   // Méthode pour gérer le changement de la case à cocher
   onCheckboxChange(checked: boolean, item: any) {
@@ -87,13 +100,13 @@ export class ValidationComponent implements OnInit {
     this.isItemSelected = this.items.some(item => item.checked);
   }
 
- 
+
   // Méthode pour gérer l'action de rejet
   rejeter(item: any) {
     // Logique pour le rejet
     console.log("Rejecting item:", item);
   }
-  
+
   applyFilter(filterValue: string) {
     filterValue = filterValue.trim(); // Supprimer les espaces vides
     filterValue = filterValue.toLowerCase(); // Mettre en minuscule
@@ -112,15 +125,15 @@ export class ValidationComponent implements OnInit {
       }
     });
   }
-  goToValid() { this.router.navigate(['/card-val']); }
-  goTShare() {
+
+  goTVal() {
     // Naviguer vers la page de détails en utilisant l'ID de l'élément
-    this.router.navigate(['/complaint']);
+    this.router.navigate(['/valide']);
   }
-  goToReject() { this.router.navigate(['/rejected']); }
-  goToCardS() { this.router.navigate(['/card-share']); }
+  go
   ngOnInit(): void {
-   
   }
- }
+
+}
+
 

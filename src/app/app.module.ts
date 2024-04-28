@@ -26,10 +26,13 @@ import { MultiSelectComponent, MultiSelectModule } from '@syncfusion/ej2-angular
 import { ComplaintComponent } from './pages/validation/complaint/complaint.component';
 import { MessageDialogComponent } from './pages/validation/message/message.component'
 import { MatIconModule } from '@angular/material/icon';
+import { CardRejectedComponent } from './pages/validation/card-rejected/card-rejected.component';
 //import { ValidDiaComponent } from './pages/validation/valid-dia/valid-dia.component';
 //import { MdbTabsModule, MdbTabModule } from 'angular-bootstrap-md';
 //import { MdbTabsModule } from 'mdb-angular-ui-kit/tabs';
-
+import { MatExpansionModule } from '@angular/material/expansion';
+import { CardValidationComponent } from './pages/validation/card-validation/card-validation.component';
+import { CardSharingComponent } from './pages/validation/card-sharing/card-sharing.component';
 
 
 
@@ -51,7 +54,8 @@ import { MatIconModule } from '@angular/material/icon';
     ToastrModule.forRoot(),
     AngularMultiSelectModule,
     MultiSelectModule,
-    MatIconModule
+    MatIconModule,
+    MatExpansionModule
     //MdbTabsModule,
     //MdbTabModule,
     
@@ -68,6 +72,9 @@ import { MatIconModule } from '@angular/material/icon';
     ShareComponent,
     ComplaintComponent,
     MessageDialogComponent,
+    CardRejectedComponent,
+    CardValidationComponent,
+    CardSharingComponent,
    
     //ValidDiaComponent,
     //ShareDiaComponent,

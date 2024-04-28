@@ -11,6 +11,10 @@ import { ValidDiaComponent } from './pages/validation/valid-dia/valid-dia.compon
 import { ShareComponent } from './pages/validation/share/share.component';
 import { SelectMultiComponent } from './pages/validation/select-multi/select-multi.component';
 import { ComplaintComponent } from './pages/validation/complaint/complaint.component';
+import { RejectDiaComponent } from './pages/validation/reject-dia/reject-dia.component';
+import { CardRejectedComponent } from './pages/validation/card-rejected/card-rejected.component';
+import { CardValidationComponent } from './pages/validation/card-validation/card-validation.component';
+import { CardSharingComponent } from './pages/validation/card-sharing/card-sharing.component';
 
 const routes: Routes =[
   {
@@ -32,6 +36,10 @@ const routes: Routes =[
     component: StaticComponent,
   },
   {
+    path: 'rejected',
+    component: CardRejectedComponent,
+  },
+  {
     path: 'share',
     component: ShareComponent,
   },
@@ -46,6 +54,14 @@ const routes: Routes =[
   {
     path: 'valid-dia',
     component: ValidDiaComponent
+  },
+  {
+    path: 'card-val',
+    component: CardValidationComponent
+  },
+  {
+    path: 'card-share',
+    component: CardSharingComponent
   },
   {
     path: 'valide',

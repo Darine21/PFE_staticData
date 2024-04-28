@@ -1,17 +1,18 @@
+
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { RejectDiaComponent } from './reject-dia/reject-dia.component';
+import { RejectDiaComponent } from '../reject-dia/reject-dia.component';
 import { MatDialog } from '@angular/material/dialog';
-import { ValidDiaComponent } from './valid-dia/valid-dia.component';
+import { ValidDiaComponent } from '../valid-dia/valid-dia.component';
 import { Console } from 'console';
-import { SelectedItemService } from './communiation.service';
+import { SelectedItemService } from '../communiation.service';
 import Chart from 'chart.js';
 import { Router } from '@angular/router';
 @Component({
-  selector: 'app-validation',
-  templateUrl: './validation.component.html',
-  styleUrls: ['./validation.component.scss']
+  selector: 'app-card-validation',
+  templateUrl: './card-validation.component.html',
+  styleUrls: ['./card-validation.component.scss']
 })
-export class ValidationComponent implements OnInit {
+export class CardValidationComponent implements OnInit {
   data: any[] = [];
   filteredData: any[];
   items: any[] = [
@@ -24,8 +25,28 @@ export class ValidationComponent implements OnInit {
       createDate: "2022-04-20",
       createdBy: "User 1",
       checked: false // Ajoutez une propriété pour la case à cocher
-    }
-   
+    },
+    {
+      id: 2,
+      name: "loan type",
+      status: "Inactive",
+      category: "Category 6",
+      types: ["global"],
+      createDate: "2022-05-20",
+      createdBy: "User 3",
+      checked: false // Ajoutez une propriété pour la case à cocher
+    },
+    {
+      id: 3,
+      name: "interest rate",
+      status: "Inactive",
+      category: "Category 4",
+      types: ["global"],
+      createDate: "2022-04-2",
+      createdBy: "User 2",
+      checked: false // Ajoutez une propriété pour la case à cocher
+    },
+
     // Ajoutez plus d'exemples si nécessaire
   ];
   public canvas: any;
@@ -34,20 +55,20 @@ export class ValidationComponent implements OnInit {
   public chartEmail;
   public chartHours;
   showRejectDialog: boolean = false;
- // selectedItemName: string = '';
+  // selectedItemName: string = '';
   showFirstDialog: boolean = false;
   showConfirmationDialog: boolean = true;
   dataName: string = '';
   isItemSelected: boolean = false;
   @Input() selectedItemName: string = '';
   @Output() itemNameChange: EventEmitter<string> = new EventEmitter<string>();
-  constructor(private dialog: MatDialog, private selectedItemService: SelectedItemService , private router : Router ) { }
- 
+  constructor(private dialog: MatDialog, private selectedItemService: SelectedItemService, private router: Router) { }
+
   logName(name: string) {
     console.log("Name clicked:", name);
   }
- 
-  
+
+
 
   openDialog(): void {
     //this.showRejectDialog = true;
@@ -65,7 +86,7 @@ export class ValidationComponent implements OnInit {
   valider(item: any) {
     // Ouvrir le dialogue
     const dialogRef = this.dialog.open(ValidDiaComponent);
-  
+
 
     // Gérer la réponse du dialogue
     dialogRef.afterClosed().subscribe(result => {
@@ -78,7 +99,7 @@ export class ValidationComponent implements OnInit {
         console.log('Cancelled');
       }
     });
-  
+
   }
   // Méthode pour gérer le changement de la case à cocher
   onCheckboxChange(checked: boolean, item: any) {
@@ -87,13 +108,13 @@ export class ValidationComponent implements OnInit {
     this.isItemSelected = this.items.some(item => item.checked);
   }
 
- 
+
   // Méthode pour gérer l'action de rejet
   rejeter(item: any) {
     // Logique pour le rejet
     console.log("Rejecting item:", item);
   }
-  
+
   applyFilter(filterValue: string) {
     filterValue = filterValue.trim(); // Supprimer les espaces vides
     filterValue = filterValue.toLowerCase(); // Mettre en minuscule
@@ -112,15 +133,14 @@ export class ValidationComponent implements OnInit {
       }
     });
   }
-  goToValid() { this.router.navigate(['/card-val']); }
-  goTShare() {
+
+  goToVal() {
     // Naviguer vers la page de détails en utilisant l'ID de l'élément
-    this.router.navigate(['/complaint']);
+    this.router.navigate(['/valide']);
   }
   goToReject() { this.router.navigate(['/rejected']); }
-  goToCardS() { this.router.navigate(['/card-share']); }
   ngOnInit(): void {
-   
+
   }
- }
+}
 

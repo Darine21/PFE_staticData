@@ -13,6 +13,9 @@ export const ROUTES: RouteInfo[] = [
   { path: '/valide', title: 'validation Data', icon: 'fa fa-check text-red', class: '' },
   { path: '/share', title: 'share Data', icon: 'fa fa-check text-red', class: '' },
   { path: '/complaint', title: '', icon: '', class: '' },
+  { path: '/rejected', title: '', icon: '', class: '' },
+  { path: '/card-val', title: '', icon: '', class: '' },
+  { path: '/card-share', title: '', icon: '', class: '' },
 ]
 
 

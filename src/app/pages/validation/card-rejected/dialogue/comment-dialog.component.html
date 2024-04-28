@@ -1,0 +1,57 @@
+<style>
+  .comment-dialog {
+    padding: 20px;
+    border-radius: 5px;
+    background-color: #f4fafe;
+    color: #333;
+    border-radius: 10px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    overflow-x: auto; /* Ajouter une barre de défilement verticale si le contenu dépasse la hauteur maximale */
+    max-height: 400px;
+  }
+
+    .comment-dialog h2 {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      color: #0026ff;
+      margin-left:120px;
+    }
+
+      .comment-dialog h2 mat-icon {
+        margin-right: 10px;
+      }
+
+    .comment-dialog p {
+      color: #000000;
+      word-wrap: break-word;
+    }
+
+    .comment-dialog button mat-icon {
+      margin-right: 5px;
+    }
+
+</style>
+
+ 
+  <div class="comment-dialog">
+    <h2 mat-dialog-title>
+      <i class="fas fa-comment"></i> Comment
+    </h2>
+    <div style="margin-top:30px;"></div>
+    <div mat-dialog-content>
+      <p>{{ data.comment }}</p>
+    </div>
+    <div mat-dialog-actions>
+      <button type="button" class="btn btn-outline-primary" style="margin-left: 350px; color: #0026ff;" >
+        <i class="fas fa-times" (click)="onClose()"></i> Close
+      </button>
+
+    </div>
+  </div>
+  
+

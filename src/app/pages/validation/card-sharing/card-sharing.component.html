@@ -7,14 +7,9 @@
   </div>
 </div>
 <div style="margin-top:20px; margin-left:20px;">
-  <i class="fas fa-database navbar-icon"></i>
-  <span class="nav-text" style="font-size:15px; margin-left:10px;">StaticData</span>
-  <!-- Séparateur -->
-  <span class="separator"></span>
 
-  <i class="fas fa-chevron-right navbar-icon"></i>
   <i class="fas fa-check-circle navbar-icon" style="margin-left: 10px;"></i>
-  <span class="nav-text" style="font-size:15px; margin-left:10px;">Validation</span>
+  <span class="nav-text" style="font-size:15px; margin-left:10px;" (click)=" goToVal()">Validation</span>
   <span class="separator" style="margin-right:-15px"></span>
   <i class="fas fa-chevron-right navbar-icon"></i>
   <i class="fas fa-share-alt navbar-icon" style="margin-left: 10px;"></i>
@@ -59,8 +54,7 @@
               <th scope="col" class="px-4 py-3 bg-white text-primary mx-6">Version</th>
               <th scope="col" class="px-4 py-3 bg-white text-primary mx-6">CreatedDate</th>
               <th scope="col" class="px-4 py-3 bg-white text-primary mx-6">Share</th>
-              <th scope="col" class="px-4 py-3 bg-white text-primary mx-6 ml-6" *ngIf="!showShareField">Actions</th>
-              <th scope="col" class="px-4 py-3 bg-white text-primary mx-6 ml-6" *ngIf="showShareField">Status</th>
+              <th scope="col" class="px-4 py-3 bg-white text-primary mx-6 ml-6">Actions</th>
               <th scope="col"></th>
             </tr>
           </thead>
@@ -69,32 +63,36 @@
             <!-- Boucle sur les données pour afficher les lignes de la table -->
             <tr *ngFor="let version of publishedVersions">
               <td class="px-4 py-3 mx-6">{{ version.versionNumber }}</td>
+
               <td class="px-4 py-3 mx-6"> New version V {{ version.versionNumber }}</td>
               <td class="px-4 py-3 mx-6">{{ version.generatedPDFDate }}</td>
               <!-- Ajoutez les autres colonnes si nécessaire -->
-              <td class="colonne-multiselect" *ngIf="!showShareField">
-                <angular2-multiselect [data]="dropdownList" [(ngModel)]="selectedItems"
-                                      [settings]="dropdownSettings"
-                                      (onSelect)="onItemSelect($event)"
-                                      (onDeSelect)="OnItemDeSelect($event)"
-                                      (onSelectAll)="onSelectAll($event)"
-                                      (onDeSelectAll)="onDeSelectAll($event)"></angular2-multiselect>
-              </td>
-              <td *ngIf="showShareField">
-                <!-- Champ Share -->
-                <input type="text" class="form-control" [(ngModel)]="selectedEntities" />
-              </td>
-              <td class="px-4 py-3 mx-4 ml-4" *ngIf="!showStatusField">
-                <button class="btn btn-success btn-sm" (click)="valider(item)">Submit</button>
-              </td>
-            
 
-            <!-- Champ de statut -->
-          
-              <td colspan="6" *ngIf="showStatusField">
-                <!-- Colspan pour fusionner toutes les colonnes -->
-               <a>shareable </a>
+
+
+              <td class="colonne-multiselect">
+                <ng-container *ngIf="isEditing; else notEditing">
+                  <angular2-multiselect [data]="dropdownList" [(ngModel)]="selectedItems"
+                                        [settings]="dropdownSettings"
+                                        (onSelect)="onItemSelect($event)"
+                                        (onDeSelect)="OnItemDeSelect($event)"
+                                        (onSelectAll)="onSelectAll($event)"
+                                        (onDeSelectAll)="onDeSelectAll($event)"></angular2-multiselect>
+                </ng-container>
+                <ng-template #notEditing>
+                  <a> E1, E2, E3, E5, E6</a>
+                </ng-template>
               </td>
+             
+
+              <td class="px-4 py-3 mx-4 ml-4">
+                <i class="fas fa-edit btn btn-success btn-sm" (click)="valider(item)"></i>
+                <i class="fas fa-trash-alt btn btn-danger btn-sm" (click)="supprimer(item)"></i>
+
+
+
+              </td>
+
             </tr>
           </tbody>
         </table>

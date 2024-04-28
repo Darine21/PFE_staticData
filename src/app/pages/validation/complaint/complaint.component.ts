@@ -13,7 +13,7 @@ declare var bootstrap: any;
 })
 export class ComplaintComponent implements OnInit {
 
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog, private router: Router) { }
 
   openMessageDialog(): void {
     const dialogRef = this.dialog.open(MessageDialogComponent, {
@@ -42,6 +42,9 @@ export class ComplaintComponent implements OnInit {
     modal.hide();
   }
  
- 
+  goToVal() {
+    // Naviguer vers la page de détails en utilisant l'ID de l'élément
+    this.router.navigate(['/valide']);
+  }
  
 }

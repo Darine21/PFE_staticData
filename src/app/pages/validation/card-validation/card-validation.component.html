@@ -19,115 +19,16 @@
     </div>
   </div>
 </div>
+<div style="margin-top:20px; margin-left:20px;">
+  
+  <i class="fas fa-check-circle navbar-icon" style="margin-left: 10px;"></i>
+  <span class="nav-text" style="font-size:15px; margin-left:10px;" (click)="goToVal()">Validation</span>
 
+  <span class="separator" style="margin-right:-15px"></span>
+  <i class="fas fa-chevron-right navbar-icon"></i>
+  <i class="fas fa-file-alt" style="margin-left: 10px;"></i>
+  <span class="nav-text" style="font-size:15px; margin-left:10px;">Recent Static Data for validation</span>
 
-
-<!-- Card stats -->
-<div class="row" style="margin-top: 30px; margin-left:25px;">
-  <div class="col-xl-3 col-lg-6 mb-4">
-    <div class="card card-stats mb-4 mb-xl-0">
-      <div class="card-body">
-        <div class="row">
-          <div class="col-auto" (click)="goToValid()">
-            <div class="icon icon-shape bg-info text-white rounded-circle shadow">
-              <i class="fas fa-file-alt"></i> <!-- Utilisation de l'icône "file-alt" pour représenter des données statiques -->
-            </div>
-          </div>
-          <div class="col">
-            <h5 class="card-title " style="font-size: 14px; font-family: 'Roboto', sans-serif; font-weight: bold; color: #adb5bd; text-align: center;">Static Data for Validation</h5>
-            <div class="text-right " style="margin-bottom:10px;">
-              <span class="h2 font-weight-bold mb-0 text-info-card" style="color: #11cdef; margin-right: 12px;">3</span>
-              <span style="font-size: 18px; color: #11cdef">(3 days ago)</span>
-            </div>
-          </div>
-        </div>
-        <div class="card-footer">
-          <div class="stats">
-            <i class="fas fa-sync" style="color: #11cdef;"></i> Update Now
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-xl-3 col-lg-6 mb-4">
-    <div class="card card-stats mb-4 mb-xl-0">
-      <div class="card-body">
-        <div class="row">
-          <div class="col-auto" (click)="goToReject()">
-            <div class="icon icon-shape bg-danger text-white rounded-circle shadow" >
-              <i class="fas fa-times-circle"></i>
-            </div>
-          </div>
-          <div class="col">
-            <h5 class="card-title text-right" style="font-size: 16px; text-align: center; font-family: 'Roboto', sans-serif; font-weight: bold; color: #adb5bd; text-align: center;">Rejected static data</h5>
-            <div class="text-right " style="margin-bottom:10px;">
-              <span class="h2 font-weight-bold mb-0 text-danger-card" style="color: #f5365c; margin-right: 12px; ">2</span>
-              <span class="text-danger-card" style="font-size: 14px; color: #ffc107; "></span>
-            </div>
-          </div>
-        </div>
-        <div class="card-footer">
-          <div class="stats">
-            <i class="fas fa-sync" style="color: #f5365c;"></i> Update Now
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-xl-3 col-lg-6 mb-4">
-    <div class="card card-stats mb-4 mb-xl-0">
-      <div class="card-body">
-        <div class="row">
-          <div class="col-auto" (click)=" goToCardS()">
-            <div class="icon icon-shape" style="background-color: #007bff; color: #ffffff; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;">
-              <i class="fas fa-share-alt"></i>
-            </div>
-
-          </div>
-          <div class="col">
-            <h5 class="card-title text-right" style="font-size: 16px; text-align: center; font-family: 'Roboto', sans-serif; font-weight: bold; color: #adb5bd; text-align: center;">Shared static data</h5>
-            <div class="text-right " style="margin-bottom:10px;">
-              <span class="h2 font-weight-bold mb-0 text-danger-card" style="color: #f5365c; margin-right: 12px; ">6</span>
-              <span class="text-danger-card" style="font-size: 14px; color: #ffc107; "></span>
-            </div>
-          </div>
-        </div>
-        <div class="card-footer">
-          <div class="stats">
-            <i class="fas fa-sync" style="color: #f5365c;"></i> Update Now
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-xl-3 col-lg-6 mb-4">
-    <div class="card card-stats mb-4 mb-xl-0">
-      <div class="card-body">
-        <div class="row">
-          <div class="col-auto" (click)="goTShare()">
-            <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
-              <i class="fas fa-exclamation-circle"></i>
-            </div>
-          </div>
-          <div class="col"  >
-            <h5   class="card-title text-right" style="font-size: 16px; text-align: center; font-family: 'Roboto', sans-serif; font-weight: bold; color: #adb5bd; text-align: center;">Complaint</h5>
-            <div class="text-right " style="margin-bottom:10px;">
-              <span class="h2 font-weight-bold mb-0 text-warning-card" style="color: #fb6340; margin-right: 12px;">3</span>
-              <span style="font-size: 14px; color: #f5365c;"></span>
-            </div>
-          </div>
-        </div>
-        <div class="card-footer">
-          <div class="stats">
-            <i class="fas fa-sync" style="color: #fb6340;"></i> Update Now
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
 
 <div class="container-fluid mt-4 mb-4">
