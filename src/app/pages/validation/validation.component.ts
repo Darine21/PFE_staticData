@@ -4,7 +4,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ValidDiaComponent } from './valid-dia/valid-dia.component';
 import { Console } from 'console';
 import { SelectedItemService } from './communiation.service';
-
+import Chart from 'chart.js';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-validation',
   templateUrl: './validation.component.html',
@@ -27,6 +28,11 @@ export class ValidationComponent implements OnInit {
    
     // Ajoutez plus d'exemples si nécessaire
   ];
+  public canvas: any;
+  public ctx;
+  public chartColor;
+  public chartEmail;
+  public chartHours;
   showRejectDialog: boolean = false;
  // selectedItemName: string = '';
   showFirstDialog: boolean = false;
@@ -35,7 +41,7 @@ export class ValidationComponent implements OnInit {
   isItemSelected: boolean = false;
   @Input() selectedItemName: string = '';
   @Output() itemNameChange: EventEmitter<string> = new EventEmitter<string>();
-  constructor(private dialog: MatDialog, private selectedItemService: SelectedItemService ) { }
+  constructor(private dialog: MatDialog, private selectedItemService: SelectedItemService , private router : Router ) { }
  
   logName(name: string) {
     console.log("Name clicked:", name);
@@ -107,8 +113,12 @@ export class ValidationComponent implements OnInit {
     });
   }
 
-
-  ngOnInit(): void {
+  goTShare() {
+    // Naviguer vers la page de détails en utilisant l'ID de l'élément
+    this.router.navigate(['/complaint']);
   }
+  ngOnInit(): void {
+   
+  }
+ }
 
-}

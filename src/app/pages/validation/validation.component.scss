@@ -91,3 +91,50 @@
 .btn-submit:hover {
   background-color: #0056b3;
 }
+.card {
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+/* Réduire la hauteur */
+
+}
+.card-stats{
+    width: 280px;
+    height: 140px;
+}
+.card-body {
+  padding: 10px; /* Réduire le rembourrage */
+}
+
+.card-category {
+  font-size: 12px; /* Réduire la taille de la catégorie */
+}
+
+.card-title {
+  font-size: 18px; /* Réduire la taille du titre */
+  margin-top: 8px; /* Réduire l'espace entre le titre et la catégorie */
+}
+
+.card-footer {
+  border-top: 1px solid #eee;
+  padding: 8px 15px; /* Réduire le rembourrage du pied de carte */
+}
+
+.stats {
+  font-size: 12px; /* Réduire la taille du texte des statistiques */
+}
+
+.icon-big {
+  font-size: 28px; /* Réduire la taille de l'icône */
+}
+.icon-color {
+  color: #fff;
+}
+
+.text-color {
+  color: #999;
+}
+
+.title-color {
+  color: #fff;
+}

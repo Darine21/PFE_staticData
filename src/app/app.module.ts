@@ -23,6 +23,9 @@ import { ValidDiaComponent } from './pages/validation/valid-dia/valid-dia.compon
 import { ToastrModule } from 'ngx-toastr';
 import { ShareComponent } from './pages/validation/share/share.component';
 import { MultiSelectComponent, MultiSelectModule } from '@syncfusion/ej2-angular-dropdowns';
+import { ComplaintComponent } from './pages/validation/complaint/complaint.component';
+import { MessageDialogComponent } from './pages/validation/message/message.component'
+import { MatIconModule } from '@angular/material/icon';
 //import { ValidDiaComponent } from './pages/validation/valid-dia/valid-dia.component';
 //import { MdbTabsModule, MdbTabModule } from 'angular-bootstrap-md';
 //import { MdbTabsModule } from 'mdb-angular-ui-kit/tabs';
@@ -48,7 +51,7 @@ import { MultiSelectComponent, MultiSelectModule } from '@syncfusion/ej2-angular
     ToastrModule.forRoot(),
     AngularMultiSelectModule,
     MultiSelectModule,
-  
+    MatIconModule
     //MdbTabsModule,
     //MdbTabModule,
     
@@ -63,6 +66,8 @@ import { MultiSelectComponent, MultiSelectModule } from '@syncfusion/ej2-angular
     RejectDiaComponent,
     ValidDiaComponent,
     ShareComponent,
+    ComplaintComponent,
+    MessageDialogComponent,
    
     //ValidDiaComponent,
     //ShareDiaComponent,

@@ -1,3 +1,17 @@
+<style>
+  /* Définition des classes CSS pour les différentes couleurs de carte */
+  .text-info-card {
+    color: #17a2b8; /* Couleur de l'icône "Info" */
+  }
+
+  .text-danger-card {
+    color: #dc3545; /* Couleur de l'icône "Danger" */
+  }
+
+  .text-warning-card {
+    color: #ffc107; /* Couleur de l'icône "Warning" */
+  }
+</style>
 <div class="header bg-gradient-danger custom-header" style="height: 53px;">
   <div class="container-fluid">
     <div class="header-body">
@@ -5,23 +19,124 @@
     </div>
   </div>
 </div>
-<div style="margin-top:20px; margin-left:20px;">
-  <i class="fas fa-database navbar-icon"></i>
-  <span class="nav-text" style="font-size:15px; margin-left:10px;">StaticData</span>
-  <!-- Séparateur -->
-  <span class="separator"></span>
 
-  <i class="fas fa-chevron-right navbar-icon"></i>
-  <span class="nav-text" style="font-size:15px; margin-left:10px;">Validation</span>
+
+
+<!-- Card stats -->
+<div class="row" style="margin-top: 30px; margin-left:25px;">
+  <div class="col-xl-3 col-lg-6 mb-4">
+    <div class="card card-stats mb-4 mb-xl-0">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-auto">
+            <div class="icon icon-shape bg-info text-white rounded-circle shadow">
+              <i class="fas fa-file-alt"></i> <!-- Utilisation de l'icône "file-alt" pour représenter des données statiques -->
+            </div>
+          </div>
+          <div class="col">
+            <h5 class="card-title " style="font-size: 14px; font-family: 'Roboto', sans-serif; font-weight: bold; color: #adb5bd; text-align: center;">Static Data for Validation</h5>
+            <div class="text-right " style="margin-bottom:10px;">
+              <span class="h2 font-weight-bold mb-0 text-info-card" style="color: #11cdef; margin-right: 12px;">4</span>
+              <span style="font-size: 18px; color: #11cdef">(3 days ago)</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="stats">
+            <i class="fas fa-sync" style="color: #11cdef;"></i> Update Now
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-lg-6 mb-4">
+    <div class="card card-stats mb-4 mb-xl-0">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-auto">
+            <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
+              <i class="fas fa-times-circle"></i>
+            </div>
+          </div>
+          <div class="col">
+            <h5 class="card-title text-right" style="font-size: 16px; text-align: center; font-family: 'Roboto', sans-serif; font-weight: bold; color: #adb5bd; text-align: center;">Rejected static data</h5>
+            <div class="text-right " style="margin-bottom:10px;">
+              <span class="h2 font-weight-bold mb-0 text-danger-card" style="color: #f5365c; margin-right: 12px; ">6</span>
+              <span class="text-danger-card" style="font-size: 14px; color: #ffc107; "></span>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="stats">
+            <i class="fas fa-sync" style="color: #f5365c;"></i> Update Now
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-lg-6 mb-4">
+    <div class="card card-stats mb-4 mb-xl-0">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-auto">
+            <div class="icon icon-shape" style="background-color: #007bff; color: #ffffff; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;">
+              <i class="fas fa-share-alt"></i>
+            </div>
+
+          </div>
+          <div class="col">
+            <h5 class="card-title text-right" style="font-size: 16px; text-align: center; font-family: 'Roboto', sans-serif; font-weight: bold; color: #adb5bd; text-align: center;">Shared static data</h5>
+            <div class="text-right " style="margin-bottom:10px;">
+              <span class="h2 font-weight-bold mb-0 text-danger-card" style="color: #f5365c; margin-right: 12px; ">6</span>
+              <span class="text-danger-card" style="font-size: 14px; color: #ffc107; "></span>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="stats">
+            <i class="fas fa-sync" style="color: #f5365c;"></i> Update Now
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-lg-6 mb-4">
+    <div class="card card-stats mb-4 mb-xl-0">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-auto" (click)="goTShare()">
+            <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
+              <i class="fas fa-exclamation-circle"></i>
+            </div>
+          </div>
+          <div class="col"  >
+            <h5   class="card-title text-right" style="font-size: 16px; text-align: center; font-family: 'Roboto', sans-serif; font-weight: bold; color: #adb5bd; text-align: center;">Complaint</h5>
+            <div class="text-right " style="margin-bottom:10px;">
+              <span class="h2 font-weight-bold mb-0 text-warning-card" style="color: #fb6340; margin-right: 12px;">3</span>
+              <span style="font-size: 14px; color: #f5365c;"></span>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="stats">
+            <i class="fas fa-sync" style="color: #fb6340;"></i> Update Now
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-<!-- Page content -->
+
 <div class="container-fluid mt-4 mb-4">
 
   <!-- Table -->
   <div class="row">
     <div class="col">
-      <div class="card shadow">
-        <div class="card-header border-0 d-flex justify-content-between align-items-center mt-n2" style="height: 75px;">
+      <div class="card shadow" style="margin-top:40px;">
+        <div class="card-header border-0 d-flex justify-content-between align-items-center mt-n2" style="height: 75px; ">
           <!-- Appliquez des classes de taille Bootstrap à l'élément h3 -->
           <h3 class="mb-0">List of Static Data</h3>
           <div class="d-flex align-items-center ml-auto">
@@ -77,11 +192,11 @@
               <td class="px-4 mx-5 ml-5">
                 <button class="btn btn-success btn-sm" [routerLink]="['/details', item.id]">Show</button>
                 <!-- Colonne Actions avec les boutons Valider et Rejeter -->
-                <td class="px-4 py-3 mx-4 ml-4">
-                  <button *ngIf="isItemSelected" class="btn btn-success btn-sm" (click)="valider(item)">Valider</button>
-                  <button *ngIf="isItemSelected" class="btn btn-danger btn-sm" (click)="showRejectDialog = true">Rejeter</button>
-                </td>
-             
+              <td class="px-4 py-3 mx-4 ml-4">
+                <button *ngIf="isItemSelected" class="btn btn-success btn-sm" (click)="valider(item)">Valider</button>
+                <button *ngIf="isItemSelected" class="btn btn-danger btn-sm" (click)="showRejectDialog = true">Rejeter</button>
+              </td>
+
             </tr>
           </tbody>
         </table>
@@ -121,3 +236,5 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+

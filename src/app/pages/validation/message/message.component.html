@@ -1,0 +1,28 @@
+<div class="chatbot-dialog-container" *ngIf="showDialog">
+    <i class="fas fa-times close-icon" (click)="onClose()" style="position: absolute; top: 70px; right: 20px; color: #888; font-size: 20px; cursor: pointer;"></i>
+
+  <div class="chatbot-dialog">
+    <div class="chatbot-messages">
+      <!-- Afficher tous les messages de chat -->
+      <div class="chatbot-message" *ngFor="let message of chatMessages">
+        <p [ngClass]="{'default-message': message.sender !== 'Moi', 'user-message': message.sender === 'Moi'}">
+          <!-- Appliquer une classe CSS différente en fonction de l'expéditeur -->
+          <i class="far fa-user-circle message-icon"></i>
+          <strong class="message">{{ message.sender }} :</strong>
+          <span class="message">{{ message.content }}</span>
+          <span *ngIf="message.sender !== 'Moi'">
+            <!-- Icône indiquant que c'est un message de l'interlocuteur -->
+
+          </span>
+        </p>
+      </div>
+    </div>
+    <div class="chatbot-input">
+      <textarea matInput placeholder="Entrez votre message ici..." [(ngModel)]="messageContent"></textarea>
+      <button mat-icon-button (click)="sendMessage()">
+        <!-- Icône d'envoi -->
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </div>
+  </div>
+</div>

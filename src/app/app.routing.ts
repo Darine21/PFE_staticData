@@ -10,6 +10,7 @@ import { DetailsComponent } from './pages/static/details/details.component';
 import { ValidDiaComponent } from './pages/validation/valid-dia/valid-dia.component';
 import { ShareComponent } from './pages/validation/share/share.component';
 import { SelectMultiComponent } from './pages/validation/select-multi/select-multi.component';
+import { ComplaintComponent } from './pages/validation/complaint/complaint.component';
 
 const routes: Routes =[
   {
@@ -33,6 +34,10 @@ const routes: Routes =[
   {
     path: 'share',
     component: ShareComponent,
+  },
+  {
+    path: 'complaint',
+    component: ComplaintComponent,
   },
   {
     path: 'select',

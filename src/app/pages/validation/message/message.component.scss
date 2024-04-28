@@ -1,0 +1,90 @@
+/* styles.css ou styles.scss */
+
+
+.chatbot-dialog {
+  width: 500px;
+ 
+  border-radius: 8px;
+  background-color: #f0f0f0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-top: 60px;
+}
+.chatbot-dialog-container {
+  position: fixed; /* Position fixée pour rester au centre de la page */
+  top: 50%; /* Aligner le haut du conteneur au milieu de la page */
+  left: 50%; /* Aligner la gauche du conteneur au milieu de la page */
+  transform: translate(-50%, -50%);
+
+  margin-top: 60px; /* Décaler le conteneur de moitié de sa taille en négatif pour le centrer */
+}
+
+.chatbot-message {
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #4caf50; /* Couleur verte pour le message de l'utilisateur */
+  color: white; /* Texte blanc pour le message de l'utilisateur */
+  align-self: flex-end;
+  margin-left: 30px; /* Marge gauche de 5px */
+  margin-right: 120px;
+  margin-top: 60px;
+}
+
+.chatbot-message.from-bot {
+  background-color: #4caf50;
+  color: white;
+  align-self: flex-start;
+}
+.chatbot-messages {
+  overflow-y: auto; /* Ajouter une barre de défilement verticale si le contenu dépasse la hauteur maximale */
+  max-height: 400px; /* Hauteur maximale de la zone de messages */
+}
+.from-user {
+  background-color: #4caf50; /* Couleur verte pour le message de l'utilisateur */
+  color: white; /* Texte blanc pour le message de l'utilisateur */
+  align-self: flex-end;
+  }
+.chatbot-input {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  max-height: 200px; /* Hauteur maximale de 60 pixels */
+  overflow-y: auto; /* Ajouter une barre de défilement verticale si le contenu dépasse la hauteur maximale */
+}
+.message-icon {
+  vertical-align: middle; /* Alignement vertical au centre */
+  margin-left: 5px; /* Marge à gauche */
+}
+.message {
+  background-color: #4caf50; /* Couleur verte pour le message de l'utilisateur */
+  color: white; /* Texte blanc pour le message de l'utilisateur */
+  align-self: flex-end;
+}
+.chatbot-input textarea {
+  flex: 1;
+  border: none;
+  border-radius: 5px;
+  padding: 8px;
+  resize: none;
+ 
+}
+
+  .chatbot-input button {
+    margin-left: 10px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+  /* message.component.css */
+  /* message.component.css */
+  .default-message {
+    color: gray; /* Couleur grise pour le message par défaut */
+  }
+
