@@ -14,13 +14,14 @@ import { StaticData } from '../models/staticdata';
 })
 export class StaticService {
   formData: StaticData = {
-    Id: null,
-    Name: null,
-    Types: null,
-    Category: null,
-    Status: null,
-    DateCreated: null,
-    CreatedBy:null
+      Id: 1,
+      Name: '',
+      Types: '',
+      Category: '',
+      Status: 'Inactive',
+
+      CreatedBy: '',
+      DateCreated: undefined
   };
   list: StaticData[];
 

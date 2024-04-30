@@ -2,9 +2,10 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { StaticData } from '../../models/staticdata';
-import { StaticService } from '../static.service';
+//import { StaticService } from '../static.service';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { DataService } from '../data.service';
 
 @Component({
   selector: 'app-dialogs',
@@ -22,23 +23,30 @@ export class DialogsComponent {
   addedBulkValues: string[] = [];
   dataType: string;
   dataCategory: string;
-  inputMethod: string;
-
+  
+  inputMethod: string = '';
   @Output() addItem = new EventEmitter<any>();
   @Output() dataSubmitted: EventEmitter<any> = new EventEmitter<any>();
   @Output() formSubmitted = new EventEmitter<any>();
   myForm: FormGroup;
   errorMessages: any;
+  formData: any[] = []; 
 
-  constructor(private dialogue: StaticService, private fb: FormBuilder, private toastr: ToastrService) {
+  constructor( private fb: FormBuilder, private toastr: ToastrService, private dataService: DataService) {
 
   }
 
   ngOnInit() {
-    this.resetForm();
+    //this.resetForm();
+   
+      // Souscrire aux données partagées pour les mettre à jour dans le formulaire si nécessaire
+      this.dataService.formData$.subscribe(formData => {
+       
+        this.formData = formData;
+        console.log("datttt");// Assurez-vous de mettre à jour la variable formData avec les données partagées
+      });
+    
   }
-
-
 
   onNext() {
     this.showFirstDialog = false;
@@ -49,52 +57,30 @@ export class DialogsComponent {
     const valuesArray = this.bulkValues.split(/\r?\n/);
     this.addedBulkValues = [...valuesArray];
   }
+
   onSubmit(form: NgForm) {
-    if (this.dialogue.formData.Id == 0)
-      this.insertRecord(form);
-   
-  }
+    const formData = form.value;
 
-  insertRecord(form: NgForm) {
-    this.dialogue.addStaticData().subscribe(
-      res => {
-        debugger;
-        this.resetForm(form);
-        this.toastr.success('Submitted successfully', 'Payment Detail Register');
-        this.dialogue.refreshList();
-      },
-      err => {
-        debugger;
-        console.log(err);
+    // Exclure les clés null du formulaire
+    const filteredFormData = {};
+    for (const key in formData) {
+      if (formData[key] !== null) {
+        filteredFormData[key] = formData[key];
       }
-    )
-  }
-
-
-
-
-
-  // Fonction pour réinitialiser les valeurs du formulaire
-  resetForm(form?: NgForm) {
-    if (form != null)
-      form.form.reset();
-    this.dialogue.formData = {
-      Id: 0,
-      Name: '',
-      Types: '',
-      Category: '',
-      Status: 'Inactive',
-      CreatedBy: '',
-      DateCreated: new Date()
-    
-
-
-
     }
+
+    console.log("ttt",filteredFormData); // Affichez les données filtrées dans la console pour vérification
+    this.dataService.updateFormData(filteredFormData); // Envoyer les données de formData au service partagé
   }
+
+
+
+
+
   // Fonction pour réinitialiser les valeurs
   resetValues() {
     this.dataName = '';
+    
     this.dataType = '';
     this.dataCategory = '';
     this.inputValues = [''];
@@ -108,8 +94,6 @@ export class DialogsComponent {
   removeBulkValue(index: number) {
     this.addedBulkValues.splice(index, 1);
   }
-
-
   onClose() {
     // Réinitialise les valeurs et cache les deux dialogues
     this.dataName = '';
@@ -129,11 +113,6 @@ export class DialogsComponent {
     this.showExportButton = false; // Afficher le bouton Export
     this.showFirstDialog = true; // Afficher la première boîte de dialogue
   }
-
-  
-
-
-
   addInput() {
     if (this.inputMethod === 'single') {
       this.inputValues.push('');

@@ -4,9 +4,20 @@ import { DialogsComponent } from './dialogue/dialogue.component';
 import { Router } from '@angular/router';
 import { StaticData } from '../models/staticdata';
 import { FormsModule } from '@angular/forms';
-import { StaticService } from './static.service';
+//import { StaticService } from './static.service';
 import { ToastrService } from 'ngx-toastr';
+import { DataService } from './data.service';
 //import { BsModalRef } from 'ngx-bootstarp/modal';
+interface FormData {
+  ID: number;
+  Name: string;
+  Status: string;
+  Category: string;
+  Types: string[];
+  CreateDate: string;
+  CreatedBy: string;
+}
+
 @Component({
   selector: 'app-tables',
   templateUrl: './static.component.html',
@@ -17,17 +28,6 @@ export class StaticComponent {
   data: any[] = [];
   filteredData: any[];
   items: any[] = [
-    {
-      id: 1,
-      name: "currency",
-      status: "Inactive",
-      category: "null",
-      types: ["null"],
-      createDate: "2022-04-20",
-      createdBy: "null",
-      checked: false // Ajoutez une propriété pour la case à cocher
-    },
-    // Ajoutez plus d'exemples si nécessaire
   ];
   //modalRef?: BsModalRef;
   item: StaticData[] = [];
@@ -37,17 +37,32 @@ export class StaticComponent {
   showConfirmationDialog: boolean = true;
   dataName: string = '';
   isItemSelected: boolean = false;
-    staticService: any;
-    errorMessages: any;
+  staticService: any;
+  errorMessages: any;
+  formData: any[] = [];
+    Name: any;
+    Category: any;
+    Types: any;
+    Status: any;
+    ID: any;
+    CreateDate: any;
+  CreatedBy: any;
+  submitButtonClicked: boolean = false;
+  
+
   deleteItem(index: number) {
     this.items.splice(index, 1); // Supprime l'élément du tableau à l'index donné
   }
-  
+
   addItemToTable(newItem: any) {
     this.items.push(newItem); // Ajoutez les données saisies au tableau items
   }
 
-  constructor(private dialog: MatDialog, private dialogue: StaticService, private router: Router, private toastr: ToastrService) {  }
+  constructor(private dialog: MatDialog,  private router: Router, private toastr: ToastrService, private dataService: DataService) {
+
+
+  }
+
   // Méthode pour gérer le changement de la case à cocher
   onCheckboxChange(checked: boolean, item: any) {
     item.checked = checked;
@@ -88,44 +103,63 @@ export class StaticComponent {
       }
     });
   }
-  populateForm(pd: StaticData) {
-    this.dialogue.formData = Object.assign({}, pd);
-  }
-  onDelete(Id) {
-    if (confirm('Are you sure to delete this record ?')) {
-      this.dialogue.DeleteStaticData(Id)
-        .subscribe(res => {
-          debugger;
-          this.dialogue.refreshList();
-          this.toastr.warning('Deleted successfully', 'Payment Detail Register');
-        },
-          err => {
-            debugger;
-            console.log(err);
-          })
-    }
-  }
+ 
 
   addStaticData(model: StaticData) {
-    this.staticService.addStaticData(model).subscribe( {
+    this.staticService.addStaticData(model).subscribe({
       next: (response) => {
-          
-          //this.sharedService.showNotification(true , response.valueOf.title, response.value.message);
-          //this.router.navigate(['/account/login']);
-          console.log(response);
-
-        },
-        error: error => {
-          if (error.error.Errors) {
-            this.errorMessages = error.error.Errors;
-          }
-          console.log(error);
-        }, // Rafraîchir les données après l'ajout
+        console.log(response);
+        // Gérer la réponse en fonction de vos besoins
+      },
+      error: (error) => {
+        console.log(error);
+        // Gérer les erreurs en fonction de vos besoins
+      },
     });
   }
-  ngOnInit() {
-    this.dialogue.refreshList();
+
+  // Déclarez vos variables ici
+  formDataName: string;
+  formDataCategory: string;
+  formDataTypes: string;
+  formDataStatus: string;
+  formDataId: number;
+  formDataCreateDate: String;
+  formDataCreatedBy: string;
+  showDeleteButton: Boolean = false;
+  formvalues: String;
+  ngOnInit(): void {
+    this.submitButtonClicked = true;
+    // S'abonner à formData$ pour recevoir les mises à jour des données du service
+    this.dataService.formData$.subscribe(formData => {
+      if (formData) {
+        console.log('Données reçues dans StaticComponent :', formData);
+       
+        if (formData) {
+    
+
+          this.formDataName = formData.Name;
+          //console.log("bellah", this.formDataName);
+          this.formDataCategory = formData.Category;
+          this.formDataTypes = formData.Types;
+          this.formDataStatus = 'Inactive';
+          this.formDataId = 1;
+          this.formDataCreateDate = new Date().toLocaleDateString('fr-FR', {
+            hour12: false,
+            timeZone: 'UTC' 
+          });
+          this.formDataCreatedBy = 'name';
+          this.showDeleteButton = true;
+          this.formvalues = formData.null;
+          console.log("showDeleteButton:", this.showDeleteButton);
+        } else {
+          console.log('Aucune donnée dans formData ou formData est null.');
+        }
+      }
+    });
   }
+
+
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogsComponent, {
       width: '500px',
@@ -136,5 +170,7 @@ export class StaticComponent {
         this.addItemToTable(result); // Ajoutez les données émises à votre tableau items
       }
     });
+    this.submitButtonClicked = true;
+
   }
 }

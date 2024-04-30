@@ -44,7 +44,8 @@ export class CardValidationComponent implements OnInit {
       types: ["global"],
       createDate: "2022-04-2",
       createdBy: "User 2",
-      checked: false // Ajoutez une propriété pour la case à cocher
+      checked: false,
+      isSelected: false// Ajoutez une propriété pour la case à cocher
     },
 
     // Ajoutez plus d'exemples si nécessaire
@@ -74,6 +75,7 @@ export class CardValidationComponent implements OnInit {
     //this.showRejectDialog = true;
     const dialogRef = this.dialog.open(RejectDiaComponent, {
       width: '500px',
+      
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -101,14 +103,36 @@ export class CardValidationComponent implements OnInit {
     });
 
   }
+  selectedItemCount: number = 0;
   // Méthode pour gérer le changement de la case à cocher
-  onCheckboxChange(checked: boolean, item: any) {
-    item.checked = checked;
-    // Mettre à jour le drapeau en fonction de l'état de la sélection
-    this.isItemSelected = this.items.some(item => item.checked);
+  onCheckboxChange(item: any) {
+
+    // Désélectionner tous les autres éléments
+    this.items.forEach((el) => {
+      el.isSelected = (el === item && !el.isSelected); // Sélectionner uniquement l'élément cliqué
+    });
+    let alreadySelected = item.isSelected;
+    console.log("sss", item.isSelected)
+   
+    const previousState = !item.isSelected;
+    if (previousState) {
+      // Si la case était précédemment cochée, décrémenter le compteur
+      this.selectedItemCount--;
+    } else {
+      // Sinon, incrémenter le compteur
+      this.selectedItemCount++;
+    }
+    
+    console.log("before:", this.selectedItemCount);
+    item.isSelected = !item.isSelected;
+     // Mettre à jour le nombre d'éléments sélectionnés
+    console.log("after:", this.selectedItemCount);
   }
 
-
+  rejectAll() {
+    const selectedItems = this.items.filter(item => item.isSelected);
+    selectedItems.forEach(item => this.rejeter(item)); // Appeler la méthode rejeter() pour chaque élément sélectionné
+  }
   // Méthode pour gérer l'action de rejet
   rejeter(item: any) {
     // Logique pour le rejet
@@ -138,9 +162,25 @@ export class CardValidationComponent implements OnInit {
     // Naviguer vers la page de détails en utilisant l'ID de l'élément
     this.router.navigate(['/valide']);
   }
+  goToDiaReject() { this.router.navigate(['/reject-dia']); }
   goToReject() { this.router.navigate(['/rejected']); }
   ngOnInit(): void {
+    this.showRejectDialog = false;
 
+  }
+  // Fonction pour ouvrir le dialogue de rejet pour un élément spécifique
+  openRejectDialog(item: any) {
+    item.showRejectDialog = true;
+  }
+
+  // Fonction pour fermer le dialogue de rejet pour un élément spécifique
+  closeRejectDialog(item: any) {
+    item.showRejectDialog = false;
+  }
+  onClose() {
+
+    this.showFirstDialog = false;
+   
   }
 }
 

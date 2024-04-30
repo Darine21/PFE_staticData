@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap/datepicker/ngb-date-struct';
 import { Router } from '@angular/router';
+import { DataService } from '../data.service';
 //import { ShareDiaComponent } from '../share-dia/share-dia.component';
 
 @Component({
@@ -33,9 +34,9 @@ export class DetailsComponent implements OnInit {
   predefinedValues: string[] = ['Val1', 'Val2', 'Val3'];
   selectedValue: string = '';
   newValue: string = '';
-    options: any;
+  options: any;
 
-  constructor(private dialog: MatDialog, private router: Router) { }
+  constructor(private dialog: MatDialog, private router: Router, private dataService: DataService) { }
   checkAndAddValue() {
     // Vérifiez si la valeur saisie correspond à l'une des valeurs prédéfinies
     if (this.predefinedValues.includes(this.newValue)) {
@@ -70,13 +71,50 @@ export class DetailsComponent implements OnInit {
     }
   }
 
-
+  formDataName: string;
+  formDataCategory: string;
+  formDataTypes: string;
+  formDataStatus: string;
+  formDataId: number;
+  formDataCreateDate: String;
+  formDataCreatedBy: string;
+  showDeleteButton: Boolean = false;
   showShareOptions: boolean = false
   ngOnInit(): void {
     this.inputValues.push(''); // Ajoute une valeur initiale vide
-    this.showOptions.push(false); // Initialise showOptions pour la première valeur
+    this.showOptions.push(false);
+
+    // S'abonner à formData$ pour recevoir les mises à jour des données du service
+    this.dataService.formData$.subscribe(formData => {
+      if (formData) {
+        console.log('Données reçues dans StaticComponent :', formData);
+
+        if (formData) {
+
+
+          this.formDataName = formData.Name;
+          //console.log("bellah", this.formDataName);
+          this.formDataCategory = formData.Category;
+          this.formDataTypes = formData.Types;
+          this.formDataStatus = 'Inactive';
+          this.formDataId = 1;
+          this.formDataCreateDate = new Date().toLocaleDateString('fr-FR', {
+            hour12: false,
+            timeZone: 'UTC'
+          });
+          this.formDataCreatedBy = 'name';
+          this.showDeleteButton = true;
+          console.log("showDeleteButton:", this.showDeleteButton);
+        } else {
+          console.log('Aucune donnée dans formData ou formData est null.');
+        }
+      }// Initialise showOptions pour la première valeur
+    });
   }
- // Initialisation
+
+  
+  
+ 
 
   
   shareOptions() {
@@ -141,4 +179,4 @@ export class DetailsComponent implements OnInit {
     // Méthode pour ajouter une nouvelle valeur
     
   }
-    // Affichez la ligne sous l'élément sur lequel vous avez cliqué
+    

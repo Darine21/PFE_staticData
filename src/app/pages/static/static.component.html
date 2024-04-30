@@ -69,24 +69,24 @@
 
           <!-- Corps de tableau -->
           <tbody>
-           <tr> <!-- Boucle sur les données pour afficher les lignes de la table -->
-            <!-- Utilisez une boucle *ngFor pour itérer sur chaque élément dans le tableau items -->
-          <td class="px-4 py-3 mx-6">{{ items[0].id }}</td>
-          <td class="px-4 py-3 mx-6" (click)="goToDetails(items[0].id)">{{ items[0].name }}</td>
+            <tr>
+              <!-- Boucle sur les données pour afficher les lignes de la table -->
+              <!-- Utilisez une boucle *ngFor pour itérer sur chaque élément dans le tableau items -->
+              <td class="px-4 py-3 mx-6">{{ formDataId }}</td>
+              <td class="px-4 py-3 mx-6" (click)="goToDetails(formDataId)">{{ formDataName }}</td>
 
-          <td class="px-4 py-3 mx-6">{{ items[0].status }}</td>
-          <td class="px-4 py-3 mx-6">{{ items[0].category }}</td>
-          <td class="px-4 py-3 mx-6">{{ items[0].types.join(', ') }}</td>
-          <td class="px-4 py-3 mx-6">{{ items[0].createDate  }}</td>
-          <td class="px-4 py-3 mx-6">{{ items[0].createdBy }}</td>
-          <!-- Colonne Actions avec les boutons Valider et Rejeter -->
-          <td class="px-4 py-3 mx-4 ml-4 ">
-            <button class="btn btn-danger btn-sm">Delete</button>
-
-          </td>
-          </tr>
+              <td class="px-4 py-3 mx-6">{{formDataStatus}}</td>
+              <td class="px-4 py-3 mx-6">{{formDataCategory}}</td>
+              <td class="px-4 py-3 mx-6">{{ formDataTypes }}</td>
+              <td class="px-4 py-3 mx-6">{{ formDataCreateDate}}</td>
+              <td class="px-4 py-3 mx-6">{{ formDataCreatedBy }}</td>
+         
+              <td class="px-4 py-3 mx-4 ml-4" >
+                <button class="btn btn-danger btn-sm">Delete</button>
+              </td>
 
 
+            </tr>
 
           </tbody>
         </table>

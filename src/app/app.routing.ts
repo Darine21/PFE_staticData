@@ -68,6 +68,7 @@ const routes: Routes =[
     component: ValidationComponent,
   },
   { path: 'details/:id', component: DetailsComponent },
+  { path: 'reject-dia', component: RejectDiaComponent },
   {
     path: '',
     component: AuthLayoutComponent,

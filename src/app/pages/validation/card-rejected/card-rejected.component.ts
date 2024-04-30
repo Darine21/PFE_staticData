@@ -76,6 +76,7 @@ export class CardRejectedComponent implements OnInit {
     this.selectedItemService.updateSelectedItem(name);
   }
   valider(item: any) {
+    
     // Ouvrir le dialogue
     const dialogRef = this.dialog.open(ValidDiaComponent);
 

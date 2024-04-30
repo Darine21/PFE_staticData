@@ -64,7 +64,7 @@
                   <div class="col-md-5 pr-1">
                     <div class="form-group">
                       <label>Name</label>
-                      <input type="text" class="form-control" placeholder="Company" value="currency">
+                      <input type="text" class="form-control" placeholder="Company" value="{{formDataName}}">
                     </div>
                   </div>
 
@@ -79,7 +79,7 @@
                         <tr>
 
                           <td>{{ i + 1 }}</td>
-                          <div style="margin-left: 10px;"></div>
+                          <div style="margin-left: 6px;"></div>
                           <td>
 
                             <input type="text" class="form-control" [(ngModel)]="inputValues[i]" placeholder="Enter data value" style="width:300px;">
@@ -145,14 +145,14 @@
                   <div class="col-md-5 pr-1">
                     <div class="form-group">
                       <label>Types</label>
-                      <input type="text" class="form-control" placeholder="Lorem by " value="null">
+                      <input type="text" class="form-control" placeholder="Lorem by " value="{{formDataTypes}}">
                     </div>
                   </div>
 
                   <div class="col-md-5 px-1">
                     <div class="form-group">
                       <label>Category</label>
-                      <input type="text" class="form-control" placeholder="Country" value="null">
+                      <input type="text" class="form-control" placeholder="Country" value="{{formDataCategory}}">
                     </div>
                   </div>
                 </div>
@@ -167,7 +167,7 @@
                             <i class="fa fa-calendar"></i> <!-- Utilisez une icône de calendrier -->
                           </button>
                         </div>
-                        <input class="form-control" placeholder="2024-02-08" name="creationDate" [(ngModel)]="creationDate" ngbDatepicker #dpCreation="ngbDatepicker">
+                        <input class="form-control" placeholder="{{formDataCreateDate}}" name="creationDate" [(ngModel)]="creationDate" ngbDatepicker #dpCreation="ngbDatepicker">
                       </div>
                     </div>
                   </div>
@@ -246,11 +246,7 @@
                       </div>
                       <div *ngIf="showShareOptions">
                         <label for="options">Options:</label>
-                        <select id="options" name="options" multiple [(ngModel)]="selectedOptions" class="custom-select">
-                          <option *ngFor="let option of options" [value]="option">{{option}}</option>
-                          <option>E2</option>
-                          <option>E3</option>
-                        </select>
+                        
                         <button (click)="submit()" class="btn-submit">Submit</button>
                       </div>
 
