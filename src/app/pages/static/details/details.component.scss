@@ -87,3 +87,21 @@
 .btn-submit:hover {
   background-color: #0056b3;
 }
+/* Styles CSS pour limiter la taille de la colonne */
+
+.colonne-multiselect {
+   /* Permet au composant de s'adapter à la largeur de son conteneur */
+  width:280px; /* Définissez la largeur maximale souhaitée */
+  overflow-x: auto; /* Limite la largeur maximale du composant */
+  /* Hauteur fixe de 300 pixels, ajustez selon vos besoins */
+  font-size: 16px; /* Taille de la police de 16 pixels, ajustez selon vos besoins */
+  margin-bottom: 10px; /* Marge inférieure de 10 pixels pour séparer des éléments suivants */
+}
+.container-fluid {
+  width: 100%; /* Ajustez la largeur de votre conteneur selon vos besoins */
+  float: left;
+ 
+  overflow-x: hidden;
+   /* Utilisez 100% de la largeur de la fenêtre */
+  max-width: 200%; /* Limitez la largeur maximale à la largeur de la fenêtre */
+}

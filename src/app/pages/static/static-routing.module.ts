@@ -6,6 +6,7 @@ import { Dialog } from '@angular/cdk/dialog';
 import { DialogsComponent } from './dialogue/dialogue.component';
 import { DetailsComponent } from './details/details.component';
 import { ValidationComponent } from '../validation/validation.component';
+import { FormsModule } from '@angular/forms';
 
 
 const router: Routes = [
@@ -19,9 +20,11 @@ const router: Routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(router)
+
   ],
   exports: [
-    RouterModule
+    RouterModule,
+    FormsModule,
   ]
 })
 export class StaticRoutingModule { }

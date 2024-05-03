@@ -8,12 +8,27 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 export class DataService {
   private formDataSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   formData$: Observable<any> = this.formDataSubject.asObservable();
+  private dataSubmittedSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  dataSubmitted$: Observable<any> = this.dataSubmittedSubject.asObservable();
 
   constructor() { }
 
   updateFormData(formData: any) {
     this.formDataSubject.next(formData);
-    console.log("Données reçues dans le service :", formData);
   }
-  
+  deleteFormDataById(formDataId: number) {
+    const currentValue = this.formDataSubject.value;
+    if (currentValue && Array.isArray(currentValue)) {
+      const updatedValue = currentValue.filter((data: any) => data.id !== formDataId);
+      this.formDataSubject.next(updatedValue);
+    } else {
+      console.error('La valeur de formDataSubject n\'est pas un tableau ou est null.');
+    }
+  }
+  emitDataSubmitted(data: any) {
+    this.dataSubmittedSubject.next(data);
+  }
+  private inputValuesSource = new BehaviorSubject<string[]>([]);
+  inputValues$ = this.inputValuesSource.asObservable();
+ 
 }

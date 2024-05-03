@@ -29,6 +29,7 @@ export class StaticComponent {
   filteredData: any[];
   items: any[] = [
   ];
+  i: number = 0;
   //modalRef?: BsModalRef;
   item: StaticData[] = [];
   showRejectDialog: boolean = false;
@@ -40,28 +41,43 @@ export class StaticComponent {
   staticService: any;
   errorMessages: any;
   formData: any[] = [];
-    Name: any;
-    Category: any;
-    Types: any;
-    Status: any;
-    ID: any;
-    CreateDate: any;
+  Name: any;
+  Category: any;
+  Types: any;
+  Status: any;
+  ID: any;
+  CreateDate: any;
   CreatedBy: any;
   submitButtonClicked: boolean = false;
+  formDataList: any[] = [];
+  index: number = -1;
   
 
   deleteItem(index: number) {
     this.items.splice(index, 1); // Supprime l'élément du tableau à l'index donné
   }
+ 
+  
 
-  addItemToTable(newItem: any) {
-    this.items.push(newItem); // Ajoutez les données saisies au tableau items
-  }
+  
 
   constructor(private dialog: MatDialog,  private router: Router, private toastr: ToastrService, private dataService: DataService) {
 
 
   }
+  deleteRow(index: number) {
+    // Vérifiez que l'index est valide
+    if (index >= 0 && index < this.formData.length) {
+      // Supprimez l'élément du tableau this.formData à l'index spécifié
+      this.formData.splice(index, 1);
+      console.log("Ligne supprimée avec succès !");
+    } else {
+      console.error("Index invalide : impossible de supprimer la ligne.");
+    }
+  }
+
+  
+
 
   // Méthode pour gérer le changement de la case à cocher
   onCheckboxChange(checked: boolean, item: any) {
@@ -108,7 +124,7 @@ export class StaticComponent {
   addStaticData(model: StaticData) {
     this.staticService.addStaticData(model).subscribe({
       next: (response) => {
-        console.log(response);
+        console.log("add",response);
         // Gérer la réponse en fonction de vos besoins
       },
       error: (error) => {
@@ -129,48 +145,76 @@ export class StaticComponent {
   showDeleteButton: Boolean = false;
   formvalues: String;
   ngOnInit(): void {
-    this.submitButtonClicked = true;
-    // S'abonner à formData$ pour recevoir les mises à jour des données du service
     this.dataService.formData$.subscribe(formData => {
       if (formData) {
-        console.log('Données reçues dans StaticComponent :', formData);
-       
-        if (formData) {
-    
+        // Ajouter un identifiant unique à chaque formData
+        //formData.id = this.generateUniqueId(); // Supposons que vous ayez une fonction generateUniqueId() qui génère des identifiants uniques
 
-          this.formDataName = formData.Name;
-          //console.log("bellah", this.formDataName);
-          this.formDataCategory = formData.Category;
-          this.formDataTypes = formData.Types;
-          this.formDataStatus = 'Inactive';
-          this.formDataId = 1;
-          this.formDataCreateDate = new Date().toLocaleDateString('fr-FR', {
-            hour12: false,
-            timeZone: 'UTC' 
-          });
-          this.formDataCreatedBy = 'name';
-          this.showDeleteButton = true;
-          this.formvalues = formData.null;
-          console.log("showDeleteButton:", this.showDeleteButton);
-        } else {
-          console.log('Aucune donnée dans formData ou formData est null.');
+        // Ajouter formData à formDataList
+        this.formDataList.push(formData);
+        console.log("darine", this.formDataList);
+        this.index += 1;
+        console.log("index", this.index);
+        // Mettre à jour les autres propriétés
+        this.formDataName = formData.Name;
+        this.formDataCategory = formData.Category;
+        this.formDataTypes = formData.Types;
+        this.formDataStatus = 'Inactive';
+        this.formDataId = 1; // Utiliser l'identifiant unique pour l'élément
+        this.formDataCreateDate = new Date().toLocaleDateString('fr-FR', {
+          hour12: false,
+          timeZone: 'UTC'
+        });
+        this.formDataCreatedBy = 'name';
+        this.showDeleteButton = true;
+        this.formvalues = formData.null;
+        this.items.push(formData);
+        console.log("name&", this.formDataList);
+        for (let i in this.formDataList) {
+          const name = this.formDataList[i].Name;
+          const category = this.formDataList[i].Category
+          console.log("name", name);
+          console.log("category", category);
         }
+       
+
+      } else {
+        console.log('Aucune donnée dans formData ou formData est null.');
       }
     });
   }
+  generateHTML(): string {
+    let html = '';
+    this.formDataList.forEach( i => {
+      html += `<tr *ngFor="let i of formDataList">`;
+      html += `<td class="px-4 py-3 mx-6">ddddd</td>`; // Colonne ID
+      html += `<td class="px-4 py-3 mx-6">${i.Name}</td>`; // Colonne Name
+      html += `<td class="px-4 py-3 mx-6">Inactive</td>`; // Colonne Status
+      html += `<td class="px-4 py-3 mx-6">${i.Category}</td>`; // Colonne Category
+      html += `<td class="px-4 py-3 mx-6">${i.Types}</td>`; // Colonne Types
+      html += `<td class="px-4 py-3 mx-6"><!-- Actions --></td>`; // Colonne Actions
+      html += `</tr>`;
+    });
+    return html;
+  }
 
 
+  addItemToTable(newItem: any) {
+    this.items.push(newItem);
+    console.log("eeee", this.items);
+    console.log("sss", newItem);// Ajoutez les données saisies au tableau items
+  }
+  submittedDataList: any[] = [];
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogsComponent, {
       width: '500px',
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result) { // Vérifie si des données ont été émises depuis le dialogue
-        this.addItemToTable(result); // Ajoutez les données émises à votre tableau items
+      if (result) {
+        this.addItemToTable(result);
       }
     });
-    this.submitButtonClicked = true;
-
+   
   }
 }

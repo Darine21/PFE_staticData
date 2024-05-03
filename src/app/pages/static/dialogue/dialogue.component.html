@@ -3,16 +3,12 @@
   <h2 style="text-align: center; margin-top: 40px; color: #333; font-family: 'Pacifico', cursive; font-size: 36px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);"> Add Static Data 📊</h2>
 
   <form #form="ngForm" autocomplete="off" (submit)="onSubmit(form)">
-
-    <!-- Inputs for single entry -->
     <div style="margin-top: 30px;"></div>
-    <!-- Input for Name -->
     <div class="input-group" style="margin-left:30px;">
       <label class="label-name" for="dataName">Name :</label>
       <input name="Name" type="text" class="input-name" [(ngModel)]="dataName" placeholder="Enter static data name" style="width:300px;" required>
     </div>
     <div style="margin-top: 30px; margin-left:10px">
-      <!-- Inputs for Type and Category -->
       <div class="row">
         <div class="col-md-5">
           <div class="form-group" style="margin-left:30px;">
@@ -31,24 +27,28 @@
       <div style="margin-top: 30px; margin-right:-40px;">
         <div class="input-group">
           <label class="label-name" style="color: #555; font-size: 20px; font-weight: bold;">Add Values :</label>
-          <select class="input-name" [(ngModel)]="inputMethod" style="width:350px; padding: 12px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; outline: none;">
-            <option value="" disabled [selected]="!inputMethod">Choose your option</option>
+          <select class="input-name" [(ngModel)]="selectedOption" (change)="updateSelectedOption($event.target.value)"
+                  style="width:350px; padding: 12px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; outline: none;">
+
+            <option value="" disabled [selected]="selectedOption === 'Choose your option'"> {{ selectedOption !== 'Choose your option' ? selectedOption : 'Choose your option' }} </option>
+
             <option value="single">Single</option>
             <option value="bulk">Bulk Input</option>
           </select>
-
         </div>
       </div>
+
     </div>
+
     <div style="margin-top: 30px;"></div>
-    <div *ngIf="inputMethod === 'single'">
+    <div *ngIf="selectedOption=== 'single'">
       <!-- Inputs for values -->
       <div *ngFor="let inputValue of inputValues; let i = index" class="input-container">
         <div class="input-group">
           <label for="valueInput{{i}}" class="label-name">Value:</label>
           <div class="input-wrapper">
-            <
-            <input type="text" id="valueInput{{i}}" class="input-name" [(ngModel)]="inputValues[i]" placeholder="Enter data value">
+
+            <input type="text" id="valueInput{{i}}" class="input-name" [value]="inputValues[i]" (input)="$event.target.value" placeholder="Enter data value">
 
             <div class="input-buttons">
               <button class="btn btn-circle btn-plus" (click)="addInput()">+</button>
@@ -60,26 +60,25 @@
     </div>
     <div style="margin-top: 30px;">
       <!-- Input for bulk entry -->
-      <div *ngIf="inputMethod === 'bulk'" style="margin: 0px 20px;">
+      <div *ngIf="selectedOption === 'bulk'" style="margin: 0px 20px;">
         <label class="label-name" for="multiValueInput">Bulk Values :</label>
         <textarea id="multiValueInput" class="input-name" [(ngModel)]="bulkValues" placeholder="Enter multiple values separated by commas or new lines" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; outline: none;"></textarea>
-
-        <!-- Affichage des valeurs ajoutées -->
-        <!-- Affichage des valeurs ajoutées -->
-        <!-- Affichage des valeurs ajoutées -->
-        <!-- Affichage des valeurs ajoutées -->
-        <div style="margin-top:35px;">
+        <div style="margin-top: 35px; max-height: 200px; overflow-y: auto;">
           <p style="color: #555; font-size: 16px; font-weight: bold;">Added Values:</p>
           <div [style.flexDirection]="addedBulkValues.length > 1 ? 'column' : 'row'" style="display: flex; flex-wrap: wrap;">
             <div *ngFor="let value of addedBulkValues; let i = index" style="margin-bottom: 10px; display: flex; align-items: center;">
               <div style="flex: 1; padding: 5px; background-color: #f0f0f0; border-radius: 5px; margin-right: 5px;">{{ value }}</div>
               <div style="display: flex; align-items: center;">
                 <button class="btn btn-circle btn-plus" style="margin-right: 5px; margin-bottom:10px;" (click)="addInput()">+</button>
-                <button class="btn btn-circle btn-minus" style="margin-left: 5px;" (click)="removeBulkValue(i)">-</button>
+                <button class="btn btn-circle btn-minus" style="margin-left: 5px; margin-bottom: 10px;" (click)="removeBulkValue(i)">-</button>
               </div>
             </div>
           </div>
         </div>
+      </div>
+
+      <div *ngIf="selectedOption === 'bulk'" class="buttons-container" style="text-align: center; margin-bottom: 40px;">
+        <button class="btn btn-primary btn-sm" (click)="addBulkValues()" style="padding: 12px 30px; background-color: #007bff; color: #fff; border: none; border-radius: 5px; font-size: 16px; cursor: pointer;">OK</button>
       </div>
     </div>
     <div class="button-container">
@@ -88,16 +87,8 @@
       <button class="cancel-button btn-md" (click)="onClose()">Cancel</button>
     </div>
   </form>
-    <!-- Fin de l'affichage des valeurs ajoutées -->
-    <!-- Fin de l'affichage des valeurs ajoutées -->
-    <!-- Choix entre saisie unique ou en bloc -->
-    <!-- Fin du choix entre saisie unique ou en bloc -->
-    <!-- Bouton OK pour valider l'ajout des valeurs en bloc -->
-    <div *ngIf="inputMethod === 'bulk'" class="buttons-container" style="text-align: center; margin-bottom: 40px;">
-      <button class="btn btn-primary" (click)="addBulkValues()" style="padding: 12px 30px; background-color: #007bff; color: #fff; border: none; border-radius: 5px; font-size: 16px; cursor: pointer;">OK</button>
-    </div>
-    <!-- Fin du bouton OK -->
-    
+
+
+
 
 </div>
-

@@ -33,6 +33,7 @@ import { CardRejectedComponent } from './pages/validation/card-rejected/card-rej
 import { MatExpansionModule } from '@angular/material/expansion';
 import { CardValidationComponent } from './pages/validation/card-validation/card-validation.component';
 import { CardSharingComponent } from './pages/validation/card-sharing/card-sharing.component';
+import { StaticComponent } from './pages/static/static.component';
 
 
 
@@ -42,7 +43,7 @@ import { CardSharingComponent } from './pages/validation/card-sharing/card-shari
   imports: [
     BrowserAnimationsModule,
     FormsModule,
-   
+    CommonModule,
     HttpClientModule,
     ComponentsModule,
     NgbModule,
@@ -64,7 +65,7 @@ import { CardSharingComponent } from './pages/validation/card-sharing/card-shari
     AppComponent,
     AdminLayoutComponent,
     AuthLayoutComponent,
-    //DialogsComponent,
+ 
 
     ValidationComponent,
     RejectDiaComponent,

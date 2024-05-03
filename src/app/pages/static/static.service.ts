@@ -21,7 +21,8 @@ export class StaticService {
       Status: 'Inactive',
 
       CreatedBy: '',
-      DateCreated: undefined
+    DateCreated: undefined,
+
   };
   list: StaticData[];
 

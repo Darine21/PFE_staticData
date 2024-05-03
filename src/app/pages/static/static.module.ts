@@ -27,4 +27,4 @@ import { ListeValuesComponent } from './liste-values/liste-values.component';
     //SharedModule
   ]
 })
-export class AccountModule { }
+export class StaticModule { }
