@@ -15,6 +15,7 @@ import { RejectDiaComponent } from './pages/validation/reject-dia/reject-dia.com
 import { CardRejectedComponent } from './pages/validation/card-rejected/card-rejected.component';
 import { CardValidationComponent } from './pages/validation/card-validation/card-validation.component';
 import { CardSharingComponent } from './pages/validation/card-sharing/card-sharing.component';
+import { ReasonDialogComponent } from './pages/validation/reject-dia/reason-dialog/reason-dialog.component';
 
 const routes: Routes =[
   {
@@ -34,6 +35,10 @@ const routes: Routes =[
   {
     path: 'static',
     component: StaticComponent,
+  },
+  {
+    path: 'dia-rejecttt',
+    component: ReasonDialogComponent,
   },
   {
     path: 'rejected',

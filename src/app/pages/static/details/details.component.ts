@@ -40,6 +40,8 @@ export class DetailsComponent implements OnInit {
   selectedValue: string = '';
   newValue: string = '';
   options: any;
+  list: any[] = [];
+    checked: boolean;
   
 
   constructor(private dialog: MatDialog, private router: Router, private dataService: DataService, private selectedItemService: SelectedItemService) { }
@@ -89,7 +91,8 @@ export class DetailsComponent implements OnInit {
   formvalues: string;
   selectedItemName: string = '';
   selectedVersion: number;
-  
+  submittedDataList: any[] = [];
+
   items: any[] = [
     {
       id: 1,
@@ -134,6 +137,7 @@ export class DetailsComponent implements OnInit {
   }
 
   selectedEntities: string[];
+ 
 
   // Mettez à jour selectedEntities chaque fois que selectedItems change
   updateSelectedEntities(): void {
@@ -184,7 +188,7 @@ export class DetailsComponent implements OnInit {
           //console.log("bellah", this.formDataName);
           this.formDataCategory = formData.Category;
           this.formDataTypes = formData.Types;
-          this.formDataStatus = 'Inactive';
+          this.formDataStatus = 'Inactive/Draft';
           this.formDataId = 1;
           this.formDataCreateDate = new Date().toLocaleDateString('fr-FR', {
             hour12: false,
@@ -193,6 +197,7 @@ export class DetailsComponent implements OnInit {
           this.formDataCreatedBy = 'name';
           this.showDeleteButton = true;
           this.formvalues = formData.null;
+          this.checked = false;
           console.log("showDeleteButton:", this.showDeleteButton);
         } else {
           console.log('Aucune donnée dans formData ou formData est null.');
@@ -284,7 +289,7 @@ export class DetailsComponent implements OnInit {
     // Parcourir le tableau items
     this.items.forEach(item => {
       // Vérifier si l'élément correspond à celui rejeté
-      if (item.status === "Inactive") {
+      if (item.status === "Inactive/Draft") {
         // Mettre à jour le statut de l'élément rejeté
         item.status = newStatus;
       }
@@ -340,10 +345,26 @@ export class DetailsComponent implements OnInit {
   selectValues() {
     this.showForm = false; // Afficher la table lorsque vous cliquez sur "Values"
   }
-  submit() {
-    // Logique pour gérer la soumission des données
+  submit(): void {
     console.log('Submitting data...');
+
+    const formDataToSend = {
+      formDataName: this.formDataName,
+      formDataStatus: this.formDataStatus,
+      formDataCategory: this.formDataCategory,
+      formDataTypes: this.formDataTypes,
+      formDataCreateDate: this.formDataCreateDate,
+      formDataCreatedBy: this.formDataCreatedBy,
+      formvalues: this.formvalues,
+      checked: this.checked
+      // Ajoutez d'autres propriétés si nécessaire
+    };
+
+    this.dataService.setFormData(formDataToSend);
+    this.dataService.addToSubmittedDataList(formDataToSend); // Ajoutez les données soumises à la liste
+
   }
+
 
   moveLine(index: number) {
     this.activeLineIndex = index;

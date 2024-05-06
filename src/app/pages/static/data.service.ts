@@ -10,12 +10,15 @@ export class DataService {
   formData$: Observable<any> = this.formDataSubject.asObservable();
   private dataSubmittedSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   dataSubmitted$: Observable<any> = this.dataSubmittedSubject.asObservable();
+    formData: any;
+    submittedDataList: any[]=[];
 
   constructor() { }
 
   updateFormData(formData: any) {
     this.formDataSubject.next(formData);
   }
+ 
   deleteFormDataById(formDataId: number) {
     const currentValue = this.formDataSubject.value;
     if (currentValue && Array.isArray(currentValue)) {
@@ -30,5 +33,15 @@ export class DataService {
   }
   private inputValuesSource = new BehaviorSubject<string[]>([]);
   inputValues$ = this.inputValuesSource.asObservable();
- 
+  setFormData(formData: any) {
+    this.formDataSubject.next(formData); // Émettre les données via le sujet observable
+  }
+
+  getFormData(): Observable<any> {
+    return this.formData$; // Retourner l'observable des données
+  }
+  addToSubmittedDataList(formData: any) {
+    this.submittedDataList.push(formData);
+    console.log("lisssttttt", this.submittedDataList);
+  }
 }

@@ -34,8 +34,10 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { CardValidationComponent } from './pages/validation/card-validation/card-validation.component';
 import { CardSharingComponent } from './pages/validation/card-sharing/card-sharing.component';
 import { StaticComponent } from './pages/static/static.component';
-
-
+import { ReasonDialogComponent } from './pages/validation/reject-dia/reason-dialog/reason-dialog.component';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { BrowserModule } from '@angular/platform-browser';
 
 
 
@@ -47,6 +49,7 @@ import { StaticComponent } from './pages/static/static.component';
     HttpClientModule,
     ComponentsModule,
     NgbModule,
+    NgbModalModule,
     RouterModule,
     AppRoutingModule,
     MatDialogModule,
@@ -59,7 +62,7 @@ import { StaticComponent } from './pages/static/static.component';
     MatExpansionModule
     //MdbTabsModule,
     //MdbTabModule,
-    
+   
   ],
   declarations: [
     AppComponent,
@@ -76,6 +79,7 @@ import { StaticComponent } from './pages/static/static.component';
     CardRejectedComponent,
     CardValidationComponent,
     CardSharingComponent,
+    ReasonDialogComponent,
    
     //ValidDiaComponent,
     //ShareDiaComponent,

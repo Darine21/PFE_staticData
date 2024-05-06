@@ -1,5 +1,10 @@
 import { Component, OnInit, Inject, EventEmitter, Output } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { NgbActiveModal, NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+import { ReasonDialogComponent } from './reason-dialog/reason-dialog.component';
+import { NavbarService } from '../../../components/NavBar.service';
+import { DataService } from '../../static/data.service';
+
 @Component({
   selector: 'app-reject-dia',
   templateUrl: './reject-dia.component.html',
@@ -17,7 +22,7 @@ export class RejectDiaComponent implements OnInit {
     {
       id: 1,
       name: "Example 1",
-      status: "Inactive",
+      status: "Inactive/Draft",
       category: "Category 1",
       types: ["global"],
       createDate: "2022-04-20",
@@ -27,7 +32,7 @@ export class RejectDiaComponent implements OnInit {
     {
       id: 2,
       name: "Example 2",
-      status: "Inactive",
+      status: "Inactive/Draft",
       category: "Category 2",
       types: ["global"],
       createDate: "2022-04-21",
@@ -36,37 +41,64 @@ export class RejectDiaComponent implements OnInit {
     },
     // Ajoutez plus d'exemples si nécessaire
   ];
-
-  onNext() {
+  modalRef: any;
+    submittedDataList: any[]=[];
+  constructor(private modalService: NgbModal, private navbarService: NavbarService, private dataService: DataService) { } onNext() {
     this.showFirstDialog = false;
     this.showSecondDialog = true;
   }
   @Output() statusUpdate: EventEmitter<string> = new EventEmitter<string>();
-
+  showReasonInput: boolean = false;
+  rejectReason: string = '';
   openSecondDialog() {
     // Autres logiques nécessaires
     this.statusUpdate.emit('Rejected');
-  } onYesClick(): void {
-    // Émettre l'événement avec la nouvelle valeur de status
+  }
+  onYesClick(): void {
+    this.showReasonInput = true;
     this.statusUpdate.emit('Rejected');
+    const modalOptions: NgbModalOptions = {
+      backdrop: false, // Désactiver le blocage de fond
+      keyboard: true // Activer la fermeture avec la touche "Escape"
+    };
+    const modalRef = this.modalService.open(ReasonDialogComponent, modalOptions);
+
+
+    modalRef.result.then((reason) => {
+      console.log('Reason:', reason);
+      this.reason = reason; // Stocker le reason dans la variable locale
+      this.navbarService.changeReason(reason); // Envoyer le reason au service pour qu'il soit accessible ailleurs
+    }).catch((error) => {
+      console.log('Modal closed without entering reason.');
+    });
+  
   }
 
+  reason: string = '';
+  closeModal() {
+    // Fermer la fenêtre modale
+    this.modalRef.close();
+  }
+  notif: string[] = [];
+  saveReason() {
+    
+      console.log('Raisossn du rejet:', this.reason);
+      
+    
+  
 
+    this.modalRef.close(this.reason);
+  }
   onClose() {
-    // Réinitialise les valeurs et cache les deux dialogues
     this.dataName = '';
     this.showFirstDialog = false;
     this.showSecondDialog = false;
   }
-  
-
-
 
   onBack() {
-    this.showSecondDialog = false; // Masquer la deuxième boîte de dialogue
-    // Afficher le bouton Create
-    this.showExportButton = false; // Afficher le bouton Export
-    this.showFirstDialog = true; // Afficher la première boîte de dialogue
+    this.showSecondDialog = false;
+    this.showExportButton = false; 
+    this.showFirstDialog = true; 
   }
 
 
@@ -93,6 +125,19 @@ export class RejectDiaComponent implements OnInit {
 
 
   ngOnInit(): void {
+   
+    this.navbarService.reason$.subscribe(reason => {
+      this.submittedDataList = this.dataService.submittedDataList;
+      for (let i = 0; i < (this.submittedDataList.length)/4; i++) {
+        this.reason = reason;
+        this.notif.push(this.reason)
+      
+        console.log('Reason updated:', this.reason);
+      }
+      console.log('SALUT:', this.notif);
+      this.navbarService.updateReasonData(this.notif);
+      // Faire d'autres actions avec le reason mis à jour
+    });
   }
 
 

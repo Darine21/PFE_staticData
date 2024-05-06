@@ -31,7 +31,8 @@ export class DialogsComponent {
   myForm: FormGroup;
   errorMessages: any;
   formData: any[] = [];
-
+  singleValue: string = '';
+  Data: any[] = [];
   constructor(private fb: FormBuilder, private toastr: ToastrService, private dataService: DataService) {
 
   }
@@ -55,18 +56,31 @@ export class DialogsComponent {
   selectedOption: string = ''; // Déclarez une propriété pour stocker l'option sélectionnée
 
   updateSelectedOption(option: string) {
-    this.selectedOption = option; // Met à jour la propriété selectedOption avec l'option choisie
+    this.selectedOption = option; 
   }
-
+  showbulk: boolean = false;
 
   addBulkValues() {
+    this.showbulk= true
     const valuesArray = this.bulkValues.split(/\r?\n/);
     this.addedBulkValues = [...valuesArray];
-  }
+    console.log("val", this.addedBulkValues);
 
+   
+  }
+  
   onSubmit(form: NgForm) {
     const formData = form.value;
-
+    console.log("eeeeee", formData);
+    if (this.selectedOption === 'single') {
+      const data = this.Data = [...this.inputValues];
+      formData.null = data;
+      console.log("hhhh", formData.null)
+    } else {
+      const valuesArray = this.bulkValues.split(/\r?\n/);
+      formData.null = this.addedBulkValues = [...valuesArray];
+      console.log("val2", this.addedBulkValues);
+    }
     // Exclure les clés null du formulaire
     const filteredFormData = {};
     for (const key in formData) {
@@ -75,8 +89,9 @@ export class DialogsComponent {
       }
     }
 
-    console.log("ttt", filteredFormData); // Affichez les données filtrées dans la console pour vérification
-    this.dataService.updateFormData(filteredFormData); // Envoyer les données de formData au service partagé
+    console.log("ttt", filteredFormData);
+    
+    this.dataService.updateFormData(filteredFormData);
   }
 
 
@@ -95,13 +110,13 @@ export class DialogsComponent {
   }
 
 
-  // Fonction pour réinitialiser les valeurs
   resetValues() {
     this.dataName = '';
 
     this.dataType = '';
     this.dataCategory = '';
-    this.inputValues = [''];
+    this.inputValues = [];
+    this.singleValue = '';
     this.bulkValues = '';
     this.addedBulkValues = [];
   }
@@ -121,7 +136,7 @@ export class DialogsComponent {
   openSecondDialog() {
     this.showFirstDialog = false;
     // Masquer le bouton Create
-    this.showExportButton = true; // Masquer le bouton Export
+    this.showExportButton = true; 
     this.showSecondDialog = true; // Afficher la deuxième boîte de dialogue
   }
 
@@ -131,36 +146,54 @@ export class DialogsComponent {
     this.showExportButton = false; // Afficher le bouton Export
     this.showFirstDialog = true; // Afficher la première boîte de dialogue
   }
+
   addInput() {
     if (this.selectedOption === 'single') {
-
       this.inputValues.push('');
+      this.Data= [...this.inputValues];
+      console.log("form", this.Data);
+      console.log("Valeurs saisies par l'utilisateur:", this.inputValues);
+      const formDataToUpdate = { ...this.formData };
+      console.log("valllll", formDataToUpdate);// Copie des données actuelles de formData
+      formDataToUpdate['null'] = this.inputValues;
+  
 
-    } else if (this.selectedOption === 'bulk') {
-      this.addedBulkValues.push('');
+      
+    }
+  }
+  updateInputValue(index: number, value: string) {
+    this.inputValues[index] = value;
+    // Mettre à jour formData ici si nécessaire
+  }
+
+  removeInput(index: number) {
+    if (this.selectedOption === 'single') {
+      this.inputValues.splice(index, 1);
+      console.log("Valeurs saisies par l'utilisateur:", this.inputValues);
     }
   }
   onInputChange(event: any) {
-    // Vous n'avez pas besoin de faire quoi que ce soit ici, 
-    // Angular mettra automatiquement à jour le modèle avec la valeur entrée par l'utilisateur.
+    
   }
+  singleValues: string[] = []; 
 
 
 
-  removeInput(index: number) {
-    this.inputValues.splice(index, 1); // Supprimer le champ d'entrée à l'index spécifié
-  }
+ 
   exportToExcel() {
-    // Simuler un clic sur l'élément input caché pour que l'utilisateur puisse choisir un emplacement de fichier
+    
     document.getElementById('fileInput').click();
   }
 
   onFileChosen(event: any) {
     const selectedFile = event.target.files[0];
-    // Ici, vous pouvez générer le fichier Excel et l'enregistrer à l'emplacement choisi par l'utilisateur
   }
-
-
+  addInputt() {
+    if (this.selectedOption === 'single') {
+      this.inputValues.push('');
+      console.log("valusdde", this.inputValues);
+    }
+  }
 
 
 }

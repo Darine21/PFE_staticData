@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 import { ROUTES } from '../sidebar/sidebar.component';
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { Router } from '@angular/router';
+import { NavbarService } from '../NavBar.service';
 
 @Component({
   selector: 'app-navbar',
@@ -12,12 +13,24 @@ export class NavbarComponent implements OnInit {
   public focus;
   public listTitles: any[];
   public location: Location;
-  constructor(location: Location,  private element: ElementRef, private router: Router) {
+  reason: string = '';
+  name: string = '';
+  reasonData: string;
+  constructor(location: Location, private element: ElementRef, private router: Router, private navbarService: NavbarService) {
     this.location = location;
   }
-
   ngOnInit() {
     this.listTitles = ROUTES.filter(listTitle => listTitle);
+    this.navbarService.reasonData$.subscribe(reasonData => {
+      console.log('Données de raison mises à jour:', reasonData);
+      // Utilisez reasonData comme vous le souhaitez
+    });
+     
+    this.navbarService.currentName.subscribe(name=> {
+      this.name = name;
+      // Utilisez la raison mise à jour ici, par exemple, pour afficher une notification dans la barre de navigation
+      console.log('Name mise à jour dans la barre de navigation:', this.name);
+    });
   }
   getTitle(){
     var titlee = this.location.prepareExternalUrl(this.location.path());

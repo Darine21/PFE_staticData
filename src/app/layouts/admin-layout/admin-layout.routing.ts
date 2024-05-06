@@ -8,6 +8,7 @@ import { ComplaintComponent } from '../../pages/validation/complaint/complaint.c
 import { CardRejectedComponent } from '../../pages/validation/card-rejected/card-rejected.component';
 import { CardValidationComponent } from '../../pages/validation/card-validation/card-validation.component';
 import { CardSharingComponent } from '../../pages/validation/card-sharing/card-sharing.component';
+import { ReasonDialogComponent } from '../../pages/validation/reject-dia/reason-dialog/reason-dialog.component';
 
 
 export const AdminLayoutRoutes: Routes = [
@@ -18,7 +19,7 @@ export const AdminLayoutRoutes: Routes = [
   { path: 'complaint', component: ComplaintComponent },
   { path: 'rejected', component: CardRejectedComponent },
   { path: 'card-val', component: CardValidationComponent },
-  { path: 'card-share', component: CardSharingComponent }
+  { path: 'card-share', component: CardSharingComponent },
 
-
+  
 ];

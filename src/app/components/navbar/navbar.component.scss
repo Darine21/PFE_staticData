@@ -7,3 +7,84 @@
   justify-content: space-between; /* Pour répartir les éléments de manière égale */
   align-items: center; /* Pour aligner les éléments verticalement au centre */
 }
+/* Style pour l'icône de l'enveloppe */
+.fa-envelope {
+  color: #6c757d; /* Couleur de l'icône */
+}
+
+/* Style pour le badge de notifications non lues */
+.badge-danger {
+  background-color: #dc3545; /* Couleur de fond rouge */
+  color: #fff; /* Couleur du texte blanc */
+  font-size: 6px; /* Taille de police */
+  padding:3px 3px; /* Remplissage */
+  border-radius: 50%; /* Bord arrondi */
+  position: absolute; /* Position absolue par rapport à l'icône */
+  top: 8px; /* Décalage vers le haut */
+  right: 10px; /* Décalage vers la droite */
+}
+
+/* Style pour le menu déroulant des notifications */
+.dropdown-menu {
+  width: 300px; /* Largeur personnalisée */
+  max-height: 400px; /* Hauteur maximale pour la défilement */
+  overflow-y: auto; /* Activation du défilement vertical si nécessaire */
+}
+/* Style pour l'icône de l'enveloppe */
+.fa-envelope {
+  color: #6c757d; /* Couleur de l'icône */
+}
+
+/* Style pour le badge de notifications non lues */
+.badge-danger {
+  background-color: #dc3545; /* Couleur de fond rouge */
+  color: #fff; /* Couleur du texte blanc */
+  font-size: 6px; /* Taille de police */
+  padding: 3px 3px; /* Remplissage */
+  border-radius: 50%; /* Bord arrondi */
+  position: absolute; /* Position absolue par rapport à l'icône */
+  top: 5px; /* Décalage vers le haut */
+  right: 10px; /* Décalage vers la droite */
+}
+
+/* Style pour chaque élément de notification */
+.notification {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+/* Style pour la miniature de l'entité */
+.entity-thumbnail {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+/* Style pour le type de notification (rejet ou validation) */
+.notification-type {
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+/* Style pour les notifications rejetées */
+.notification-type.rejected {
+  color: #dc3545; /* Couleur rouge */
+}
+
+/* Style pour les notifications validées */
+.notification-type.accepted {
+  color: #28a745; /* Couleur verte */
+}
+
+/* Style pour le contenu de la notification */
+.notification-content {
+  flex: 1;
+}
+
+/* Style pour le texte de la notification */
+.notification-content p {
+  margin: 0;
+  font-size: 14px;
+}

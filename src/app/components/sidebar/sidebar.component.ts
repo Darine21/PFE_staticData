@@ -15,7 +15,7 @@ export const ROUTES: RouteInfo[] = [
   { path: '/complaint', title: '', icon: '', class: '' },
   { path: '/rejected', title: '', icon: '', class: '' },
   { path: '/card-val', title: '', icon: '', class: '' },
-  { path: '/card-share', title: '', icon: '', class: '' },
+  { path: '/card-share', title: '', icon: '', class: '' }
 ]
 
 

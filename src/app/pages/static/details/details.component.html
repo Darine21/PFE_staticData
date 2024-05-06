@@ -57,13 +57,14 @@
   <div class="container-fluid">
     <div class="row justify-content-center align-items-center">
       <div class="col-md-8">
+
         <div class="card card-user">
           <div class="card-header">
             <h4 class="card-title">Edit Data</h4>
           </div>
           <div class="card-body">
             <div *ngIf="showForm">
-              <form>
+              <form (ngSubmit)="submit()">
                 <div id="detailsContent">
                   <div class="row">
                     <div class="col-md-4 pr-1">
@@ -87,7 +88,7 @@
                             <div style="margin-left: 6px;"></div>
                             <td>
 
-                              <input type="text" id="valueInput{{i}}" class="form-control" [value]="inputValues[i]" (input)="$event.target.value" placeholder="Enter data value" style="width:280px;">
+                              <input type="text" id="valueInput{{i}}" class="form-control" [value]="inputValues[i]" (input)="$event.target.value" placeholder="{{formvalues}}" style="width:280px;">
                             </td>
 
 
@@ -96,26 +97,7 @@
 
 
                               <!-- Icone de trois points verticaux pour afficher les options -->
-                              <!-- app-options-menu.component.html -->
-                              <div ngbDropdown #dropdown="ngbDropdown" class="options-menu">
-                                <button class="btn btn-options" id="dropdownButton{{ i }}" ngbDropdownToggle>
-                                  <i class="fas fa-ellipsis-v"></i>
-                                </button>
-                                <div ngbDropdownMenu aria-labelledby="dropdownButton{{ i }}" class="dropdown-menu dropdown-menu-right">
-                                  <button class="dropdown-item" (click)="addInput(i)">
-                                    <i class="fas fa-plus"></i> Ajouter
-                                  </button>
-                                  <button class="dropdown-item" (click)="removeInput(i)">
-                                    <i class="fas fa-trash-alt"></i> Supprimer
-                                  </button>
-                                  <button class="dropdown-item" (click)="shareOptions()">
-                                    <i class="fas fa-share"></i> Partager
-                                  </button>
-
-                                </div>
-
-
-                              </div>
+                             
 
 
                             </td>
@@ -125,16 +107,7 @@
                       </div>
                     </div>
 
-                    <div *ngIf="showShareOptions" class="col-md-4 pr-1">
-                      <div class="form-group">
-                        <label>Share</label>
-                        <div class="colonne-multiselect">
-                          <angular2-multiselect [data]="dropdownList" [(ngModel)]="publishedVersions.selectedItems"
-                                                (onSelect)="onItemSelect($event)"
-                                                (onDeSelect)="onItemDeSelect($event)"></angular2-multiselect>
-                        </div>
-                      </div>
-                    </div>
+                    
                   </div>
                   <div style="margin-bottom: 20px;"></div>
                   <div class="row">
@@ -207,8 +180,7 @@
                     <div class="col-md-11">
                       <div class="d-flex justify-content-center align-items-center">
                         <button type="submit" class="btn btn-primary  btn-lg mx-2 w-40">Save</button>
-                        <button type="submit" class="btn btn-primary  btn-lg mx-2 w-40">Submit</button>
-
+                        <button type="submit">Submit</button>
 
                       </div>
                     </div>
@@ -223,50 +195,56 @@
             <table class="table">
               <thead>
                 <tr>
-                  <th scope="col" class="px-4 py-3 bg-white text-primary mx-6">#</th>
-                  <th scope="col" class="px-4 py-3 bg-white text-primary mx-6" style="font-size:20px;"> Value</th>
-                  <th scope="col" class="px-4 py-3 bg-white text-primary mx-6">Options</th>
+                  <th scope="col" class="px-4 py-3 bg-white text-primary mx-6" style="font-size:14px;">#</th>
+
+                  <th scope="col" class="px-4 py-3 bg-white text-primary mx-6" style="font-size:14px;"> Value</th>
+                  <th scope="col" class="px-4 py-3 bg-white text-primary mx-6" style="font-size:14px;">Options</th>
                 </tr>
               </thead>
               <tbody>
-                <ng-container *ngFor="let value of inputValues; let i = index">
-                  <tr>
-                    <td>{{ i + 1 }}</td>
-                    <td>
-                      <input type="text" id="valueInput{{i}}" class="form-control" [(ngModel)]="inputValues[i]" placeholder="Enter data value" style="width:280px;">
-                    </td>
-                    <td>
-                      <!-- Icone de trois points verticaux pour afficher les options -->
-                      <!-- app-options-menu.component.html -->
-                      <div *ngIf="showShareOptions" class="col-md-4 pr-1">
-                        <div class="form-group">
-                         
-                          <div class="colonne-multiselect">
-                            <angular2-multiselect [data]="dropdownList" [(ngModel)]="publishedVersions.selectedItems" (onSelect)="onItemSelect($event)" (onDeSelect)="onItemDeSelect($event)"></angular2-multiselect>
-                          </div>
-                        </div>
-                      </div>
-                      <div ngbDropdown #dropdown="ngbDropdown" class="options-menu col-md-4 pr-1" >
-                        <button class="btn btn-options" id="dropdownButton{{ i }}" ngbDropdownToggle>
-                          <i class="fas fa-ellipsis-v"></i>
-                        </button>
-                        <div ngbDropdownMenu aria-labelledby="dropdownButton{{ i }}" class="dropdown-menu dropdown-menu-right">
-                          <button class="dropdown-item" (click)="addInput(i)">
-                            <i class="fas fa-plus"></i> Ajouter
-                          </button>
-                          <button class="dropdown-item" (click)="removeInput(i)">
-                            <i class="fas fa-trash-alt"></i> Supprimer
-                          </button>
-                          <button class="dropdown-item" (click)="shareOptions()">
-                            <i class="fas fa-share"></i> Partager
-                          </button>
-                        </div>
-                      </div>
-                      <!-- Champ "Share" inclus dans la même colonne -->
+              <td>1</td>
 
-                    </td>
-                  </tr>
-                </ng-container>
+              <a type="text" id="valueInput{{i}}" class="form-control" [(ngModel)]="inputValues[i]" placeholder="{{formvalues}}" style="width:280px; margin-left:25px;height:40px; margin-top:10px;"></a>
+              <ng-container *ngFor="let value of inputValues; let i = index">
+
+                <tr>
+                  <td>{{ i + 2 }}</td>
+
+
+
+                  <td><input type="text" id="valueInput{{i}}" class="form-control" [(ngModel)]="inputValues[i]" placeholder="enter your value" style="width:280px;"></td>
+                  <td>
+                    <!-- Icone de trois points verticaux pour afficher les options -->
+                    <!-- app-options-menu.component.html -->
+                    <div *ngIf="showShareOptions" class="col-md-4 pr-1">
+                      <div class="form-group">
+
+                        <div class="colonne-multiselect">
+                          <angular2-multiselect [data]="dropdownList" [(ngModel)]="publishedVersions.selectedItems" (onSelect)="onItemSelect($event)" (onDeSelect)="onItemDeSelect($event)"></angular2-multiselect>
+                        </div>
+                      </div>
+                    </div>
+                    <div ngbDropdown #dropdown="ngbDropdown" class="options-menu col-md-4 pr-1">
+                      <button class="btn btn-options" id="dropdownButton{{ i }}" ngbDropdownToggle>
+                        <i class="fas fa-ellipsis-v"></i>
+                      </button>
+                      <div ngbDropdownMenu aria-labelledby="dropdownButton{{ i }}" class="dropdown-menu dropdown-menu-right">
+                        <button class="dropdown-item" (click)="addInput(i)">
+                          <i class="fas fa-plus"></i> Ajouter
+                        </button>
+                        <button class="dropdown-item" (click)="removeInput(i)">
+                          <i class="fas fa-trash-alt"></i> Supprimer
+                        </button>
+                        <button class="dropdown-item" (click)="shareOptions()">
+                          <i class="fas fa-share"></i> Partager
+                        </button>
+                      </div>
+                    </div>
+                    <!-- Champ "Share" inclus dans la même colonne -->
+
+                  </td>
+                </tr>
+              </ng-container>
               </tbody>
             </table>
           </div>

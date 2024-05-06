@@ -51,15 +51,12 @@ export class StaticComponent {
   submitButtonClicked: boolean = false;
   formDataList: any[] = [];
   index: number = -1;
+    show: boolean;
   
 
   deleteItem(index: number) {
-    this.items.splice(index, 1); // Supprime l'élément du tableau à l'index donné
+    this.items.splice(index, 1); 
   }
- 
-  
-
-  
 
   constructor(private dialog: MatDialog,  private router: Router, private toastr: ToastrService, private dataService: DataService) {
 
@@ -113,7 +110,7 @@ export class StaticComponent {
     // Parcourir le tableau items
     this.items.forEach(item => {
       // Vérifier si l'élément correspond à celui rejeté
-      if (item.status === "Inactive") {
+      if (item.status === "Inactive/Draft") {
         // Mettre à jour le statut de l'élément rejeté
         item.status = newStatus;
       }
@@ -155,11 +152,11 @@ export class StaticComponent {
         console.log("darine", this.formDataList);
         this.index += 1;
         console.log("index", this.index);
-        // Mettre à jour les autres propriétés
+       
         this.formDataName = formData.Name;
         this.formDataCategory = formData.Category;
         this.formDataTypes = formData.Types;
-        this.formDataStatus = 'Inactive';
+        this.formDataStatus = 'Inactive/Draft';
         this.formDataId = 1; // Utiliser l'identifiant unique pour l'élément
         this.formDataCreateDate = new Date().toLocaleDateString('fr-FR', {
           hour12: false,
@@ -168,6 +165,7 @@ export class StaticComponent {
         this.formDataCreatedBy = 'name';
         this.showDeleteButton = true;
         this.formvalues = formData.null;
+        this.show = true;
         this.items.push(formData);
         console.log("name&", this.formDataList);
         for (let i in this.formDataList) {
