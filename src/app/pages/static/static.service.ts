@@ -19,22 +19,23 @@ export class StaticService {
       Types: '',
       Category: '',
       Status: 'Inactive',
-
-      CreatedBy: '',
-    DateCreated: undefined,
-
+    DateCreated: new  Date(),
+    CreatedBy: '',
+    InputValues:[],
   };
   list: StaticData[];
 
 
   constructor(private http: HttpClient, private router: Router) { }
-  addStaticData() {
-    return this.http.post(`${environment.appUrl}/api/pages/static/Addition`, this.formData);
+  Addition(model: StaticData) {
+    return this.http.post<StaticData>(`${environment.appUrl}/api/pages/static/Addition`, model);
   }
-  DeleteStaticData(id) {
-    return this.http.delete(`${environment.appUrl}/api/pages/static/delete-data/${id}`);
+  DeleteStaticData(id: number) {
+    return this.http.delete(`${environment.appUrl}/api/pages/static/${id}`);
   }
-  
+  GetStaticData(id: number) {
+    return this.http.get(`${environment.appUrl}/api/pages/static/details/${id}`)
+  }
   refreshList() {
     this.http.get(`${environment.appUrl}/api/pages/static/data`)
       .toPromise()

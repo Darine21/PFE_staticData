@@ -62,12 +62,16 @@ export class RejectDiaComponent implements OnInit {
       keyboard: true // Activer la fermeture avec la touche "Escape"
     };
     const modalRef = this.modalService.open(ReasonDialogComponent, modalOptions);
-
-
+ 
+    this.notif.push(this.reason);
+    console.log('demamré:', this.notif);
     modalRef.result.then((reason) => {
       console.log('Reason:', reason);
-      this.reason = reason; // Stocker le reason dans la variable locale
-      this.navbarService.changeReason(reason); // Envoyer le reason au service pour qu'il soit accessible ailleurs
+      this.reason = reason;
+   
+     
+      // Stocker le reason dans la variable locale
+      this.navbarService.changeReason(reason);
     }).catch((error) => {
       console.log('Modal closed without entering reason.');
     });
@@ -125,19 +129,7 @@ export class RejectDiaComponent implements OnInit {
 
 
   ngOnInit(): void {
-   
-    this.navbarService.reason$.subscribe(reason => {
-      this.submittedDataList = this.dataService.submittedDataList;
-      for (let i = 0; i < (this.submittedDataList.length)/4; i++) {
-        this.reason = reason;
-        this.notif.push(this.reason)
-      
-        console.log('Reason updated:', this.reason);
-      }
-      console.log('SALUT:', this.notif);
-      this.navbarService.updateReasonData(this.notif);
-      // Faire d'autres actions avec le reason mis à jour
-    });
+    
   }
 
 

@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import * as html2pdf from 'html2pdf.js';
 import { SelectedItemService } from '../communiation.service';
 import { MatDialogRef } from '@angular/material/dialog';
+import { NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-valid-dia',
@@ -39,6 +40,7 @@ export class ValidDiaComponent implements OnInit {
   index: number = 2;
   versions: any[] = [
   ];
+  showValidDialog: boolean = false;
   @Output() publishVersion: EventEmitter<any> = new EventEmitter<any>();
     selectedVersion: any;
 
@@ -50,10 +52,15 @@ export class ValidDiaComponent implements OnInit {
       this.selectedItemName = name;
     });
   }
- 
+  @Output() statusUpdate: EventEmitter<string> = new EventEmitter<string>();
   publish() {
-    // Effectuez les actions nécessaires pour publier la donnée
-    // Supposons que newCurrencyVersionLink soit l'URL de la nouvelle version
+    this.showValidDialog = true;
+    this.statusUpdate.emit('Approval');
+  
+    const modalOptions: NgbModalOptions = {
+      backdrop: false, // Désactiver le blocage de fond
+      keyboard: true // Activer la fermeture avec la touche "Escape"
+    };
     this.newCurrencyVersionLink = '/details/' + this.itemId;
     const staticDataId = 1; // Assurez-vous de récupérer l'ID correctement
 
@@ -82,6 +89,8 @@ export class ValidDiaComponent implements OnInit {
   }
   closeDialog(): void {
     this.dialogRef.close();
+   
+
   }
   generatePDF() {
     this.showConfirmationMessage = true;

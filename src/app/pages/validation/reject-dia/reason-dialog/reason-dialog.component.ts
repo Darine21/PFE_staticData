@@ -20,7 +20,7 @@ export class ReasonDialogComponent implements OnInit {
   saveReason() {
    
     console.log('Reason:', this.reason);
-    // Envoyer le reason au service ou faire d'autres traitements
+   
     this.modal.close(this.reason);
   }
 

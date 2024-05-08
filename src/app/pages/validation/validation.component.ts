@@ -36,6 +36,7 @@ export class ValidationComponent implements OnInit {
   public chartEmail;
   public chartHours;
   showRejectDialog: boolean = false;
+  showValidDialog: boolean = false;
  // selectedItemName: string = '';
   showFirstDialog: boolean = false;
   showConfirmationDialog: boolean = true;
@@ -56,10 +57,14 @@ export class ValidationComponent implements OnInit {
     formData: any;
   submittedDataList: any[];
   rejected: boolean = false;
-  reasonsList: { itemId: string, reason: string }[] = [];
-    reason: string='';
+  reasonsList: { itemId: string, reason: any }[] = [];
+  reason: string='';
+  notif: any[] = [];
+  StatusList: any[]=[];
+
   constructor(private navbarService: NavbarService,private dialog: MatDialog, private route: ActivatedRoute, private selectedItemService: SelectedItemService, private dataService: DataService, private router : Router ) { }
- 
+  @Output() statusUpdate: EventEmitter<string> = new EventEmitter<string>();
+
   logName(name: string) {
     console.log("Name clicked:", name);
   }
@@ -82,15 +87,18 @@ export class ValidationComponent implements OnInit {
     this.selectedItemService.updateSelectedItem(name);
   }
   valider(item: any) {
-    // Ouvrir le dialogue
+    item.showValidDialog = true;
+    console.log("woww", item.showValidDialog);
+    item.formDataStatus = 'Approval';
+    console.log("woww", item.formDataStatus);
+    this.StatusList.push(item.formDataStatus);
     const dialogRef = this.dialog.open(ValidDiaComponent);
   
    
     // Gérer la réponse du dialogue
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'publish') {
-        // Si l'utilisateur a cliqué sur "Publisher"
-        // Effectuer les actions nécessaires pour publier la donnée
+   
         console.log('Published');
       } else {
         // Si l'utilisateur a cliqué sur "Cancel" ou a fermé le dialogue
@@ -114,9 +122,10 @@ export class ValidationComponent implements OnInit {
     this.isItemSelected=true
     item.showRejectDialog = true;
     
-      // Afficher la boîte de dialogue pour saisir le reason
-      // Une fois que le reason est saisi et envoyé, ajoutez-le à la liste globale
-    this.reasonsList.push({ itemId: item.formDataName, reason: this.reason });
+    // Afficher la boîte de dialogue pour saisir le reason
+  
+      this.reasonsList.push({ itemId: item.formDataName, reason: this.notif });
+    
     console.log("lisstaaa", this.reasonsList);
    
 
@@ -131,24 +140,27 @@ export class ValidationComponent implements OnInit {
       return item.name.toLowerCase().includes(filterValue);
     });
   }
-  updateStatus2(newStatus: string) {
+  updateStatus2(newStatus: string , item:any) {
     // Parcourir le tableau items
-    this.submittedDataList.forEach(item => {
+   
       // Vérifier si l'élément correspond à celui rejeté
       if (item.formDataStatus === "Inactive/Draft") {
         // Mettre à jour le statut de l'élément rejeté
         item.formDataStatus = newStatus;
       }
-    });
+  
   }
 
   updateStatus(newStatus: string , item : any) {
-    // Parcourir le tableau items
-    
+
+    console.log("vali", this.showValidDialog);
       // Vérifier si l'élément correspond à celui rejeté
-      if (item.formDataStatus === "Inactive/Draft") {
+    if (item.formDataStatus === "Inactive/Draft" || item.formDataStatus === "Approval") {
         // Mettre à jour le statut de l'élément rejeté
         item.formDataStatus = newStatus;
+      console.log("New status:", item.formDataStatus);
+      this.StatusList.push(item.formDataStatus);
+      console.log("etat",this.StatusList);
       }
   
   }
@@ -161,18 +173,38 @@ export class ValidationComponent implements OnInit {
   goToReject() { this.router.navigate(['/rejected']); }
   goToCardS() { this.router.navigate(['/card-share']); }
   ngOnInit(): void {
+   
+    this.navbarService.reason$.subscribe(reason => {
+      // Ajouter la nouvelle raison à la liste notif sans réinitialiser
+      this.notif.push(reason);
+      console.log('valiation :', this.notif);
+
+      // Faire d'autres actions avec la raison mise à jour si nécessaire
+    });
+
+    console.log('notif', this.notif);
     this.submittedDataList = this.dataService.submittedDataList;
     console.log("listtt", this.submittedDataList);
+
     this.submittedDataList.forEach(item => {
-      item.showRejectDialog = this.showRejectDialog; // Ajoutez la variable `rejected` à chaque objet
+      item.showRejectDialog = this.showRejectDialog;
+      item.showValidDialog = this.showValidDialog;// Ajoutez la variable `rejected` à chaque objet
     });
     console.log("rejectttttteeeee", this.submittedDataList[0].showRejectDialog);
+    console.log("validdddddtttttteeeee", this.submittedDataList[0].showValidDialog);
     for (let i = 0; i < this.submittedDataList.length; i++) {
       this.formDataName = this.submittedDataList[i].formDataName;
       this.formDataNameList.push(this.formDataName);
+      
+      console.log("etat",this.StatusList);
       console.log("paaaaar", this.formDataName);
     }
-    this.navbarService.changeName(this.formDataNameList); 
+    this.navbarService.changeName(this.formDataNameList);
+    for (let item of this.submittedDataList) {
+      this.StatusList.push(item.formDataStatus);
+    }
+    console.log("list de ", this.StatusList);
+    this.navbarService.changeStatus(this.StatusList);
     // Récupérez les données transmises depuis la page précédente
     this.formDataName = this.submittedDataList[0].formDataName;
     console.log("par", this.formDataName);

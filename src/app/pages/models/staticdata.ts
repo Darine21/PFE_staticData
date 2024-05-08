@@ -6,4 +6,5 @@ export interface StaticData {
   Status: "Inactive";
   DateCreated: Date;
   CreatedBy: string;
+  InputValues: string[];
 }

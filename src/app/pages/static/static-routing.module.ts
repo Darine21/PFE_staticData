@@ -10,8 +10,8 @@ import { FormsModule } from '@angular/forms';
 
 
 const router: Routes = [
-  { path: 'addition', component: DialogsComponent },
-  //{ path: 'details', component: DetailsComponent },
+  { path: 'Addition', component: DialogsComponent },
+  { path: 'details', component: DetailsComponent },
   { path: 'valide', component: ValidationComponent },
 ]
 
