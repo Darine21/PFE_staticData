@@ -7,6 +7,9 @@ import { Console } from 'console';
 import { SelectedItemService } from '../communiation.service';
 import Chart from 'chart.js';
 import { Router } from '@angular/router';
+import { StaticService } from '../../static/static.service';
+import { DataService } from '../../static/data.service';
+import { ValidService } from '../validation.service';
 @Component({
   selector: 'app-card-validation',
   templateUrl: './card-validation.component.html',
@@ -50,6 +53,7 @@ export class CardValidationComponent implements OnInit {
 
     // Ajoutez plus d'exemples si nécessaire
   ];
+  formDataList: any[] = []; 
   public canvas: any;
   public ctx;
   public chartColor;
@@ -63,7 +67,13 @@ export class CardValidationComponent implements OnInit {
   isItemSelected: boolean = false;
   @Input() selectedItemName: string = '';
   @Output() itemNameChange: EventEmitter<string> = new EventEmitter<string>();
-  constructor(private dialog: MatDialog, private selectedItemService: SelectedItemService, private router: Router) { }
+    selectedItemID: any;
+    checked: boolean;
+    
+    showValidDialog: any;
+  StatusList: any[] = [];
+    toastr: any;
+  constructor(private dialog: MatDialog, private valiservice: ValidService, private dataservice: DataService, private selectedItemService: SelectedItemService, private router: Router) { }
 
   logName(name: string) {
     console.log("Name clicked:", name);
@@ -101,7 +111,7 @@ export class CardValidationComponent implements OnInit {
         console.log('Cancelled');
       }
     });
-
+   
   }
   selectedItemCount: number = 0;
   // Méthode pour gérer le changement de la case à cocher
@@ -162,12 +172,58 @@ export class CardValidationComponent implements OnInit {
     // Naviguer vers la page de détails en utilisant l'ID de l'élément
     this.router.navigate(['/valide']);
   }
+
+  formDataName: string;
+  formDataCategory: string;
+  formDataTypes: string;
+  formDataStatus: string;
+  formDataId: number;
+  formDataCreateDate: Date;
+  formDataCreatedBy: string;
+  showDeleteButton: Boolean = false;
+  showShareOptions: boolean = false;
+  formvalues: string[] = [];
+  formDataNameList: string[] = [];
+  selectedVersion: number;
+  submittedDataList: any[] = [];
+  values: string;
   goToDiaReject() { this.router.navigate(['/reject-dia']); }
   goToReject() { this.router.navigate(['/rejected']); }
   ngOnInit(): void {
+   
     this.showRejectDialog = false;
+    this.selectedItemID = this.dataservice.getSelectedItemID();
+    console.log('selectedItemID:', this.selectedItemID);
+    this.submittedDataList = this.dataservice.submittedDataList;
+    console.log("listtt", this.submittedDataList);
+    
+    this.submittedDataList.forEach(item => {
+      item.showRejectDialog = this.showRejectDialog;
+      item.showValidDialog = this.showValidDialog;// Ajoutez la variable `rejected` à chaque objet
+    });
+    console.log("rejectttttteeeee", this.submittedDataList[0].showRejectDialog);
+    console.log("validdddddtttttteeeee", this.submittedDataList[0].showValidDialog);
+    console.log("validdddddvvvvtttttteeeee", this.submittedDataList[0].InputValues);
+    for (let i = 0; i < this.submittedDataList.length; i++) {
+      this.formDataName = this.submittedDataList[i].Name;
+      this.formDataNameList.push(this.formDataName);
+
+      console.log("etat", this.StatusList);
+      console.log("paaaaar", this.formDataName);
+    }
+    // Récupérez les données transmises depuis la page précédente
+    this.formDataName = this.submittedDataList[0].Name;
+    console.log("par", this.formDataName);
+    this.formDataCategory = this.submittedDataList[0].Category;
+    this.formDataTypes = this.submittedDataList[0].Types;
+    // Ajoutez d'autres propriétés si nécessaire
+    console.log("par", this.formDataName);
+    // Vous pouvez ensuite utiliser ces données comme vous le souhaitez dans votre composant
 
   }
+  
+
+
   // Fonction pour ouvrir le dialogue de rejet pour un élément spécifique
   openRejectDialog(item: any) {
     item.showRejectDialog = true;
@@ -177,6 +233,16 @@ export class CardValidationComponent implements OnInit {
   closeRejectDialog(item: any) {
     item.showRejectDialog = false;
   }
+  getNumberOfDaysFromDate(dateString: string): number {
+    const currentDate = new Date();
+    const createDate = new Date(dateString);
+    const differenceInTime = currentDate.getTime() - createDate.getTime();
+    const differenceInDays = differenceInTime / (1000 * 3600 * 24);
+    console.log("Jours ", differenceInDays);
+    return Math.floor(differenceInDays);
+
+  }
+
   onClose() {
 
     this.showFirstDialog = false;

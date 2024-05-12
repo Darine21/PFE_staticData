@@ -34,8 +34,9 @@ const routes: Routes =[
   },
   {
     path: 'static',
-    component: StaticComponent,
+    component: StaticComponent, 
   },
+
   {
     path: 'dia-rejecttt',
     component: ReasonDialogComponent,
@@ -105,5 +106,6 @@ const routes: Routes =[
   ],
   exports: [
   ],
+
 })
 export class AppRoutingModule { }

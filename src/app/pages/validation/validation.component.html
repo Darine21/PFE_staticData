@@ -176,19 +176,19 @@
           <!-- Corps de tableau -->
           <tbody>
             <!-- Boucle sur les données pour afficher les lignes de la table -->
-            <tr *ngFor="let item of submittedDataList; let i=index" (click)="updateSelectedItemName(item.formDataName)">
+            <tr *ngFor="let item of submittedDataList; let i=index" (click)="updateSelectedItemName(item.Name)">
               <!-- Case à cocher -->
               <td class="px-4 py-3 mx-6">
                 <input type="checkbox" [checked]="item.checked" (change)="onCheckboxChange($event.target.checked, item)">
               </td>
               <td class="px-4 py-3 mx-6">{{i + 1}}</td>
-              <td class="px-4 py-3 mx-6" (click)="logName(item.formDataName)">{{item.formDataName}}</td>
-              <td class="px-4 py-3 mx-6">{{item.formDataStatus  }}</td>
-              <td class="px-4 py-3 mx-6">{{item.formDataCategory }}</td>
-              <td class="px-4 py-3 mx-6">{{item.formDataTypes }}</td>
-              <td class="px-4 py-3 mx-6">{{item.formDataCreateDate}}</td>
-              <td class="px-4 py-3 mx-6">{{item.formDataCreatedBy}}</td>
-              <td class="px-4 py-3 mx-6">{{item.formvalues }}</td>
+              <td class="px-4 py-3 mx-6" (click)="logName(item.formDataName)">{{item.Name}}</td>
+              <td class="px-4 py-3 mx-6">{{item.Status  }}</td>
+              <td class="px-4 py-3 mx-6">{{item.Category }}</td>
+              <td class="px-4 py-3 mx-6">{{item.Types }}</td>
+              <td class="px-4 py-3 mx-6">{{item.DateCreated}}</td>
+              <td class="px-4 py-3 mx-6">{{item.CreatedBy}}</td>
+              <td class="px-4 py-3 mx-6">{{item?.InputValues }}</td>
               <!-- Colonne Actions avec les boutons Valider et Rejeter -->
               <td class="px-4 py-3 mx-4 ml-4">
                 <button *ngIf="!isItemSelected" class="btn btn-success btn-sm" (click)="valider(item)">Valide</button>

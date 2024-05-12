@@ -47,7 +47,7 @@
           <div class="input-wrapper">
             <input type="text" id="valueInput{{i}}" class="input-name" [(ngModel)]="inputValues[i]" placeholder="{{inputValue}}">
             <div class="input-buttons">
-              <button class="btn btn-circle btn-plus" (click)="addInput()">+</button>
+              <button class="btn btn-circle btn-plus" (click)="AddInput()">+</button>
               <button *ngIf="i !== 0" class="btn btn-circle btn-minus" (click)="removeInput(i)">-</button>
             </div>
           </div>
@@ -75,9 +75,7 @@
       </div>
 
 
-      <div *ngIf="selectedOption === 'bulk'" class="buttons-container" style="text-align: center; margin-bottom: 40px;">
-        <button class="btn btn-primary btn-sm" (click)="addBulkValues()" style="padding: 12px 30px; background-color: #007bff; color: #fff; border: none; border-radius: 5px; font-size: 16px; cursor: pointer;">OK</button>
-      </div>
+      
     </div>
     <div class="button-container">
       <button class="submit-button btn-md" type="submit">Submit</button>

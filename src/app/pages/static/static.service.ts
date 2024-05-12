@@ -14,11 +14,11 @@ import { StaticData } from '../models/staticdata';
 })
 export class StaticService {
   formData: StaticData = {
-      Id: 1,
+     
       Name: '',
       Types: '',
-      Category: '',
-      Status: 'Inactive',
+    Category: '',
+    Status: 'Inactive/Draft',
     DateCreated: new  Date(),
     CreatedBy: '',
     InputValues:[],
@@ -26,20 +26,27 @@ export class StaticService {
   list: StaticData[];
 
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router) { } 
   Addition(model: StaticData) {
-    return this.http.post<StaticData>(`${environment.appUrl}/api/pages/static/Addition`, model);
+  return this.http.post(`${environment.appUrl}/api/pages/static/StaticData/Addition`, model);
   }
-  DeleteStaticData(id: number) {
-    return this.http.delete(`${environment.appUrl}/api/pages/static/${id}`);
+  DeleteStaticData(model: StaticData) {
+    return this.http.delete(`${environment.appUrl}/api/pages/static/StaticData/${model.Name}`);
   }
-  GetStaticData(id: number) {
-    return this.http.get(`${environment.appUrl}/api/pages/static/details/${id}`)
+  GetStaticData(model: StaticData) {
+    return this.http.get(`${environment.appUrl}/api/pages/static/details/${model.Name}`)
   }
   refreshList() {
     this.http.get(`${environment.appUrl}/api/pages/static/data`)
       .toPromise()
       .then(res => this.list = res as StaticData[]);
   }
+  ValidateStaticData(model: string) {
+    return this.http.put(`${environment.appUrl}/api/pages/static/StaticData/validate`, model)
+  }
+  RejectedStaticData(model: string) {
+    return this.http.put(`${environment.appUrl}/api/pages/static/StaticData`, model)
+  }
+
 }
 

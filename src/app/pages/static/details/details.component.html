@@ -62,7 +62,7 @@
           <div class="card-header">
             <h4 class="card-title">Edit Data</h4>
           </div>
-          <div class="card-body">
+          <div class="card-body" >
             <div *ngIf="showForm">
               <form (ngSubmit)="submit()">
                 <div id="detailsContent">
@@ -88,7 +88,7 @@
                             <div style="margin-left: 6px;"></div>
                             <td>
 
-                              <input type="text" id="valueInput{{i}}" class="form-control" [value]="inputValues[i]" (input)="$event.target.value" placeholder="{{formvalues}}" style="width:280px;">
+                              <input type="text" id="valueInput{{i}}" class="form-control" [value]="inputValues[i]" (input)="$event.target.value" placeholder="{{values}}" style="width:280px;">
                             </td>
 
 
@@ -179,7 +179,7 @@
                   <div class="row">
                     <div class="col-md-11">
                       <div class="d-flex justify-content-center align-items-center">
-                        <button type="submit" class="btn btn-primary  btn-lg mx-2 w-40">Save</button>
+                        <button type="submit" class="btn btn-primary  btn-lg mx-2 w-40" (click)="goToStatic()">Save</button>
                         <button type="submit">Submit</button>
 
                       </div>
@@ -204,7 +204,7 @@
               <tbody>
               <td>1</td>
 
-              <a type="text" id="valueInput{{i}}" class="form-control" [(ngModel)]="inputValues[i]" placeholder="{{formvalues}}" style="width:280px; margin-left:25px;height:40px; margin-top:10px;"></a>
+              <a type="text" id="valueInput{{i}}" class="form-control" [(ngModel)]="inputValues[i]" placeholder="{{values}}" style="width:280px; margin-left:25px;height:40px; margin-top:10px;"></a>
               <ng-container *ngFor="let value of inputValues; let i = index">
 
                 <tr>

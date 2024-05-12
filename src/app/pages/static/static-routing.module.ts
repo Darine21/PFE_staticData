@@ -19,12 +19,13 @@ const router: Routes = [
   declarations: [],
   imports: [
     CommonModule,
+    FormsModule,
     RouterModule.forChild(router)
 
   ],
   exports: [
     RouterModule,
-    FormsModule,
+  
   ]
 })
 export class StaticRoutingModule { }

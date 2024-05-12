@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 //import { StaticService } from './static.service';
 import { ToastrService } from 'ngx-toastr';
 import { DataService } from './data.service';
+import { StaticService } from './static.service';
 //import { BsModalRef } from 'ngx-bootstarp/modal';
 interface FormData {
   ID: number;
@@ -22,7 +23,7 @@ interface FormData {
   selector: 'app-tables',
   templateUrl: './static.component.html',
   styleUrls: ['./static.component.scss'],
-  standalone: true,
+  
 })
 export class StaticComponent {
   data: any[] = [];
@@ -38,9 +39,9 @@ export class StaticComponent {
   showConfirmationDialog: boolean = true;
   dataName: string = '';
   isItemSelected: boolean = false;
-  staticService: any;
+ 
   errorMessages: any;
-  formData: any[] = [];
+  formData: StaticData;
   Name: any;
   Category: any;
   Types: any;
@@ -49,29 +50,22 @@ export class StaticComponent {
   CreateDate: any;
   CreatedBy: any;
   submitButtonClicked: boolean = false;
-  formDataList: any[] = [];
+  formDataList: StaticData[] = [];
   index: number = -1;
     show: boolean;
+    dataSuccess: boolean;
+    listValues: string[]=[];
   
 
   deleteItem(index: number) {
     this.items.splice(index, 1); 
   }
 
-  constructor(private dialog: MatDialog,  private router: Router, private toastr: ToastrService, private dataService: DataService) {
+  constructor(private dialog: MatDialog, private router: Router, private toastr: ToastrService, private dataService: DataService, private staticService: StaticService) {
 
 
   }
-  deleteRow(index: number) {
-    // Vérifiez que l'index est valide
-    if (index >= 0 && index < this.formData.length) {
-      // Supprimez l'élément du tableau this.formData à l'index spécifié
-      this.formData.splice(index, 1);
-      console.log("Ligne supprimée avec succès !");
-    } else {
-      console.error("Index invalide : impossible de supprimer la ligne.");
-    }
-  }
+  
 
   
 
@@ -79,11 +73,15 @@ export class StaticComponent {
   // Méthode pour gérer le changement de la case à cocher
   onCheckboxChange(checked: boolean, item: any) {
     item.checked = checked;
-    // Mettre à jour le drapeau en fonction de l'état de la sélection
+  
     this.isItemSelected = this.items.some(item => item.checked);
   }
   goToDetails(id: number) {
-    // Naviguer vers la page de détails en utilisant l'ID de l'élément
+ 
+   
+    const item = id;
+    console.log("iiii", item);
+    this.dataService.setSelectedItemID(item)
     this.router.navigate(['/details', id]);
   }
   // Méthode pour gérer l'action de validation
@@ -116,22 +114,7 @@ export class StaticComponent {
       }
     });
   }
- 
 
-  addStaticData(model: StaticData) {
-    this.staticService.addStaticData(model).subscribe({
-      next: (response) => {
-        console.log("add",response);
-        // Gérer la réponse en fonction de vos besoins
-      },
-      error: (error) => {
-        console.log(error);
-        // Gérer les erreurs en fonction de vos besoins
-      },
-    });
-  }
-
-  // Déclarez vos variables ici
   formDataName: string;
   formDataCategory: string;
   formDataTypes: string;
@@ -142,13 +125,17 @@ export class StaticComponent {
   showDeleteButton: Boolean = false;
   formvalues: String;
   ngOnInit(): void {
+    const storedData = localStorage.getItem('staticData');
+    if (storedData) {
+      this.formDataList = JSON.parse(storedData);
+    }
     this.dataService.formData$.subscribe(formData => {
       if (formData) {
-        // Ajouter un identifiant unique à chaque formData
-        //formData.id = this.generateUniqueId(); // Supposons que vous ayez une fonction generateUniqueId() qui génère des identifiants uniques
 
-        // Ajouter formData à formDataList
+        this.showDeleteButton = true
+        console.log("yalaa2", this.formData);
         this.formDataList.push(formData);
+        localStorage.setItem('staticData', JSON.stringify(this.formDataList));
         console.log("darine", this.formDataList);
         this.index += 1;
         console.log("index", this.index);
@@ -164,23 +151,70 @@ export class StaticComponent {
         });
         this.formDataCreatedBy = 'name';
         this.showDeleteButton = true;
-        this.formvalues = formData.null;
+        //this.formvalues = formData.null;
+        this.listValues.push(formData.null);
+       
         this.show = true;
         this.items.push(formData);
         console.log("name&", this.formDataList);
+    
+        this.formDataList.forEach(item => {
+          item.DateCreated = new Date();
+          item.Status = "Inactive/Draft";
+          item.CreatedBy = this.formDataCreatedBy;
+          item.InputValues = this.listValues;
+          console.log("wwwwwoooo", item.InputValues);
+        // Ajoutez la variable `rejected` à chaque objet
+        });
+        console.log("name22", this.formDataList);
         for (let i in this.formDataList) {
           const name = this.formDataList[i].Name;
           const category = this.formDataList[i].Category
+          const date = this.formDataList[i].DateCreated;
           console.log("name", name);
           console.log("category", category);
+          console.log("date", date)
         }
-       
+        
+        this.dataService.formDataList$.subscribe(formData => {
+          this.formDataList = formData;
+        });
+        //this.dataService.updateFormDataList(this.formDataList);
 
       } else {
         console.log('Aucune donnée dans formData ou formData est null.');
       }
+      this.dataService.updateFormDataList(this.formDataList);
+    });
+    
+    
+  
+    
+  }
+  
+  incrementIndex() {
+    this.i++;
+  }
+
+  delete(i : number) {
+ 
+
+    this.staticService.DeleteStaticData(this.formDataList[i]).subscribe({
+      next: (response) => {
+        console.log("Response from API:", response);
+        this.toastr.success('Data deleted successfully!', 'Success');
+      },
+      error: (error) => {
+        this.formDataList.splice(i, 1);
+        localStorage.setItem('staticData', JSON.stringify(this.formDataList));
+        console.error("Error deleting data:", error);
+        this.toastr.error('Failed to delete data!', 'Error');
+      }
     });
   }
+
+
+
   generateHTML(): string {
     let html = '';
     this.formDataList.forEach( i => {
@@ -210,7 +244,7 @@ export class StaticComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.addItemToTable(result);
+        
       }
     });
    

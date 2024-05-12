@@ -4,6 +4,10 @@ import { NgbActiveModal, NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-boot
 import { ReasonDialogComponent } from './reason-dialog/reason-dialog.component';
 import { NavbarService } from '../../../components/NavBar.service';
 import { DataService } from '../../static/data.service';
+import { StaticService } from '../../static/static.service';
+import { SelectedItemService } from '../communiation.service';
+import { RejectSD } from '../../models/RejectSD';
+import { ValidService } from '../validation.service';
 
 @Component({
   selector: 'app-reject-dia',
@@ -42,8 +46,9 @@ export class RejectDiaComponent implements OnInit {
     // Ajoutez plus d'exemples si nécessaire
   ];
   modalRef: any;
-    submittedDataList: any[]=[];
-  constructor(private modalService: NgbModal, private navbarService: NavbarService, private dataService: DataService) { } onNext() {
+  submittedDataList: any[] = [];
+    toastr: any;
+  constructor(private modalService: NgbModal, private validservice: ValidService  ,private selectedItemService: SelectedItemService, private navbarService: NavbarService, private dataService: DataService, private staticservice: StaticService) { } onNext() {
     this.showFirstDialog = false;
     this.showSecondDialog = true;
   }
@@ -56,7 +61,24 @@ export class RejectDiaComponent implements OnInit {
   }
   onYesClick(): void {
     this.showReasonInput = true;
-    this.statusUpdate.emit('Rejected');
+    this.staticservice.RejectedStaticData(this.selectedItemName).subscribe(
+      (response) => {
+        console.log('Rejection successful:', response);
+        for (let item of this.submittedDataList) {
+          if (item.Name == this.selectedItemName) {
+            item.Status = "Rejected";
+
+           
+          } else {
+            console.log("ereurrrr");
+
+          }
+        }
+      },
+      (error) => {
+        console.error('Rejection failed:', error);
+      }
+    );
     const modalOptions: NgbModalOptions = {
       backdrop: false, // Désactiver le blocage de fond
       keyboard: true // Activer la fermeture avec la touche "Escape"
@@ -68,6 +90,25 @@ export class RejectDiaComponent implements OnInit {
     modalRef.result.then((reason) => {
       console.log('Reason:', reason);
       this.reason = reason;
+      const rejectSD: RejectSD = {
+        Name: this.selectedItemName,
+        Status: "Rejected",
+        DateCreated: new Date(),
+        CreatedBy: "name",
+        Reason: this.reason
+      }
+      this.validservice.saveRejectedStaticData(rejectSD).subscribe(
+        response => {
+          console.log('Rejected successful:', response);
+          this.toastr.success('Données enregistrées avec succès.');
+        },
+        error => {
+          // Erreur lors de la requête
+          this.toastr.error('Une erreur s\'est produite lors de l\'enregistrement des données.');
+          console.error(error);
+        });
+
+    
    
      
       // Stocker le reason dans la variable locale
@@ -127,9 +168,13 @@ export class RejectDiaComponent implements OnInit {
   }
 
 
-
+  selectedItemName: string = '';
   ngOnInit(): void {
-    
+    this.selectedItemService.selectedItem$.subscribe(name => {
+      this.selectedItemName = name; // Mettre à jour le selectedItemName lorsque des mises à jour sont émises
+    });
+    this.submittedDataList = this.dataService.submittedDataList;
+    console.log("listtt", this.submittedDataList);
   }
 
 

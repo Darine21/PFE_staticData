@@ -20,11 +20,11 @@ import { DetailsComponent } from '../../pages/static/details/details.component';
     HttpClientModule,
     NgbModule,
     ClipboardModule,
-    StaticComponent,
+
     //DetailsComponent
   ],
   declarations: [
-    
+    //StaticComponent, 
   ]
 })
 

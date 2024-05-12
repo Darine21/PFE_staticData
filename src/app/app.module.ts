@@ -1,7 +1,7 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AppComponent } from './app.component';
@@ -38,6 +38,7 @@ import { ReasonDialogComponent } from './pages/validation/reject-dia/reason-dial
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserModule } from '@angular/platform-browser';
+import { JwtInterceptor } from './Auth.gard';
 
 
 
@@ -68,7 +69,7 @@ import { BrowserModule } from '@angular/platform-browser';
     AppComponent,
     AdminLayoutComponent,
     AuthLayoutComponent,
- 
+    StaticComponent,
 
     ValidationComponent,
     RejectDiaComponent,
@@ -80,13 +81,16 @@ import { BrowserModule } from '@angular/platform-browser';
     CardValidationComponent,
     CardSharingComponent,
     ReasonDialogComponent,
+  
    
     //ValidDiaComponent,
     //ShareDiaComponent,
     //DetailsComponent,
     //DetailsComponent,
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

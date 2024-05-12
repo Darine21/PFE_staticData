@@ -7,6 +7,8 @@ import * as html2pdf from 'html2pdf.js';
 import { SelectedItemService } from '../communiation.service';
 import { MatDialogRef } from '@angular/material/dialog';
 import { NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+import { ValidService } from '../validation.service';
+import { ValidSD } from '../../models/ValidSD';
 
 @Component({
   selector: 'app-valid-dia',
@@ -43,8 +45,9 @@ export class ValidDiaComponent implements OnInit {
   showValidDialog: boolean = false;
   @Output() publishVersion: EventEmitter<any> = new EventEmitter<any>();
     selectedVersion: any;
+    formattedVersions: string[]=[];
 
-  constructor(private dialogue: StaticService, private fb: FormBuilder, private toastr: ToastrService, private router: Router, private selectedItemService: SelectedItemService, private dialogRef: MatDialogRef<any> ) { }
+  constructor(private dialogue: StaticService, private validService: ValidService, private fb: FormBuilder, private toastr: ToastrService, private router: Router, private selectedItemService: SelectedItemService, private dialogRef: MatDialogRef<any> ) { }
   ngOnInit() {
     
 
@@ -55,7 +58,7 @@ export class ValidDiaComponent implements OnInit {
   @Output() statusUpdate: EventEmitter<string> = new EventEmitter<string>();
   publish() {
     this.showValidDialog = true;
-    this.statusUpdate.emit('Approval');
+   
   
     const modalOptions: NgbModalOptions = {
       backdrop: false, // Désactiver le blocage de fond
@@ -82,7 +85,38 @@ export class ValidDiaComponent implements OnInit {
     // Mettre à jour le service avec la nouvelle version
     this.selectedItemService.updateSelectedVersion(newVersion);
     this.selectedItemService.publishVersion(newVersion);
-    // Si closeDialog est true, fermez le dialogue
+    console.log("nom", this.selectedItemName);
+    console.log("date", currentDate);
+    console.log("Creat", this.versions);
+
+    this.formattedVersions = this.versions.map(version => {
+      return `versionNumber: ${version.versionNumber}, url: ${version.url}, generatedPDFDate: ${version.generatedPDFDate}`;
+    });
+    console.log("dqqq", this.formattedVersions);
+
+    const validStaticData: ValidSD = {
+   
+      Name: this.selectedItemName,
+      Versions: this.formattedVersions,
+      PDF: 'ddd',
+      Status: "Approval",
+      DateCreated: new Date(),
+      CreatedBy: 'name',
+      Entity: ['']
+    };
+
+    // Appelez l'API pour enregistrer les données
+    this.validService.saveValidStaticData(validStaticData).subscribe(
+      response => {
+        console.log('Validation successful:', response);
+        this.toastr.success('Données enregistrées avec succès.');
+      },
+      error => {
+        // Erreur lors de la requête
+        this.toastr.error('Une erreur s\'est produite lors de l\'enregistrement des données.');
+        console.error(error);
+      });
+
   }
   updateSelectedVersion(version: number): void {
     this.selectedItemService.updateSelectedVersion(version);

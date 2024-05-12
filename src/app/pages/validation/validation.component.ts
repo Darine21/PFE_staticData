@@ -8,6 +8,8 @@ import Chart from 'chart.js';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../static/data.service';
 import { NavbarService } from '../../components/NavBar.service';
+import { StaticService } from '../static/static.service';
+import { StaticData } from '../models/staticdata';
 @Component({
   selector: 'app-validation',
   templateUrl: './validation.component.html',
@@ -61,8 +63,9 @@ export class ValidationComponent implements OnInit {
   reason: string='';
   notif: any[] = [];
   StatusList: any[]=[];
+    dataE: any;
 
-  constructor(private navbarService: NavbarService,private dialog: MatDialog, private route: ActivatedRoute, private selectedItemService: SelectedItemService, private dataService: DataService, private router : Router ) { }
+  constructor(private navbarService: NavbarService, private dialog: MatDialog, private route: ActivatedRoute, private selectedItemService: SelectedItemService, private dataService: DataService, private router: Router, private staticservice: StaticService) { }
   @Output() statusUpdate: EventEmitter<string> = new EventEmitter<string>();
 
   logName(name: string) {
@@ -88,24 +91,33 @@ export class ValidationComponent implements OnInit {
   }
   valider(item: any) {
     item.showValidDialog = true;
-    console.log("woww", item.showValidDialog);
-    item.formDataStatus = 'Approval';
-    console.log("woww", item.formDataStatus);
-    this.StatusList.push(item.formDataStatus);
-    const dialogRef = this.dialog.open(ValidDiaComponent);
+    console.log("ddd", item.Name);
+    this.staticservice.ValidateStaticData(item.Name).subscribe(
+      (response) => {
+        console.log('Validation successful:', response);
+       
+        item.Status = 'Approval';
+      },
+      (error) => {
+        console.error('Validation failed:', error);
+      }
+    );
   
-   
+    this.StatusList.push(item.Status);
+    const dialogRef = this.dialog.open(ValidDiaComponent);
+
+
     // Gérer la réponse du dialogue
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'publish') {
-   
+
         console.log('Published');
       } else {
         // Si l'utilisateur a cliqué sur "Cancel" ou a fermé le dialogue
         console.log('Cancelled');
       }
     });
-  
+
   }
   // Méthode pour gérer le changement de la case à cocher
   onCheckboxChange(checked: boolean, item: any) {
@@ -144,9 +156,9 @@ export class ValidationComponent implements OnInit {
     // Parcourir le tableau items
    
       // Vérifier si l'élément correspond à celui rejeté
-      if (item.formDataStatus === "Inactive/Draft") {
+      if (item.Status === "Inactive/Draft") {
         // Mettre à jour le statut de l'élément rejeté
-        item.formDataStatus = newStatus;
+        item.Status = newStatus;
       }
   
   }
@@ -166,39 +178,56 @@ export class ValidationComponent implements OnInit {
   }
   goToValid() { this.router.navigate(['/card-val']); }
   goTShare() {
-    // Naviguer vers la page de détails en utilisant l'ID de l'élément
+
     this.router.navigate(['/complaint']);
   }
+
   formDataNameList: string[] = [];
   goToReject() { this.router.navigate(['/rejected']); }
   goToCardS() { this.router.navigate(['/card-share']); }
   ngOnInit(): void {
-   
-    this.navbarService.reason$.subscribe(reason => {
-      // Ajouter la nouvelle raison à la liste notif sans réinitialiser
-      this.notif.push(reason);
-      console.log('valiation :', this.notif);
 
-      // Faire d'autres actions avec la raison mise à jour si nécessaire
+    // Abonnement au service pour recevoir les raisons de validation
+    this.navbarService.reason$.subscribe(reason => {
+      this.notif.push(reason);
+      console.log('Validation:', this.notif);
     });
 
-    console.log('notif', this.notif);
+
+    const storedData = localStorage.getItem('submittedDataList');
+    if (storedData) {
+      this.submittedDataList = JSON.parse(storedData);
+    }
     this.submittedDataList = this.dataService.submittedDataList;
-    console.log("listtt", this.submittedDataList);
+    console.log("Liste initiale:", this.submittedDataList);
+   
+    // Après avoir reçu les données, stockez-les dans le localStorage
+    localStorage.setItem('submittedDataList', JSON.stringify(this.submittedDataList));
+
+    this.submittedDataList.forEach(item => {
+      item.showRejectDialog = this.showRejectDialog;
+      item.showValidDialog = this.showValidDialog;
+    });
+
 
     this.submittedDataList.forEach(item => {
       item.showRejectDialog = this.showRejectDialog;
       item.showValidDialog = this.showValidDialog;// Ajoutez la variable `rejected` à chaque objet
     });
+
+    
     console.log("rejectttttteeeee", this.submittedDataList[0].showRejectDialog);
     console.log("validdddddtttttteeeee", this.submittedDataList[0].showValidDialog);
+    console.log("validdddddvvvvtttttteeeee", this.submittedDataList[0].InputValues);
     for (let i = 0; i < this.submittedDataList.length; i++) {
-      this.formDataName = this.submittedDataList[i].formDataName;
+      this.formDataName = this.submittedDataList[i].Name;
       this.formDataNameList.push(this.formDataName);
-      
-      console.log("etat",this.StatusList);
+
+      console.log("etat", this.StatusList);
       console.log("paaaaar", this.formDataName);
     }
+    
+    console.log(localStorage);
     this.navbarService.changeName(this.formDataNameList);
     for (let item of this.submittedDataList) {
       this.StatusList.push(item.formDataStatus);
@@ -206,16 +235,14 @@ export class ValidationComponent implements OnInit {
     console.log("list de ", this.StatusList);
     this.navbarService.changeStatus(this.StatusList);
     // Récupérez les données transmises depuis la page précédente
-    this.formDataName = this.submittedDataList[0].formDataName;
+    this.formDataName = this.submittedDataList[0].Name;
     console.log("par", this.formDataName);
-    this.formDataCategory = this.submittedDataList[0].formDataCategory;
-    this.formDataTypes = this.submittedDataList[0].formDataTypes;
+    this.formDataCategory = this.submittedDataList[0].Category;
+    this.formDataTypes = this.submittedDataList[0].Types;
     // Ajoutez d'autres propriétés si nécessaire
     console.log("par", this.formDataName);
-    // Vous pouvez ensuite utiliser ces données comme vous le souhaitez dans votre composant
-  
-}
-
+   
+  }
   
  }
 

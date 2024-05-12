@@ -71,7 +71,7 @@
 </div>
 
 
-<div class="container-fluid mt-4 mb-4">
+<div class="container-fluid mt-4 ">
   <div class="row">
     <div class="col">
       <div class="card shadow" style="margin-top:40px;">
@@ -115,33 +115,36 @@
           <!-- Corps de tableau -->
           <tbody>
             <!-- Boucle sur les données pour afficher les lignes de la table -->
-            <tr *ngFor="let item of items" (click)="updateSelectedItemName(item.name)">
-              <!-- Case à cocher -->
-              <td class="px-4 py-3 mx-6">
-                <input type="checkbox" [checked]="item.isSelected" (change)="onCheckboxChange(item)">
-              </td>
-              <!-- Autres colonnes avec les données de l'élément -->
-              <td class="px-4 py-3 mx-6">{{ item.id }}</td>
-              <td class="px-4 py-3 mx-6" (click)="logName(item.name)">{{ item.name }}</td>
-              <td class="px-4 py-3 mx-6">{{ item.status }}</td>
-              <td class="px-4 py-3 mx-6">{{ item.category || 'Null' }}</td>
-              <td class="px-4 py-3 mx-6">{{ item.types.join(', ') || 'Null' }}</td>
-              <td class="px-4 py-3 mx-6">{{ item.createDate }}</td>
-              <td class="px-4 py-3 mx-6">{{ item.createdBy || 'Null' }}</td>
-              <td class="px-4 mx-5 ml-5">
-                <button class="btn btn-success btn-sm" [routerLink]="['/details', item.id]">Show</button>
+            <ng-container *ngFor="let item of submittedDataList; let i=index">
+              <tr *ngIf="i < 3">
+
+                <td class="px-4 py-3 mx-6">
+                  <input type="checkbox" [checked]="item.isSelected" (change)="onCheckboxChange(item)">
+                </td>
+                <!-- Autres colonnes avec les données de l'élément -->
+                <td class="px-4 py-3 mx-6">{{i}}</td>
+                <td class="px-4 py-3 mx-6" (click)="logName(item.Name)">{{ item.Name }}</td>
+                <td class="px-4 py-3 mx-6">{{ item.Status }}</td>
+                <td class="px-4 py-3 mx-6">{{ item.Category  }}</td>
+                <td class="px-4 py-3 mx-6">{{ item.Types }}</td>
+                <td class="px-4 py-3 mx-6">
+                  {{item.DateCreated}}
+                </td>
+                <td class="px-4 py-3 mx-6">{{ item.CreatedBy }}</td>
+                <td class="px-4 mx-5 ml-5">{{item.InputValues[i]}}</td>
                 <!-- Colonne Actions avec les boutons Valider et Rejeter -->
-              <td class="px-4 py-3 mx-4 ml-4">
-                <button class="btn btn-success btn-sm" (click)="valider(item)">Valider</button>
-                <button class="btn btn-danger btn-sm" (click)="openDialog()">Rejeter</button>
-                <app-reject-dia *ngIf="showRejectDialog" (statusUpdate)="updateStatus($event); closeRejectDialog()"></app-reject-dia>
+                <td class="px-4 py-3 mx-4 ml-4">
+                  <button class="btn btn-success btn-sm" (click)="valider(item)">Valider</button>
+                  <button class="btn btn-danger btn-sm" (click)="openDialog()">Rejeter</button>
+                  <app-reject-dia *ngIf="showRejectDialog" (statusUpdate)="updateStatus($event); closeRejectDialog()"></app-reject-dia>
 
-              </td>
-
-            </tr>
-          </tbody>
-        </table>
-      </div>
+                </td>
+      
+      </tr>
+      </ng-container>
+      </tbody>
+      </table>
+    </div>
 
       <div class="card-footer py-4 " style="height: 68px;">
         <nav aria-label="...">

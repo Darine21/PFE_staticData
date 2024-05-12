@@ -6,6 +6,7 @@ import { StaticData } from '../../models/staticdata';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { DataService } from '../data.service';
+import { StaticService } from '../static.service';
 
 @Component({
   selector: 'app-dialogs',
@@ -33,19 +34,15 @@ export class DialogsComponent {
   formData: any[] = [];
   singleValue: string = '';
   Data: any[] = [];
-  constructor(private fb: FormBuilder, private toastr: ToastrService, private dataService: DataService) {
+    dataSuccess: boolean;
+  constructor(private staticService: StaticService, private fb: FormBuilder, private toastr: ToastrService, private dataService: DataService) {
 
   }
 
   ngOnInit() {
-    //this.resetForm();
+   
 
-    // Souscrire aux données partagées pour les mettre à jour dans le formulaire si nécessaire
-    this.dataService.formData$.subscribe(formData => {
-
-      this.formData = formData;
-      console.log("datttt");// Assurez-vous de mettre à jour la variable formData avec les données partagées
-    });
+   
 
   }
 
@@ -81,7 +78,31 @@ export class DialogsComponent {
       formData.null = this.addedBulkValues = [...valuesArray];
       console.log("val2", this.addedBulkValues);
     }
-    // Exclure les clés null du formulaire
+    console.log("back", formData);
+    const staticData: StaticData = {
+      Name: formData.Name,
+      Types: formData.Types,
+      Category: formData.Category,
+      Status: 'Inactive/Draft', // Assurez-vous de donner le statut approprié
+      DateCreated: new Date(), // Ajoutez la date de création actuelle
+      CreatedBy: 'username', 
+      InputValues: formData.null 
+    };
+
+    this.staticService.Addition(staticData).subscribe({
+      next: (response) => {
+      
+        console.log("Response from API:", response);
+       
+        this.toastr.success('Data added successfully!', 'Success');
+      },
+      error: (error) => {
+      
+        console.error("Error adding data:", error);
+   
+        this.toastr.error('Failed to add data!', 'Error');
+      }
+    });
     const filteredFormData = {};
     for (const key in formData) {
       if (formData[key] !== null) {
@@ -150,13 +171,7 @@ export class DialogsComponent {
   addInput() {
     if (this.selectedOption === 'single') {
       this.inputValues.push('');
-      this.Data= [...this.inputValues];
-      console.log("form", this.Data);
-      console.log("Valeurs saisies par l'utilisateur:", this.inputValues);
-      const formDataToUpdate = { ...this.formData };
-      console.log("valllll", formDataToUpdate);// Copie des données actuelles de formData
-      formDataToUpdate['null'] = this.inputValues;
-  
+     
 
       
     }
@@ -188,12 +203,13 @@ export class DialogsComponent {
   onFileChosen(event: any) {
     const selectedFile = event.target.files[0];
   }
-  addInputt() {
-    if (this.selectedOption === 'single') {
-      this.inputValues.push('');
-      console.log("valusdde", this.inputValues);
+  
+    AddInput() {
+      if (this.selectedOption === 'single') { // Vérifiez si vous avez atteint une limite (MAX_INPUTS) avant d'ajouter une nouvelle valeur
+        this.inputValues.push('');
+      }
     }
-  }
 
+  
 
 }

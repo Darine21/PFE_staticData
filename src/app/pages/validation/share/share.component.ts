@@ -5,16 +5,21 @@ import { RejectDiaComponent } from '../reject-dia/reject-dia.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MultiSelectComponent, MultiSelectModule } from '@syncfusion/ej2-angular-dropdowns';
 import { version } from 'os';
+import { SharedSD } from '../../models/SharedSD';
+import { ValidService } from '../validation.service';
 
 interface City {
   name: string,
   code: string
 }
 interface Version {
+  selectedItems2: any;
   id: number;
+  selectedLanguages: any[];
   // Autres propriétés de votre modèle de données...
   selectedItems: any[]; // Déclaration de la propriété selectedItems
 }
+
 @Component({
   selector: 'app-share',
   templateUrl: './share.component.html',
@@ -57,37 +62,103 @@ export class ShareComponent implements OnInit {
   ];
   publishedVersions: Version[] = [];
     showStatusField: boolean=false;
-  
+    toastr: any;
+    showLanguageSelect: boolean = false;
+  showLangueField: boolean = false;
+  showEntitieField: boolean = false;
 
   getselectedEntities(): string[] {
     return this.entities.filter(entity => entity.selected).map(entity => entity.name);
+    
   }
   showShareField: boolean = true;
-  isEditing: boolean = false; // 
+  isEditing: boolean = false; //
+
   valider(item: any): void {
-    // Activer le mode édition
+
     this.isEditing = true;
-    
-    // Afficher le champ Share
-    this.showShareField =false;
+    console.log("dd", item);
+    console.log("voir", item.selectedItems);
+    console.log("voire", item.selectedItems2);
+    const entityNames = item.selectedItems.map(entity => entity.itemName);
+    const LanguageNames = item.selectedItems2.map(entity => entity.itemName);
+    console.log("eeeeeee", entityNames);
+    if (item.selectedItems == undefined) {
+      status = "No Shareable";
+      console.log("wow", status);
+    } else {
+      status = "Shareable";
+      console.log("wow", status);
+    }
+    console.log("ver", this.publishedVersions);
+    const versionName = ["new  " +  this.selectedItemName  + " Version "  + item.versionNumber];
+    console.log("vv", versionName);
+    const sharedSD: SharedSD = {
+      Name: this.selectedItemName,
+      Versions: versionName,
+      Status: status,
+      Entity: entityNames,
+      DateCreated: new Date(),
+      CreatedBy: "name",
+      Language: LanguageNames, 
+
+    }
+    console.log("eee", sharedSD);
+    this.validService.saveSharedStaticData(sharedSD).subscribe(
+      response => {
+        console.log('Shared successful:', response);
+        this.toastr.success('Données enregistrées avec succès.');
+      },
+      error => {
+        // Erreur lors de la requête
+        this.toastr.error('Une erreur s\'est produite lors de l\'enregistrement des données.');
+        console.error(error);
+      });
+    this.showShareField = false;
+    this.showLanguageSelect = false;
     this.showStatusField = true;
-    // Remplir le champ Share avec les entités sélectionnées
+    this.showLangueField = true;
+    this.showEntitieField = true;
     this.selectedEntities = this.selectedItems.map(item => item.itemName);
+    this.selectedLanguage = this.selectedItems2.map(item => item.itemName);
+    console.log("entity", this.selectedEntities);
+ 
+    
+
   }
 
   selectedEntities: string[];
+  selectedLanguage: string[];
 
   // Mettez à jour selectedEntities chaque fois que selectedItems change
   updateSelectedEntities(): void {
     this.selectedEntities = this.selectedItems.map(item => item.itemName);
+    console.log("Entity", this.selectedEntities);
+  }
+
+  updateSelectedLanguages(): void {
+    this.selectedLanguage = this.selectedItems2.map(item => item.itemName);
+    console.log("Entity", this.selectedLanguage);
   }
   onItemSelect(item: any, version: Version) {
+    this.showLanguageSelect = true;
     if (!this.showShareField) {
       console.log(item);
       console.log(this.selectedItems);
       this.updateSelectedEntities();
       version.selectedItems.push(item);
+  
 // Mettre à jour selectedEntities
+    }
+  }
+  onItemSelect1(item: any, version: Version) {
+    
+    if (!this.showLanguageSelect) {
+    
+      this.updateSelectedLanguages();
+      version.selectedItems2.push(item);
+
+      // Mettre à jour selectedEntities
     }
   }
 
@@ -96,10 +167,12 @@ export class ShareComponent implements OnInit {
     for (let i = 1; i <= 3; i++) {
       this.publishedVersions.push({
         id: i,
-      
+        selectedItems2:[],
+        selectedLanguages:[],
         selectedItems: [] // Initialisation des entités sélectionnées à vide
       });
     }
+    console.log("version", this.publishedVersions);
   }
   OnItemDeSelect(item: any, version: Version) {
     if (!this.showShareField) {
@@ -107,23 +180,46 @@ export class ShareComponent implements OnInit {
       console.log(this.selectedItems);
       this.updateSelectedEntities();
       version.selectedItems = version.selectedItems.filter(selectedItem => selectedItem !== item);
-// Mettre à jour selectedEntities
+      console.log("entity", version.selectedItems);
     }
   }
+  OnItemDeSelect1(item: any, version: Version) {
+    if (!this.showLanguageSelect) {
+     
+      this.updateSelectedEntities();
+      this.updateSelectedLanguages();
+      
+      version.selectedItems2 = version.selectedItems2.filter(selectedItem => selectedItem !== item);
+      console.log("Language", version.selectedItems2);
+    }
+  }
+  onLanguageSelect(item: any, version: Version) {
+    // Mettez à jour les langues sélectionnées pour cette version
+    version.selectedLanguages.push(item.itemName);
+  }
 
+  onLanguageDeselect(item: any, version: Version) {
+    // Retirer la langue désélectionnée de la liste des langues sélectionnées pour cette version
+    version.selectedLanguages = version.selectedLanguages.filter(language => language !== item.itemName);
+  }
+
+  dropdownList2= [];
+  selectedItems2 = [];
+  dropdownSettings2 = {};
   //@Output() itemNameChange: EventEmitter<string> = new EventEmitter<string>();
-  constructor(private dialog: MatDialog, private selectedItemService: SelectedItemService) { }
+  constructor(private dialog: MatDialog, private selectedItemService: SelectedItemService, private validService: ValidService) { }
   ngOnInit(): void {
-    // Abonnement à l'observable selectedItem$ pour récupérer les mises à jour du selectedItemName
+    
     this.selectedItemService.selectedItem$.subscribe(name => {
       this.selectedItemName = name; // Mettre à jour le selectedItemName lorsque des mises à jour sont émises
     });
     this.loadPublishedVersions();
     this.selectedItemService.selectedVersion$.subscribe((newVersion: any) => {
       this.selectedVersion = newVersion;
+     
     });
     this.publishedVersions = this.selectedItemService.getPublishedVersions();
-   
+    console.log("ver", this.publishedVersions);
     this.cities = [
       { name: 'New York', code: 'NY' },
       { name: 'Rome', code: 'RM' },
@@ -154,8 +250,33 @@ export class ShareComponent implements OnInit {
         unSelectAllText: 'UnSelect All',
         enableSearchFilter: true,
         classes: "myclass custom-class"
+    };
+   
+      this.dropdownList2 = [
+        { "id": 1, "itemName": "English" },
+        { "id": 2, "itemName": "French" },
+        { "id": 3, "itemName": "Spanish" },
+        { "id": 4, "itemName": "German" },
+        { "id": 5, "itemName": "Italian" },
+        { "id": 6, "itemName": "Arab" },
+        { "id": 7, "itemName": "Russe" },
+        { "id": 8, "itemName": "Hindi" },
+        { "id": 9, "itemName": "Bengali" },
+        { "id": 10, "itemName": "Portugais" }
+      ];
+      this.selectedItems2 = [
+
+      ];
+      this.dropdownSettings2 = {
+        singleSelection: false,
+        text: "Select Languages",
+        selectAllText: 'Select All',
+        unSelectAllText: 'UnSelect All',
+        enableSearchFilter: true,
+        classes: "myclass custom-class"
       };
     }
+    
     
     onSelectAll(items: any){
       console.log(items);

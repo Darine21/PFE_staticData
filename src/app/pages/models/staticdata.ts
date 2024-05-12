@@ -1,9 +1,9 @@
 export interface StaticData {
-  Id: number;
+
   Name: string;
   Types: string;
   Category: string;
-  Status: "Inactive";
+  Status: "Inactive/Draft"; // Utiliser une chaîne au lieu d'un type spécifique
   DateCreated: Date;
   CreatedBy: string;
   InputValues: string[];

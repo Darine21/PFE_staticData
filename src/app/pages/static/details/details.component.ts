@@ -6,9 +6,10 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap/datepicker/ngb-date-struct';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../data.service';
 import { SelectedItemService } from '../../validation/communiation.service';
+import { StaticData } from '../../models/staticdata';
 //import { ShareDiaComponent } from '../share-dia/share-dia.component';
 interface Version {
   id: number;
@@ -42,9 +43,10 @@ export class DetailsComponent implements OnInit {
   options: any;
   list: any[] = [];
     checked: boolean;
+    selectedItemID: number;
   
 
-  constructor(private dialog: MatDialog, private router: Router, private dataService: DataService, private selectedItemService: SelectedItemService) { }
+  constructor(private route: ActivatedRoute ,private dialog: MatDialog, private router: Router, private dataService: DataService, private selectedItemService: SelectedItemService) { }
   checkAndAddValue() {
     // Vérifiez si la valeur saisie correspond à l'une des valeurs prédéfinies
     if (this.predefinedValues.includes(this.newValue)) {
@@ -84,15 +86,15 @@ export class DetailsComponent implements OnInit {
   formDataTypes: string;
   formDataStatus: string;
   formDataId: number;
-  formDataCreateDate: String;
+  formDataCreateDate: Date;
   formDataCreatedBy: string;
   showDeleteButton: Boolean = false;
   showShareOptions: boolean = false;
-  formvalues: string;
+  formvalues: string[]=[];
   selectedItemName: string = '';
   selectedVersion: number;
   submittedDataList: any[] = [];
-
+  values: string;
   items: any[] = [
     {
       id: 1,
@@ -157,7 +159,7 @@ export class DetailsComponent implements OnInit {
   }
   
 
-
+  itemId: number;
 
   ngOnInit(): void {
    
@@ -175,34 +177,36 @@ export class DetailsComponent implements OnInit {
     this.publishedVersions = this.selectedItemService.getPublishedVersions();
     this.inputValues.push(''); // Ajoute une valeur initiale vide
     this.showOptions.push(false);
-
-    // S'abonner à formData$ pour recevoir les mises à jour des données du service
-    this.dataService.formData$.subscribe(formData => {
-      if (formData) {
-        console.log('Données reçues dans StaticComponent :', formData);
-
-        if (formData) {
-
-
-          this.formDataName = formData.Name;
-          //console.log("bellah", this.formDataName);
-          this.formDataCategory = formData.Category;
-          this.formDataTypes = formData.Types;
+    this.selectedItemID = this.dataService.getSelectedItemID();
+    console.log('selectedItemID:', this.selectedItemID);
+  
+    this.dataService.formDataList$.subscribe(formDataList => {
+      if (formDataList) {
+        console.log('Données reçues dans StaticComponent :', formDataList);
+          this.formDataName = formDataList[this.selectedItemID-1].Name;
+          console.log("bellah", this.formDataName);
+          this.formDataCategory = formDataList[this.selectedItemID-1].Category;
+          this.formDataTypes = formDataList[this.selectedItemID-1].Types;
           this.formDataStatus = 'Inactive/Draft';
           this.formDataId = 1;
-          this.formDataCreateDate = new Date().toLocaleDateString('fr-FR', {
-            hour12: false,
-            timeZone: 'UTC'
-          });
+        this.formDataCreateDate = new Date();
           this.formDataCreatedBy = 'name';
-          this.showDeleteButton = true;
-          this.formvalues = formData.null;
+        this.showDeleteButton = true;
+    
+        this.formvalues = formDataList[this.selectedItemID - 1].InputValues;
+        console.log("valuessss", this.formvalues);
+        if (this.selectedItemID - 1 !== this.formvalues.length) {
+          this.values = this.formvalues[this.selectedItemID - 1];
+          console.log("values", this.values);
+        } else {
+          this.values = this.formvalues[this.selectedItemID - this.formvalues.length];
+        }
           this.checked = false;
           console.log("showDeleteButton:", this.showDeleteButton);
         } else {
           console.log('Aucune donnée dans formData ou formData est null.');
         }
-      }// Initialise showOptions pour la première valeur
+    // Initialise showOptions pour la première valeur
     });
    
 
@@ -348,23 +352,26 @@ export class DetailsComponent implements OnInit {
   submit(): void {
     console.log('Submitting data...');
 
-    const formDataToSend = {
-      formDataName: this.formDataName,
-      formDataStatus: this.formDataStatus,
-      formDataCategory: this.formDataCategory,
-      formDataTypes: this.formDataTypes,
-      formDataCreateDate: this.formDataCreateDate,
-      formDataCreatedBy: this.formDataCreatedBy,
-      formvalues: this.formvalues,
-      checked: this.checked
+    const formDataToSend :StaticData = {
+      Name: this.formDataName,
+      Status: "Inactive/Draft",
+      Category: this.formDataCategory,
+      Types: this.formDataTypes,
+      DateCreated: this.formDataCreateDate,
+     CreatedBy: this.formDataCreatedBy,
+      InputValues: this.formvalues,
+     
       // Ajoutez d'autres propriétés si nécessaire
     };
-
-    this.dataService.setFormData(formDataToSend);
+  
+ 
+    //this.dataService.setFormData(formDataToSend);
     this.dataService.addToSubmittedDataList(formDataToSend); // Ajoutez les données soumises à la liste
 
   }
-
+  goToStatic() {
+    this.router.navigate(['/static'])
+  }
 
   moveLine(index: number) {
     this.activeLineIndex = index;
