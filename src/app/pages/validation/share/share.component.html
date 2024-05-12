@@ -62,8 +62,8 @@
               <th scope="col" class="px-4 py-3 bg-white text-primary mx-6" *ngIf="showLanguageSelect">Language</th>
               <th scope="col" class="px-4 py-3 bg-white text-primary mx-6 ml-6" *ngIf="showShareField">Actions</th>
               <th scope="col" class="px-4 py-3 bg-white text-primary mx-6 ml-6" *ngIf="showStatusField">Status</th>
-              <th scope="col" class="px-4 py-3 bg-white text-primary mx-6" *ngIf="showEntitieField">Entities</th>
-              <th scope="col" class="px-4 py-3 bg-white text-primary mx-6 "  *ngIf="showLangueField">Language</th>
+              <th scope="col" class="px-4 py-3 bg-white text-primary mx-6" *ngIf="showEntitieField">Entities/Language</th>
+            
             </tr>
           </thead>
           <!-- Corps de tableau -->
@@ -78,10 +78,15 @@
                                       (onDeSelect)="onItemDeSelect($event, version)"></angular2-multiselect>
               </td>
               <td class="colonne-multiselect" *ngIf="showLanguageSelect">
-                <angular2-multiselect [data]="dropdownList2" [(ngModel)]="version.selectedItems2"
-                                      (onSelect)="onItemSelect1($event, version)"
-                                      (onDeSelect)="onItemDeSelect1($event, version)"></angular2-multiselect>
+                <div *ngFor="let entity of version.selectedItems">
+                  <angular2-multiselect [data]="dropdownList2" [(ngModel)]="entity.selectedLanguages"
+                                        (onSelect)="onLanguageSelect($event)"
+                                        (onDeSelect)="onLanguageDeselect($event)"></angular2-multiselect>
+                </div>
+
               </td>
+              <!-- Ajoutez une colonne pour afficher le nom de l'entité -->
+
               <td *ngIf="showStatusField" class="px-4 py-3 mx-6">
                 <ng-container *ngIf="version.selectedItems && version.selectedItems.length > 0">
                   <a>shareable</a>
@@ -93,22 +98,18 @@
               <td class="px-4 py-3 mx-6" *ngIf="showShareField">
                 <button class="btn btn-success btn-sm" (click)="valider(version)">Submit</button>
               </td>
-              <td colspan="6" *ngIf="showEntitieField">
-                <ng-container *ngIf="version.selectedItems && version.selectedItems.length > 0">
-                  <a *ngFor="let selectedItem of version.selectedItems">{{ selectedItem.itemName }} | </a>
-                </ng-container>
-                <ng-container *ngIf="!(version.selectedItems && version.selectedItems.length > 0)">
-                  <span>No items selected</span>
-                </ng-container>
+              <td class="px-4 py-3 mx-6" *ngIf="showEntitieField">
+        
+                <div *ngFor="let entity of version.selectedItems">
+                  {{ entity.itemName }} :
+                  <span *ngFor="let language of entity.selectedLanguages">
+                    {{ language.itemName }}
+                  </span>
+                </div>
               </td>
-              <td colspan="3" *ngIf="showLangueField">
-                <ng-container *ngIf="version.selectedItems2 && version.selectedItems2.length > 0">
-                  <a *ngFor="let selectedItem of version.selectedItems2">{{ selectedItem.itemName }} | </a>
-                </ng-container>
-                <ng-container *ngIf="!(version.selectedItems2 && version.selectedItems2.length > 0)">
-                  <span>No languages selected</span>
-                </ng-container>
-              </td>
+
+           
+
             </tr>
           </tbody>
         </table>

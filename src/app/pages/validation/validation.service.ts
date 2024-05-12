@@ -43,7 +43,8 @@ export class ValidService {
     return this.http.post(`${environment.appUrl}/api/pages/static/RejectStaticData/reject`, rejectedStaticData);
   }
   saveSharedStaticData(SharedStaticData: SharedSD) {
-    return this.http.post(`${environment.appUrl}/api/pages/static/SharedSD/saveSharedStaticData`, SharedStaticData);
+    //const serializedData = JSON.stringify(SharedStaticData);
+    return this.http.post(`${environment.appUrl}/api/pages/static/SharedSD/saveSharedStaticData`, SharedStaticData );
   }
 
 }
