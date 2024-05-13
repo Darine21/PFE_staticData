@@ -40,6 +40,7 @@ const routes: Routes =[
   {path: 'create-entity',
     component: CreateEntityComponent,
   },
+ 
   {
     path: 'dia-rejecttt',
     component: ReasonDialogComponent,
