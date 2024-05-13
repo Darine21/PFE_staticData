@@ -1,8 +1,8 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import * as L from 'leaflet';
-import 'leaflet.markercluster';
-import 'leaflet.markercluster/dist/leaflet.markercluster';
+// import 'leaflet.markercluster';
+// import 'leaflet.markercluster/dist/leaflet.markercluster';
 //import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 @Component({
   selector: 'app-create-entity',

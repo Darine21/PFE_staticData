@@ -56,7 +56,7 @@
 <div class="text-left">
   <div class="container-fluid">
     <div class="row justify-content-center align-items-center">
-      <div class="col-md-8">
+      <div class="col-lg-12">
 
         <div class="card card-user">
           <div class="card-header">
@@ -67,7 +67,7 @@
               <form (ngSubmit)="submit()">
                 <div id="detailsContent">
                   <div class="row">
-                    <div class="col-md-4 pr-1">
+                    <div class="col-md-6 pr-1">
                       <div class="form-group">
                         <label>Name</label>
                         <input type="text" class="form-control" placeholder="Company" value="{{formDataName}}">
@@ -75,7 +75,7 @@
                     </div>
 
 
-                    <div class="col-md-4 px-1">
+                    <div class="col-md-6 px-1">
                       <div class="form-group">
                         <label>Values</label>
 
@@ -111,14 +111,14 @@
                   </div>
                   <div style="margin-bottom: 20px;"></div>
                   <div class="row">
-                    <div class="col-md-5 pr-1">
+                    <div class="col-md-6 pr-1">
                       <div class="form-group">
                         <label>Status</label>
                         <input type="text" class="form-control" placeholder="Lorem by " value="Inactive">
                       </div>
                     </div>
 
-                    <div class="col-md-5 px-1">
+                    <div class="col-md-6 px-1">
                       <div class="form-group">
                         <label>Created By</label>
                         <input type="text" class="form-control" placeholder="Lorem by" value="name ">
@@ -127,14 +127,14 @@
                   </div>
                   <div style="margin-bottom: 20px;"></div>
                   <div class="row">
-                    <div class="col-md-5 pr-1">
+                    <div class="col-md-6 pr-1">
                       <div class="form-group">
                         <label>Types</label>
                         <input type="text" class="form-control" placeholder="Lorem by " value="{{formDataTypes}}">
                       </div>
                     </div>
 
-                    <div class="col-md-5 px-1">
+                    <div class="col-md-6 px-1">
                       <div class="form-group">
                         <label>Category</label>
                         <input type="text" class="form-control" placeholder="" value="{{formDataCategory}}">
@@ -143,7 +143,7 @@
                   </div>
                   <div style="margin-bottom: 20px;"></div>
                   <div class="row">
-                    <div class="col-md-5 pr-1">
+                    <div class="col-md-6 pr-1">
                       <div class="form-group">
                         <label>Creation Date</label>
                         <div class="input-group input-group-alternative mb-3">
@@ -156,7 +156,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-5 pr-1">
+                    <div class="col-md-6 pr-1">
                       <div class="form-group">
                         <label>Activation Date</label>
                         <div class="input-group input-group-alternative mb-3">
@@ -177,10 +177,10 @@
                     <app-liste-values></app-liste-values>
                   </div>
                   <div class="row">
-                    <div class="col-md-11">
-                      <div class="d-flex justify-content-center align-items-center">
+                    <div class="col-md-12">
+                      <div class="d-flex justify-content-end align-items-end">
                         <button type="submit" class="btn btn-primary  btn-lg mx-2 w-40" (click)="goToStatic()">Save</button>
-                        <button type="submit">Submit</button>
+                        <button  class="submit-button btn-lg mx-2 w-40">Submit</button>
 
                       </div>
                     </div>
@@ -202,7 +202,6 @@
                 </tr>
               </thead>
               <tbody>
-              <td>1</td>
 
               <a type="text" id="valueInput{{i}}" class="form-control" [(ngModel)]="inputValues[i]" placeholder="{{values}}" style="width:280px; margin-left:25px;height:40px; margin-top:10px;"></a>
               <ng-container *ngFor="let value of inputValues; let i = index">
@@ -216,7 +215,7 @@
                   <td>
                     <!-- Icone de trois points verticaux pour afficher les options -->
                     <!-- app-options-menu.component.html -->
-                    <div *ngIf="showShareOptions" class="col-md-4 pr-1">
+                    <div *ngIf="showShareOptions" class="col-md-6 pr-1">
                       <div class="form-group">
 
                         <div class="colonne-multiselect">
@@ -224,7 +223,7 @@
                         </div>
                       </div>
                     </div>
-                    <div ngbDropdown #dropdown="ngbDropdown" class="options-menu col-md-4 pr-1">
+                    <div ngbDropdown #dropdown="ngbDropdown" class="options-menu col-md-6 pr-1">
                       <button class="btn btn-options" id="dropdownButton{{ i }}" ngbDropdownToggle>
                         <i class="fas fa-ellipsis-v"></i>
                       </button>
