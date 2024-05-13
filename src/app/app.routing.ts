@@ -16,6 +16,7 @@ import { CardRejectedComponent } from './pages/validation/card-rejected/card-rej
 import { CardValidationComponent } from './pages/validation/card-validation/card-validation.component';
 import { CardSharingComponent } from './pages/validation/card-sharing/card-sharing.component';
 import { ReasonDialogComponent } from './pages/validation/reject-dia/reason-dialog/reason-dialog.component';
+import { CreateEntityComponent } from './pages/create-entity/create-entity.component';
 
 const routes: Routes =[
   {
@@ -36,7 +37,9 @@ const routes: Routes =[
     path: 'static',
     component: StaticComponent, 
   },
-
+  {path: 'create-entity',
+    component: CreateEntityComponent,
+  },
   {
     path: 'dia-rejecttt',
     component: ReasonDialogComponent,

@@ -9,7 +9,7 @@ import { CardRejectedComponent } from '../../pages/validation/card-rejected/card
 import { CardValidationComponent } from '../../pages/validation/card-validation/card-validation.component';
 import { CardSharingComponent } from '../../pages/validation/card-sharing/card-sharing.component';
 import { ReasonDialogComponent } from '../../pages/validation/reject-dia/reason-dialog/reason-dialog.component';
-
+import { CreateEntityComponent } from '../../pages/create-entity/create-entity.component';
 
 export const AdminLayoutRoutes: Routes = [
   { path: 'static', component: StaticComponent },
@@ -20,6 +20,5 @@ export const AdminLayoutRoutes: Routes = [
   { path: 'rejected', component: CardRejectedComponent },
   { path: 'card-val', component: CardValidationComponent },
   { path: 'card-share', component: CardSharingComponent },
-
-  
+  {path: 'create-entity',component: CreateEntityComponent}
 ];
