@@ -13,7 +13,8 @@
 
 @mixin bg-gradient-variant($parent, $color) {
     #{$parent} {
-        background: linear-gradient(87deg, $color 0, adjust-hue($color, 25deg) 100%) !important;
+        // background: linear-gradient(87deg, adjust-hue($color, 25deg) 0, $color 100%) !important;
+        background: linear-gradient(87deg, #00303C 0, $color 100%) !important;
     }
 }
 
