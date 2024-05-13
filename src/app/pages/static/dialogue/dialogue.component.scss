@@ -44,8 +44,10 @@
 }
 
 .button-container {
-  text-align: center;
-  margin-top: 20px;
+  text-align: end;
+  margin-top: 40px;
+  margin-right: 20px;
+  margin-bottom: 20px;
 }
 
 .submit-button, .cancel-button {
@@ -63,7 +65,7 @@
 }
 
 .cancel-button {
-  background-color: #dc3545; /* Red */
+  background-color: #ef8404; /* Red */
   color: #ffffff; /* White */
   border: none;
   margin-left: 10px;
