@@ -11,6 +11,7 @@ import { StaticData } from '../models/staticdata';
 import { ValidSD } from '../models/ValidSD';
 import { RejectSD } from '../models/RejectSD';
 import { SharedSD } from '../models/SharedSD';
+import { Entity } from '../models/Entity';
 @Injectable({
   providedIn: 'root'
 })
@@ -46,5 +47,7 @@ export class ValidService {
     //const serializedData = JSON.stringify(SharedStaticData);
     return this.http.post(`${environment.appUrl}/api/pages/static/SharedSD/saveSharedStaticData`, SharedStaticData );
   }
-
+  Addition(model: Entity) {
+    return this.http.post(`${environment.appUrl}/api/pages/CreateE/Entity/Addition`, model);
+  }
 }

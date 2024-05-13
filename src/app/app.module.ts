@@ -37,10 +37,8 @@ import { StaticComponent } from './pages/static/static.component';
 import { ReasonDialogComponent } from './pages/validation/reject-dia/reason-dialog/reason-dialog.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
-import { BrowserModule } from '@angular/platform-browser';
-import { JwtInterceptor } from './Auth.gard';
 import { CreateEntityComponent } from './pages/create-entity/create-entity.component';
-
+import { JwtInterceptor } from './Auth.gard';
 
 
 @NgModule({
@@ -82,8 +80,7 @@ import { CreateEntityComponent } from './pages/create-entity/create-entity.compo
     CardValidationComponent,
     CardSharingComponent,
     ReasonDialogComponent,
-    CreateEntityComponent,
-  
+    CreateEntityComponent
    
     //ValidDiaComponent,
     //ShareDiaComponent,
