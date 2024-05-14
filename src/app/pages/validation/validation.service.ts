@@ -50,4 +50,7 @@ export class ValidService {
   Addition(model: Entity) {
     return this.http.post(`${environment.appUrl}/api/pages/CreateE/Entity/Addition`, model);
   }
+  DeleteEntity(model: Entity) {
+    return this.http.delete(`${environment.appUrl}/api/pages/CreateE/Entity/${model.name}`);
+  }
 }

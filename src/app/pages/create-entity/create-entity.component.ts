@@ -28,27 +28,16 @@ export class CreateEntityComponent implements AfterViewInit {
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(this.map);
 
-    // Créez un groupe de marqueurs
-    const markers = L.markerClusterGroup();
-
-    // Ajoutez des marqueurs à partir de données (par exemple, des adresses)
-    const addresses = [
-      { lat: 51.5, lng: -0.09, title: 'Adresse 1' },
-      { lat: 51.51, lng: -0.1, title: 'Adresse 2' }
-      // Ajoutez d'autres adresses ici
-    ];
-
-    addresses.forEach(address => {
-      const marker = L.marker([address.lat, address.lng]);
-      marker.bindPopup(address.title);
-      markers.addLayer(marker);
-    });
-
-    // Ajoutez le groupe de marqueurs à la carte
-    this.map.addLayer(markers);
+    // Ajoutez un marqueur à la carte
+    const marker = L.marker([51.5, -0.09]).addTo(this.map);
+    marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
   }
    formDataList: Entity[] = [];
   create(form: NgForm) {
+    const storedData = localStorage.getItem('entity');
+    if (storedData) {
+      this.formDataList = JSON.parse(storedData);
+    }
     const formData = form.value;
     const name = formData.name;
     console.log("name", name);
@@ -64,11 +53,14 @@ export class CreateEntityComponent implements AfterViewInit {
     const phoneNumberString: string = formData.phoneNumber.toString();
     console.log("nummm", phoneNumberString)
     console.log("num", phoneNumber);
-    formData.forEach(item => {
-      item.DateCreated = new Date();
-    });
+    
     this.formDataList.push(formData);
+    this.formDataList.forEach(item => {
+      item.dateCreated = new Date()
+    });
     console.log("list", this.formDataList);
+    localStorage.setItem('entity', JSON.stringify(this.formDataList));
+
     const entity: Entity = {
       name: formData.name,
       address: formData.address,
@@ -96,5 +88,20 @@ export class CreateEntityComponent implements AfterViewInit {
     form.resetForm();
     // Vous pouvez également effectuer d'autres opérations avec ces valeurs, comme les envoyer à un serveur pour traitement
   }
+  delete(i: number) {
 
+
+    this.valideService.DeleteEntity(this.formDataList[i]).subscribe({
+      next: (response) => {
+        console.log("Response from API:", response);
+        this.toastr.success('Entity deleted successfully!', 'Success');
+      },
+      error: (error) => {
+        this.formDataList.splice(i, 1);
+        localStorage.setItem('entity', JSON.stringify(this.formDataList));
+        console.error("Error deleting entity:", error);
+        this.toastr.error('Failed to delete entity!', 'Error');
+      }
+    });
+  }
 }

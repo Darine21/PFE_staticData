@@ -1,0 +1,25 @@
+@import '~leaflet/dist/leaflet.css';
+.map-container {
+  height: 400px; /* Hauteur de la carte */
+  width: 100%; /* Prend toute la largeur du conteneur parent */
+  overflow: hidden; /* Masque tout contenu qui dépasse */
+}
+
+#map {
+  height: 100%; /* Hauteur de la carte par rapport à son conteneur parent */
+}
+/* Style de base pour les boutons */
+.btn-primary {
+  background-color: #f27e01; /* Couleur de fond */
+  color: white; /* Couleur du texte */
+  border: none; /* Pas de bordure */
+  border-radius: 5px; /* Bordure arrondie */
+  padding: 8px 12px; /* Espacement intérieur */
+  cursor: pointer; /* Curseur de souris pointer */
+  transition: background-color 0.3s ease; /* Transition de couleur de fond */
+}
+
+/* Style pour le survol */
+.btn-primary:hover {
+  background-color: #0056b3; /* Changement de couleur de fond au survol */
+}

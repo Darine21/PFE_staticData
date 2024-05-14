@@ -84,7 +84,7 @@
       <div class="col-md-12">
         <div class="card">
        
-            <h4 class="card-title "style="font-size:30px; margin-top:20px; margin-left:30px">List of Entity</h4>
+            <h4 class="card-title "style="font-size: 30px; margin-top: 20px; margin-left: 30px; color: #f27e01;">List of Entity</h4>
       
           <div class="card-body">
             <div class="table-responsive">
@@ -116,7 +116,7 @@
                 <tbody>
                   <tr *ngFor="let item of formDataList; let i=index">
                     <td>
-                     {{i+1}}
+                      {{i+1}}
                     </td>
                     <td>
                       {{item.name}}
@@ -127,7 +127,7 @@
                     <td>
                       {{item.address}}
                     </td>
-                    <td class="text-primary">
+                    <td>
                       {{item.responsible}}
                     </td>
                     <td>
@@ -138,7 +138,19 @@
                     </td>
                     <td>  {{item.descreption}}</td>
 
-                    <td><button>delete</button></td>
+                    
+                    <td>
+                      <button class="btn btn-primary" (click)="delete(i+1)">
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                      <button class="btn btn-primary">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                    </td>
+
+
+                 
+
                   </tr>
                 </tbody>
               </table>
@@ -150,13 +162,16 @@
   </div>
 </div>
 
-<div class="col-md-6" style="margin-top: 80px;">
-  <div class="card">
-    <div class="card-header">
-      <i class="fas fa-map-marked-alt"></i>   View Entity
+<div class="col-md-6" style="margin-top: 80px; ">
+  
+    <div class="card" style="width: 1200px;">
+      <div class="card-header" style="color: #f27e01;font-size:15px;">
+        <i class="fas fa-map-marked-alt"></i> View Entity
+      </div>
+      <div class="card-body">
+        <div id="map" class="map-container"></div> <!-- Ajout de la classe map-container -->
+      </div>
     </div>
-    <div class="card-body">
-      <div id="map" style="height: 400px;"></div>
-    </div>
+
   </div>
 </div>
