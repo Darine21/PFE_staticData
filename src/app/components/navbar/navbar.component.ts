@@ -17,16 +17,26 @@ export class NavbarComponent implements OnInit {
   name: string = '';
   reasonData: string;
   reasons: string[] = [];
-    status: string='';
+  status: string = '';
+  notif: any[] = [];
+  Status: any[] = [];
+  
   constructor(location: Location, private element: ElementRef, private router: Router, private navbarService: NavbarService) {
     this.location = location;
   }
   ngOnInit() {
     this.listTitles = ROUTES.filter(listTitle => listTitle);
-    
+    this.navbarService.reason$.subscribe(reason => {
+      this.reasons = reason;
+      console.log('Raisons mises à jour dans le composant Navbar :', this.reasons);
+      this.notif.push(this.reasons);
+     
+      console.log('Raisons mises à jour dans le composant Navbar :', this.notif);
+  
+    });
     this.navbarService.getReasons().subscribe(reasons => {
-      this.reasons = reasons; // Mettez à jour la liste de raisons dans le composant
-      // Faites quelque chose avec les raisons mises à jour, par exemple, affichez-les dans la console
+      this.reasons = reasons; 
+      
       console.log('Raisons mises à jour dans le composant Navbar :', this.reasons);
     });
      
@@ -37,6 +47,8 @@ export class NavbarComponent implements OnInit {
     });
     this.navbarService.currentstatus.subscribe(status=> {
       this.status = status;
+      this.Status.push(status);
+      console.log("Status of ", this.Status)
       // Utilisez la raison mise à jour ici, par exemple, pour afficher une notification dans la barre de navigation
       console.log('Status mise à jour dans la barre de navigation:', this.status);
     });

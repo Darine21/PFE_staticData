@@ -1,9 +1,10 @@
 export interface Entity {
+  phoneNumber: number;
   name: string;
   status: string;
   address: string;
-  Responsible: string;
-  numTel : number;
-  description: string;
-  dateCreated: Date;
+  responsible: string;
+  //numTel : number;
+  descreption: string;
+  dateCreated: String;
 }

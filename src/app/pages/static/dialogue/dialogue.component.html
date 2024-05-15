@@ -30,27 +30,13 @@
 
             <option value="" disabled [selected]="selectedOption === 'Choose your option'"> {{ selectedOption !== 'Choose your option' ? selectedOption : 'Choose your option' }} </option>
 
-            <option value="single">Single</option>
+            <option disabled [selected]="selectedOption === 'Choose your option'">Choose your option</option>
             <option value="bulk">Bulk Input</option>
           </select>
         </div>
       </div>
     </div>
-    <div style="margin-top: 30px;"></div>
-    <div *ngIf="selectedOption === 'single'" class="ml-3">
-      <div *ngFor="let inputValue of inputValues; let i = index" class="input-container">
-        <div class="input-group">
-          <label for="valueInput{{i}}" class="label-name">Value:</label>
-          <div class="input-wrapper">
-            <input type="text" id="valueInput{{i}}" class="input-name" [(ngModel)]="inputValues[i]" placeholder="{{inputValue}}">
-            <div class="input-buttons">
-              <button class="btn btn-circle btn-plus" (click)="AddInput()">+</button>
-              <button *ngIf="i !== 0" class="btn btn-circle btn-minus" (click)="removeInput(i)">-</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+   
     
 
 

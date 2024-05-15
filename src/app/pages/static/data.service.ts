@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { StaticData } from '../models/staticdata';
+import { Entity } from '../models/Entity';
+
 
 @Injectable({
   providedIn: 'root'
@@ -18,10 +20,15 @@ export class DataService {
     selectedItemID: number;
   private formDataListSource = new BehaviorSubject<StaticData[]>([]);
   formDataList$ = this.formDataListSource.asObservable();
+  private formDataListSource2 = new BehaviorSubject<Entity[]>([]);
+  formDataList2$ = this.formDataListSource2.asObservable();
   constructor() { }
 
   updateFormData(formData: any) {
     this.formDataSubject.next(formData);
+  }
+  updateFormDataList1(formDataList: Entity[]) {
+    this.formDataListSource2.next(formDataList);
   }
   updateFormDataList(formDataList: StaticData[]) {
     this.formDataListSource.next(formDataList);

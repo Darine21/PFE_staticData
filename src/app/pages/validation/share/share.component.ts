@@ -138,7 +138,7 @@ export class ShareComponent implements OnInit {
     this.selectedEntities = this.selectedItems.map(item => item.itemName);
     this.selectedLanguage = this.selectedItems2.map(item => item.itemName);
     console.log("entity", this.selectedEntities);
-
+    this.saveDataToLocalStorage();
 
 
   }
@@ -227,7 +227,14 @@ export class ShareComponent implements OnInit {
       this.selectedVersion = newVersion;
 
     });
+
+    const storedData = localStorage.getItem('shareData');
+    if (storedData) {
+      this.publishedVersions = JSON.parse(storedData);
+    }
+
     this.publishedVersions = this.selectedItemService.getPublishedVersions();
+    
     console.log("ver", this.publishedVersions);
     this.cities = [
       { name: 'New York', code: 'NY' },
@@ -284,6 +291,7 @@ export class ShareComponent implements OnInit {
       enableSearchFilter: true,
       classes: "myclass custom-class"
     };
+    
   }
 
 
@@ -294,6 +302,9 @@ export class ShareComponent implements OnInit {
     console.log(items);
   }
 
+  saveDataToLocalStorage(): void {
+    localStorage.setItem('shareData', JSON.stringify(this.publishedVersions));
+  }
 
 
   updateSelectedVersion(version: string): void {

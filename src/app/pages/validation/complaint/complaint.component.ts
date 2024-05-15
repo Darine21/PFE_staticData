@@ -18,7 +18,7 @@ export class ComplaintComponent implements OnInit {
   openMessageDialog(): void {
     const dialogRef = this.dialog.open(MessageDialogComponent, {
       width: '400px',
-      data: { message: 'Bonjour, comment puis-je vous aider ?' } // Message par défaut
+      data: { message: '' } // Message par défaut
     });
 
     dialogRef.afterClosed().subscribe(result => {

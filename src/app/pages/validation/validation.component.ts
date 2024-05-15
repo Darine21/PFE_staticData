@@ -59,11 +59,12 @@ export class ValidationComponent implements OnInit {
     formData: any;
   submittedDataList: any[];
   rejected: boolean = false;
-  reasonsList: { itemId: string, reason: any }[] = [];
+  reasonsList: { itemId: string, reason: any , status:string }[] = [];
   reason: string='';
   notif: any[] = [];
   StatusList: any[]=[];
     dataE: any;
+    Status: any;
 
   constructor(private navbarService: NavbarService, private dialog: MatDialog, private route: ActivatedRoute, private selectedItemService: SelectedItemService, private dataService: DataService, private router: Router, private staticservice: StaticService) { }
   @Output() statusUpdate: EventEmitter<string> = new EventEmitter<string>();
@@ -83,6 +84,7 @@ export class ValidationComponent implements OnInit {
  
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
+      this.showRejectDialog = false;
       
     });
   }
@@ -95,15 +97,19 @@ export class ValidationComponent implements OnInit {
     this.staticservice.ValidateStaticData(item.Name).subscribe(
       (response) => {
         console.log('Validation successful:', response);
-       
+        item.showValidDialog = false;
         item.Status = 'Approval';
+
       },
       (error) => {
         console.error('Validation failed:', error);
       }
     );
   
-    this.StatusList.push(item.Status);
+    this.StatusList.push("Approval");
+    console.log("status", this.StatusList);
+    this.navbarService.changeStatus(this.StatusList);
+
     const dialogRef = this.dialog.open(ValidDiaComponent);
 
 
@@ -117,6 +123,7 @@ export class ValidationComponent implements OnInit {
         console.log('Cancelled');
       }
     });
+    this.updateSubmittedDataList();
 
   }
   // Méthode pour gérer le changement de la case à cocher
@@ -129,17 +136,17 @@ export class ValidationComponent implements OnInit {
   }
 
  
-  // Méthode pour gérer l'action de rejet
+  status1: any;
   rejeter(item: any) {
     this.isItemSelected=true
     item.showRejectDialog = true;
-    
-    // Afficher la boîte de dialogue pour saisir le reason
-  
-      this.reasonsList.push({ itemId: item.formDataName, reason: this.notif });
+    this.StatusList.push("Rejected");
+    console.log("status", this.StatusList);
+    this.navbarService.changeStatus(this.StatusList);
+    this.reasonsList.push({ itemId: item.Name, reason: this.notif, status:"Rejected" });
     
     console.log("lisstaaa", this.reasonsList);
-   
+    this.updateSubmittedDataList();
 
   }
   
@@ -187,53 +194,44 @@ export class ValidationComponent implements OnInit {
   goToCardS() { this.router.navigate(['/card-share']); }
   ngOnInit(): void {
 
-    // Abonnement au service pour recevoir les raisons de validation
-    this.navbarService.reason$.subscribe(reason => {
+        this.navbarService.reason$.subscribe(reason => {
       this.notif.push(reason);
       console.log('Validation:', this.notif);
     });
 
 
-    const storedData = localStorage.getItem('submittedDataList');
+      const storedData = localStorage.getItem('submittedDataList');
+      console.log(storedData);
     if (storedData) {
       this.submittedDataList = JSON.parse(storedData);
+      console.log("en", this.submittedDataList);
     }
-    this.submittedDataList = this.dataService.submittedDataList;
-    console.log("Liste initiale:", this.submittedDataList);
-   
-    // Après avoir reçu les données, stockez-les dans le localStorage
-    localStorage.setItem('submittedDataList', JSON.stringify(this.submittedDataList));
+      this.submittedDataList = this.dataService.submittedDataList;
+      console.log("Liste initiale:", this.submittedDataList);
+    
+      this.submittedDataList.forEach(item => {
+        item.showRejectDialog = this.showRejectDialog;
+        item.showValidDialog = this.showValidDialog;
+      });
+  
 
-    this.submittedDataList.forEach(item => {
-      item.showRejectDialog = this.showRejectDialog;
-      item.showValidDialog = this.showValidDialog;
-    });
-
-
+   // localStorage.setItem('submittedDataList', JSON.stringify(this.submittedDataList));
     this.submittedDataList.forEach(item => {
       item.showRejectDialog = this.showRejectDialog;
       item.showValidDialog = this.showValidDialog;// Ajoutez la variable `rejected` à chaque objet
     });
-
-    
-    console.log("rejectttttteeeee", this.submittedDataList[0].showRejectDialog);
-    console.log("validdddddtttttteeeee", this.submittedDataList[0].showValidDialog);
-    console.log("validdddddvvvvtttttteeeee", this.submittedDataList[0].InputValues);
-    for (let i = 0; i < this.submittedDataList.length; i++) {
+    for (let i = 0; i <this.submittedDataList.length; i++) {
       this.formDataName = this.submittedDataList[i].Name;
       this.formDataNameList.push(this.formDataName);
 
-      console.log("etat", this.StatusList);
+     
       console.log("paaaaar", this.formDataName);
     }
     
-    console.log(localStorage);
+   
     this.navbarService.changeName(this.formDataNameList);
-    for (let item of this.submittedDataList) {
-      this.StatusList.push(item.formDataStatus);
-    }
-    console.log("list de ", this.StatusList);
-    this.navbarService.changeStatus(this.StatusList);
+
+    
     // Récupérez les données transmises depuis la page précédente
     this.formDataName = this.submittedDataList[0].Name;
     console.log("par", this.formDataName);
@@ -241,8 +239,15 @@ export class ValidationComponent implements OnInit {
     this.formDataTypes = this.submittedDataList[0].Types;
     // Ajoutez d'autres propriétés si nécessaire
     console.log("par", this.formDataName);
-   
-  }
+ 
   
+  }
+  updateSubmittedDataList() {
+    // Mettre à jour submittedDataList dans le service DataService
+    this.dataService.submittedDataList = this.submittedDataList;
+    // Sauvegarder submittedDataList dans localStorage
+    localStorage.setItem('submittedDataList', JSON.stringify(this.submittedDataList));
+  }
+
  }
 

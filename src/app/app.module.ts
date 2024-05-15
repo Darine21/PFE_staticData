@@ -39,6 +39,8 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { CreateEntityComponent } from './pages/create-entity/create-entity.component';
 import { JwtInterceptor } from './Auth.gard';
+import { AdminLocalComponent } from './pages/admin-local/admin-local.component';
+import { DialogEComponent } from './pages/create-entity/dialog-e/dialog-e.component';
 
 
 @NgModule({
@@ -80,7 +82,9 @@ import { JwtInterceptor } from './Auth.gard';
     CardValidationComponent,
     CardSharingComponent,
     ReasonDialogComponent,
-    CreateEntityComponent
+    CreateEntityComponent,
+    AdminLocalComponent,
+    DialogEComponent
    
     //ValidDiaComponent,
     //ShareDiaComponent,

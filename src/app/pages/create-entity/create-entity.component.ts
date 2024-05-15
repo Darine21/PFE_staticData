@@ -6,16 +6,20 @@ import 'leaflet.markercluster/dist/leaflet.markercluster';
 import { Entity } from '../models/Entity';
 import { ValidService } from '../validation/validation.service';
 import { ToastrService } from 'ngx-toastr';
+import { DialogEComponent } from './dialog-e/dialog-e.component'
+import { MatDialog } from '@angular/material/dialog';
+import { DataService } from '../static/data.service';
+
 //import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 @Component({
   selector: 'app-create-entity',
   templateUrl: './create-entity.component.html',
   styleUrls: ['./create-entity.component.scss']
 })
-export class CreateEntityComponent implements AfterViewInit {
+export class CreateEntityComponent implements AfterViewInit  {
   map: any;
-
-  constructor(private valideService: ValidService, private toastr: ToastrService) { }
+ 
+  constructor(private valideService: ValidService, private toastr: ToastrService, private dialog: MatDialog, private dataservice: DataService) { }
 
   ngAfterViewInit(): void {
     this.initMap();
@@ -32,8 +36,10 @@ export class CreateEntityComponent implements AfterViewInit {
     const marker = L.marker([51.5, -0.09]).addTo(this.map);
     marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
   }
-   formDataList: Entity[] = [];
+  formDataList: Entity[] = [];
+   
   create(form: NgForm) {
+   
     const storedData = localStorage.getItem('entity');
     if (storedData) {
       this.formDataList = JSON.parse(storedData);
@@ -43,11 +49,11 @@ export class CreateEntityComponent implements AfterViewInit {
     console.log("name", name);
     const address = formData.address;
     console.log("address", address);
-    const descreption = formData.descreption;
+    const descreption = formData.description;
     console.log("descreption", descreption);
     const status = formData.status;
     console.log("status", status);
-    const responsable = formData.responsible;
+    const responsable = formData.Responsible;
     console.log("responsable", responsable);
     const phoneNumber = formData.phoneNumber;
     const phoneNumberString: string = formData.phoneNumber.toString();
@@ -55,20 +61,36 @@ export class CreateEntityComponent implements AfterViewInit {
     console.log("num", phoneNumber);
     
     this.formDataList.push(formData);
-    this.formDataList.forEach(item => {
-      item.dateCreated = new Date()
-    });
+  
     console.log("list", this.formDataList);
+    const currentDate = new Date();
+
+    // Obtention de l'année, du mois et du jour
+    const year = currentDate.getFullYear();
+    const month = ('0' + (currentDate.getMonth() + 1)).slice(-2); // Les mois sont indexés à partir de 0
+    const day = ('0' + currentDate.getDate()).slice(-2);
+
+    // Obtention de l'heure, des minutes et des secondes
+    const hours = ('0' + currentDate.getHours()).slice(-2);
+    const minutes = ('0' + currentDate.getMinutes());
+
+
+    // Construction de la chaîne de date au format souhaité (par exemple: 'YYYY-MM-DD HH:MM:SS')
+    const formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}`;
+    this.formDataList.forEach(item => {
+      item.dateCreated = formattedDateTime;
+    });
     localStorage.setItem('entity', JSON.stringify(this.formDataList));
 
     const entity: Entity = {
-      name: formData.name,
-      address: formData.address,
-      description: formData.descreption,
-      status: formData.status, // Assurez-vous de donner le statut approprié
-      dateCreated: new Date(), // Ajoutez la date de création actuelle
-      numTel: formData.phoneNumber,
-      Responsible: formData.responsable
+        name: formData.name,
+        address: formData.address,
+        descreption: formData.descreption,
+        status: formData.status,
+        dateCreated: formattedDateTime,
+        phoneNumber: formData.phoneNumber,
+        responsible: formData.Responsible,
+       
     };
 
     this.valideService.Addition(entity).subscribe({
@@ -86,11 +108,11 @@ export class CreateEntityComponent implements AfterViewInit {
       }
     });
     form.resetForm();
-    // Vous pouvez également effectuer d'autres opérations avec ces valeurs, comme les envoyer à un serveur pour traitement
+    this.dataservice.updateFormDataList1(this.formDataList);
   }
   delete(i: number) {
 
-
+    console.log("sss", this.formDataList[i]);
     this.valideService.DeleteEntity(this.formDataList[i]).subscribe({
       next: (response) => {
         console.log("Response from API:", response);
@@ -104,4 +126,24 @@ export class CreateEntityComponent implements AfterViewInit {
       }
     });
   }
+  
+  openDialog(i): void {
+    const item = i;
+    console.log("dataaa", item);
+    this.dataservice.setSelectedItemID(item)
+
+      const dialogRef = this.dialog.open(DialogEComponent, {
+        width: '500px',
+        data: item,
+   
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+
+        }
+      });
+
+    }
+  
 }

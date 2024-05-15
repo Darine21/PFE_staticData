@@ -22,7 +22,7 @@
   margin-bottom: 10px;
   padding: 10px;
   border-radius: 5px;
-  background-color: #4caf50; /* Couleur verte pour le message de l'utilisateur */
+  background-color: lightskyblue; /* Couleur verte pour le message de l'utilisateur */
   color: white; /* Texte blanc pour le message de l'utilisateur */
   align-self: flex-end;
   margin-left: 30px; /* Marge gauche de 5px */
@@ -31,7 +31,7 @@
 }
 
 .chatbot-message.from-bot {
-  background-color: #4caf50;
+  background-color: lightskyblue;
   color: white;
   align-self: flex-start;
 }
@@ -40,7 +40,7 @@
   max-height: 400px; /* Hauteur maximale de la zone de messages */
 }
 .from-user {
-  background-color: #4caf50; /* Couleur verte pour le message de l'utilisateur */
+  background-color: lightskyblue; /* Couleur verte pour le message de l'utilisateur */
   color: white; /* Texte blanc pour le message de l'utilisateur */
   align-self: flex-end;
   }
@@ -56,7 +56,7 @@
   margin-left: 5px; /* Marge à gauche */
 }
 .message {
-  background-color: #4caf50; /* Couleur verte pour le message de l'utilisateur */
+  background-color: lightskyblue; /* Couleur verte pour le message de l'utilisateur */
   color: white; /* Texte blanc pour le message de l'utilisateur */
   align-self: flex-end;
 }
@@ -71,7 +71,7 @@
 
   .chatbot-input button {
     margin-left: 10px;
-    background-color: #4caf50;
+    background-color: lightskyblue;
     color: white;
     border: none;
     border-radius: 50%;

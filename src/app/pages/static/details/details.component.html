@@ -25,30 +25,27 @@
     <div class="collapse navbar-collapse ml-auto" style="margin-top: 24px;">
       <!-- Left links -->
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0 ">
-        <li class="nav-item mx-5">
-          <a class="nav-link active" aria-current="page" (click)="selectDetails()">Details</a>
-          <div class="line" [ngClass]="{'active': activeLineIndex === 0}"></div>
+        <li class="nav-item mx-5" (click)="selectDetails()" [ngClass]="{'active': activeLineIndex === 0}" >
+          <a class="nav-link">Details</a>
+       
         </li>
         <li class="nav-item mx-5" (click)="selectValues()" [ngClass]="{'active': activeLineIndex === 1}">
-          <a class="nav-link">Values</a>
-          <div class="line"></div>
+          <a class="nav-link" >Values</a>
+         
         </li>
-
-        <li class="nav-item mx-5" (click)="moveLine(2)" [ngClass]="{'active': activeLineIndex === 2}">
+        <li class="nav-item mx-5" (click)="moveLine(2)" >
           <a class="nav-link" href="#/history">History</a>
-          <div class="line"></div>
+          
         </li>
-
       </ul>
-
-      <!-- Left links -->
     </div>
+    <!-- Line below the links -->
+    <hr style="margin-top: 10px;">
+
     <!-- Collapsible wrapper -->
   </div>
+
  
-  
-
-
 
   <!-- Container wrapper -->
 </nav>
@@ -60,7 +57,7 @@
 
         <div class="card card-user">
           <div class="card-header">
-            <h4 class="card-title">Edit Data</h4>
+            <h4 class="card-title" style="color: #fb6340 ; font-size:17px;">Edit Data</h4>
           </div>
           <div class="card-body" >
             <div *ngIf="showForm">
@@ -84,12 +81,12 @@
 
                           <tr>
 
-                            <td>{{ i + 1 }}</td>
+                            
                             <div style="margin-left: 6px;"></div>
-                            <td>
+                           
 
-                              <input type="text" id="valueInput{{i}}" class="form-control" [value]="inputValues[i]" (input)="$event.target.value" placeholder="{{values}}" style="width:280px;">
-                            </td>
+                              <input type="text" id="valueInput{{i}}" class="form-control" [value]="inputValues[i]" (input)="$event.target.value" placeholder="{{formvalues}}" style="width:580px;">
+                            
 
 
 
@@ -117,7 +114,7 @@
                         <input type="text" class="form-control" placeholder="Lorem by " value="Inactive">
                       </div>
                     </div>
-
+                 
                     <div class="col-md-6 px-1">
                       <div class="form-group">
                         <label>Created By</label>
@@ -195,55 +192,59 @@
             <table class="table">
               <thead>
                 <tr>
-                  <th scope="col" class="px-4 py-3 bg-white text-primary mx-6" style="font-size:14px;">#</th>
+                  <th scope="col" class=" bg-white text-primary mx-6" style="font-size:14px;">#</th>
 
-                  <th scope="col" class="px-4 py-3 bg-white text-primary mx-6" style="font-size:14px;"> Value</th>
-                  <th scope="col" class="px-4 py-3 bg-white text-primary mx-6" style="font-size:14px;">Options</th>
+                  <th scope="col" class=" bg-white text-primary mx-6" style="font-size:14px;"> Value</th>
+                  <th scope="col" class=" bg-white text-primary mx-6" style="font-size:14px;">Options</th>
                 </tr>
               </thead>
               <tbody>
-
-              <a type="text" id="valueInput{{i}}" class="form-control" [(ngModel)]="inputValues[i]" placeholder="{{values}}" style="width:280px; margin-left:25px;height:40px; margin-top:10px;"></a>
-              <ng-container *ngFor="let value of inputValues; let i = index">
-
                 <tr>
-                  <td>{{ i + 2 }}</td>
-
-
-
-                  <td><input type="text" id="valueInput{{i}}" class="form-control" [(ngModel)]="inputValues[i]" placeholder="enter your value" style="width:280px;"></td>
                   <td>
-                    <!-- Icone de trois points verticaux pour afficher les options -->
-                    <!-- app-options-menu.component.html -->
-                    <div *ngIf="showShareOptions" class="col-md-6 pr-1">
-                      <div class="form-group">
+                    1
+                  </td>
+                  <td><a type="text" id="valueInput{{i}}" class="form-control" [(ngModel)]="inputValues[i]" placeholder="{{formvalues}}" style="width:480px;height:40px; margin-top:10px;"></a></td>
 
-                        <div class="colonne-multiselect">
-                          <angular2-multiselect [data]="dropdownList" [(ngModel)]="publishedVersions.selectedItems" (onSelect)="onItemSelect($event)" (onDeSelect)="onItemDeSelect($event)"></angular2-multiselect>
+                </tr>
+                <ng-container *ngFor="let value of inputValues; let i = index">
+                  <tr>
+                    <td>{{ i + 2 }}</td>
+
+
+
+                    <td><input type="text" id="valueInput{{i}}" class="form-control" [(ngModel)]="inputValues[i]" placeholder="enter your value" style="width:480px;"></td>
+                    <td>
+                      <!-- Icone de trois points verticaux pour afficher les options -->
+                      <!-- app-options-menu.component.html -->
+                      <div *ngIf="showShareOptions" class="col-md-6 pr-1">
+                        <div class="form-group">
+
+                          <div class="colonne-multiselect">
+                            <angular2-multiselect [data]="dropdownList" [(ngModel)]="publishedVersions.selectedItems" (onSelect)="onItemSelect($event)" (onDeSelect)="onItemDeSelect($event)"></angular2-multiselect>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div ngbDropdown #dropdown="ngbDropdown" class="options-menu col-md-6 pr-1">
-                      <button class="btn btn-options" id="dropdownButton{{ i }}" ngbDropdownToggle>
-                        <i class="fas fa-ellipsis-v"></i>
-                      </button>
-                      <div ngbDropdownMenu aria-labelledby="dropdownButton{{ i }}" class="dropdown-menu dropdown-menu-right">
-                        <button class="dropdown-item" (click)="addInput(i)">
-                          <i class="fas fa-plus"></i> Ajouter
+                      <div ngbDropdown #dropdown="ngbDropdown" class="options-menu col-md-6 pr-1">
+                        <button class="btn btn-options" id="dropdownButton{{ i }}" ngbDropdownToggle>
+                          <i class="fas fa-ellipsis-v"></i>
                         </button>
-                        <button class="dropdown-item" (click)="removeInput(i)">
-                          <i class="fas fa-trash-alt"></i> Supprimer
-                        </button>
-                        <button class="dropdown-item" (click)="shareOptions()">
-                          <i class="fas fa-share"></i> Partager
-                        </button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownButton{{ i }}" class="dropdown-menu dropdown-menu-right">
+                          <button class="dropdown-item" (click)="addInput(i)">
+                            <i class="fas fa-plus"></i> Ajouter
+                          </button>
+                          <button class="dropdown-item" (click)="removeInput(i)">
+                            <i class="fas fa-trash-alt"></i> Supprimer
+                          </button>
+                          <button class="dropdown-item" (click)="shareOptions()">
+                            <i class="fas fa-share"></i> Partager
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                    <!-- Champ "Share" inclus dans la même colonne -->
+                      <!-- Champ "Share" inclus dans la même colonne -->
 
-                  </td>
-                </tr>
-              </ng-container>
+                    </td>
+                  </tr>
+                </ng-container>
               </tbody>
             </table>
           </div>

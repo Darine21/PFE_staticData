@@ -59,6 +59,7 @@ export class RejectDiaComponent implements OnInit {
     // Autres logiques nécessaires
     this.statusUpdate.emit('Rejected');
   }
+  status1: any;
   onYesClick(): void {
     this.showReasonInput = true;
     this.staticservice.RejectedStaticData(this.selectedItemName).subscribe(
@@ -79,6 +80,7 @@ export class RejectDiaComponent implements OnInit {
         console.error('Rejection failed:', error);
       }
     );
+ 
     const modalOptions: NgbModalOptions = {
       backdrop: false, // Désactiver le blocage de fond
       keyboard: true // Activer la fermeture avec la touche "Escape"
@@ -110,8 +112,6 @@ export class RejectDiaComponent implements OnInit {
 
     
    
-     
-      // Stocker le reason dans la variable locale
       this.navbarService.changeReason(reason);
     }).catch((error) => {
       console.log('Modal closed without entering reason.');

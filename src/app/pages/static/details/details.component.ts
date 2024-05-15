@@ -157,8 +157,8 @@ export class DetailsComponent implements OnInit {
       });
     }
   }
-  
 
+  formvaluesList: any[] = [];
   itemId: number;
 
   ngOnInit(): void {
@@ -182,6 +182,11 @@ export class DetailsComponent implements OnInit {
   
     this.dataService.formDataList$.subscribe(formDataList => {
       if (formDataList) {
+        const storedData = localStorage.getItem('formDataList');
+        console.log(storedData);
+        if (storedData) {
+          formDataList = JSON.parse(storedData);
+        }
         console.log('Données reçues dans StaticComponent :', formDataList);
           this.formDataName = formDataList[this.selectedItemID-1].Name;
           console.log("bellah", this.formDataName);
@@ -194,13 +199,14 @@ export class DetailsComponent implements OnInit {
         this.showDeleteButton = true;
     
         this.formvalues = formDataList[this.selectedItemID - 1].InputValues;
+       
         console.log("valuessss", this.formvalues);
-        if (this.selectedItemID - 1 !== this.formvalues.length) {
-          this.values = this.formvalues[this.selectedItemID - 1];
+        
+          this.values = this.formvalues[this.selectedItemID -1 ];
           console.log("values", this.values);
-        } else {
-          this.values = this.formvalues[this.selectedItemID - this.formvalues.length];
-        }
+        window.addEventListener('beforeunload', () => {
+          localStorage.setItem('formDataList', JSON.stringify(formDataList));
+        });
           this.checked = false;
           console.log("showDeleteButton:", this.showDeleteButton);
         } else {
@@ -343,11 +349,13 @@ export class DetailsComponent implements OnInit {
     
     
   selectDetails() {
-    this.showForm = true; // Afficher le formulaire lorsque vous cliquez sur "Details"
+    this.showForm = true;
+    this.activeLineIndex = 0;// Afficher le formulaire lorsque vous cliquez sur "Details"
   }
 
   selectValues() {
-    this.showForm = false; // Afficher la table lorsque vous cliquez sur "Values"
+    this.showForm = false;
+    this.activeLineIndex = 1 ; // Afficher la table lorsque vous cliquez sur "Values"
   }
   submit(): void {
     console.log('Submitting data...');
@@ -377,7 +385,7 @@ export class DetailsComponent implements OnInit {
     this.activeLineIndex = index;
   }
 
-    // Méthode pour ajouter une nouvelle valeur
+
     
   }
     
