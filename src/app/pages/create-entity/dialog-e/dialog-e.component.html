@@ -1,62 +1,110 @@
-<div *ngIf="showFirstDialog" class="dialog-container right-dialog" style="width: 600px; height: auto; max-height: 700px; border-radius: 10px; background-color: #f9f9f9; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); overflow-y: auto; top: 100%; left: 55%; transform: translate(-50%, -50%); margin-right: -80px;">
+<div *ngIf="showFirstDialog" class="dialog-container right-dialog" style="position: fixed; top:50%; left: 50%; transform: translate(-50%, -50%); width: 750px; height: auto; max-height: 800px; border-radius: 10px; background-color: #f9f9f9; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); overflow-y: auto;">
   <i class="fas fa-times close-icon" (click)="onClose()" style="position: absolute; top: 20px; right: 20px; color: #888; font-size: 20px; cursor: pointer;"></i>
   <h2 style="text-align: start; margin-left: 30px; margin-top: 20px; margin-bottom: 30px; color: #f27e01; font-size: 36px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); text-align: center; "> Edit {{formDataName}} </h2>
 
   <form>
-    <div class="ml-3">
-      <div class="col-lg-12">
+    <div class="row">
+      <div class="col-md-4 px-1" style="margin-left:40px;">
         <label class="col-form-label" for="dataName">Name :</label>
-        <input name="Name" type="text" class="form-control" placeholder="{{formDataName}}" required>
+        <br>
+        <div *ngIf="!isEditingName" class="editable-content" (click)="startEditingName()">{{formDataName}}</div>
+        <!-- Champ de texte pour modifier l'adresse -->
+        <input *ngIf="isEditingName" name="Name" type="text" class="form-control" [(ngModel)]="editedName" style="width:350px" required>
+        <!-- Bouton pour activer le mode édition -->
+        <!-- Bouton pour enregistrer les modifications -->
+        <button *ngIf="isEditingName" class="btn btn-primary" (click)="saveEditedName()">Save</button>
       </div>
 
-      <div class="col-lg-12">
+      <div class="col-md-4 px-1" style="margin-left:90px;">
         <div class="mb-3">
           <label class="col-form-label">Status :</label>
-          <input name="Status" type="text" class="form-control" placeholder="{{formDataStatus}}" required>
-        </div>
-      </div>
-      <div class="col-lg-12">
-        <div class="mb-3">
-          <label class="col-form-label">Address :</label>
-          <input name="Address" type="text" class="form-control" placeholder="{{formDataaddress}}" required>
-        </div>
-      </div>
-      <div class="col-lg-12">
-        <div class="mb-3">
-          <label class="col-form-label">Responsable :</label>
-          <input name="Responsable" type="text" class="form-control" placeholder="{{formDataResponsible }}" required>
-        </div>
-      </div>
-      <div class="col-lg-12">
-        <div class="mb-3">
-          <label class="col-form-label">Phone Number :</label>
-          <input name="phone" type="number" class="form-control" placeholder="{{formDatanum}}" required>
-        </div>
-      </div>
-      <div class="col-lg-12">
-        <div class="mb-3">
-          <label class="col-form-label">Description :</label>
-          <input name="description" type="text" class="form-control" placeholder="{{formDataCreatedBy}}" required>
+          <br>
+          <div *ngIf="!isEditingStatus" class="editable-content" (click)="startEditingStatus()">{{formDataStatus}}</div>
+          <!-- Champ de texte pour modifier l'adresse -->
+          <input *ngIf="isEditingStatus" name="status" type="text" class="form-control" [(ngModel)]="editedStatus" style="width:350px" required>
+          <!-- Bouton pour activer le mode édition -->
+          <!-- Bouton pour enregistrer les modifications -->
+          <button *ngIf="isEditingStatus" class="btn btn-primary" (click)="saveEditedStatus()">Save</button>
         </div>
       </div>
     </div>
-    <div class="col-lg-12">
-      <div class="mb-3">
-        <label>Creation Date</label>
-        <div class="input-group input-group-alternative mb-3">
-          <div class="input-group-prepend">
-            <button class="btn btn-outline-secondary" (click)="dpCreation.toggle()" type="button">
-              <i class="fa fa-calendar"></i> <!-- Utilisez une icône de calendrier -->
-            </button>
-          </div>
-          <input class="form-control" placeholder="{{CreateDate}}" name="creationDate" [(ngModel)]="creationDate" ngbDatepicker #dpCreation="ngbDatepicker">
-        </div>
+
+
+    <div class="row">
+      <div class="col-md-4 px-1" style="margin-left:40px;">
+        <label class="col-form-label">Address :</label>
+        <br>
+        <div *ngIf="!isEditingAddress" class="editable-content" (click)="startEditingAddress()">{{formDataaddress}}</div>
+        <!-- Champ de texte pour modifier l'adresse -->
+        <input *ngIf="isEditingAddress" name="Address" type="text" class="form-control" [(ngModel)]="editedAddress" style="width:350px" required>
+        <!-- Bouton pour activer le mode édition -->
+        <!-- Bouton pour enregistrer les modifications -->
+        <button *ngIf="isEditingAddress" class="btn btn-primary" (click)="saveEditedAddress()">Save</button>
+
+      </div>
+
+
+      <div class="col-md-4 px-1" style="margin-left:90px;">
+        <div class="mb-3">
+          <label class="col-form-label">Responsible :</label>
+          <br>
+          <div *ngIf="!isEditingResponsible" class="editable-content" (click)="startEditingResponsible()">{{formDataResponsible}}</div>
+          <!-- Champ de texte pour modifier l'adresse -->
+          <input *ngIf="isEditingResponsible" name="Responsible" type="text" class="form-control" [(ngModel)]="editedResponsible" style="width:350px" required>
+          <!-- Bouton pour activer le mode édition -->
+          <!-- Bouton pour enregistrer les modifications -->
+          <button *ngIf="isEditingResponsible" class="btn btn-primary" (click)="saveEditedResponsible()">Save</button>
         </div>
       </div>
+
+    </div>
+    <div class="row">
+      <div class="col-md-4 px-1" style="margin-left:40px;">
+        <label class="col-form-label">Phone Number :</label>
+        <br>
+        <div *ngIf="!isEditingnum" class="editable-content" (click)="startEditingNum()">{{formDatanum}}</div>
+        <!-- Champ de texte pour modifier l'adresse -->
+        <input *ngIf="isEditingnum" name="num" type="number" class="form-control" [(ngModel)]="editednum" style="width:250px" required>
+        <!-- Bouton pour activer le mode édition -->
+        <!-- Bouton pour enregistrer les modifications -->
+        <button *ngIf="isEditingnum" class="btn btn-primary" (click)="saveEditedNum()" style="margin-top:5px;">Save</button>
+      </div>
+    
+
+
    
-<div class="button-container" style="text-align: right; padding-right: 30px; padding-bottom: 20px;">
-  <button class="submit-button btn-md">Save</button>
-  <button class="cancel-button btn-md" (click)="onClose()">Cancel</button>
-</div>
-  </form>
+        <div class="col-md-4 px-1" style="margin-left:90px;">
+        
+            <label class="col-form-label">Description :</label>
+            <br>
+            <div *ngIf="!isEditingDescription" class="editable-content" (click)="startEditingDescription()">{{formDataCreatedBy}}</div>
+            <!-- Champ de texte pour modifier l'adresse -->
+            <input *ngIf="isEditingDescription" name="Description" type="text" class="form-control" [(ngModel)]="editedDescrption" style="width:250px" required>
+            <!-- Bouton pour activer le mode édition -->
+            <!-- Bouton pour enregistrer les modifications -->
+            <button *ngIf="isEditingDescription" class="btn btn-primary" (click)="saveEditedDescription()">Save</button>
+
+         
+        </div>
+        </div>
+     
+        <div class="col-lg-12">
+          <div class="mb-3">
+            <label>Creation Date</label>
+            <div class="input-group input-group-alternative mb-3">
+              <div class="input-group-prepend">
+                <button class="btn btn-outline-secondary" (click)="dpCreation.toggle()" type="button">
+                  <i class="fa fa-calendar"></i> <!-- Utilisez une icône de calendrier -->
+                </button>
+              </div>
+              <input class="form-control" placeholder="{{CreateDate}}" name="creationDate" [(ngModel)]="creationDate" ngbDatepicker #dpCreation="ngbDatepicker" style="width:250px">
+            </div>
+          </div>
+        </div>
+
+        <div class="button-container" style="text-align: right; padding-right: 30px; padding-bottom: 20px;">
+          <button class="submit-button btn-md" (click)="saveChanges()">Save</button>
+          <button class="cancel-button btn-md" (click)="onClose()">Cancel</button>
+        </div>
+</form>
 </div>

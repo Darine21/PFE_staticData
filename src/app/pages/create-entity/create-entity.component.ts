@@ -45,20 +45,21 @@ export class CreateEntityComponent implements AfterViewInit  {
       this.formDataList = JSON.parse(storedData);
     }
     const formData = form.value;
+    console.log("form", formData);
     const name = formData.name;
     console.log("name", name);
     const address = formData.address;
     console.log("address", address);
-    const descreption = formData.description;
+    const descreption = formData.descreption;
     console.log("descreption", descreption);
     const status = formData.status;
     console.log("status", status);
-    const responsable = formData.Responsible;
+    const responsable = formData.responsible;
     console.log("responsable", responsable);
-    const phoneNumber = formData.phoneNumber;
-    const phoneNumberString: string = formData.phoneNumber.toString();
-    console.log("nummm", phoneNumberString)
-    console.log("num", phoneNumber);
+    const phoneNum = formData.phoneNumber;
+   
+    
+    console.log("num", phoneNum);
     
     this.formDataList.push(formData);
   
@@ -88,8 +89,8 @@ export class CreateEntityComponent implements AfterViewInit  {
         descreption: formData.descreption,
         status: formData.status,
         dateCreated: formattedDateTime,
-        phoneNumber: formData.phoneNumber,
-        responsible: formData.Responsible,
+      phoneNumber: phoneNum,
+        responsible: formData.responsible,
        
     };
 
@@ -127,13 +128,16 @@ export class CreateEntityComponent implements AfterViewInit  {
     });
   }
   
-  openDialog(i): void {
+  openDialog(i: number): void {
+    // Calculate position based on the event coordinates
+  
     const item = i;
     console.log("dataaa", item);
     this.dataservice.setSelectedItemID(item)
 
       const dialogRef = this.dialog.open(DialogEComponent, {
         width: '500px',
+        
         data: item,
    
       });

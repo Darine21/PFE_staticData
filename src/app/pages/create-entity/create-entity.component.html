@@ -39,8 +39,17 @@
           <div class="row">
             <div class="col-md-4 px-1" style="margin-left:40px;">
               <div class="form-group">
-                <label for="phoneNumber"> Phone Number:</label>
-                <input type="number" class="form-control" name="phoneNumber" ngModel placeholder="Enter phone number" style="width:520px;">
+                <label for="phoneNumber">Phone Number:</label>
+                <div class="input-group" style="width:520px;">
+                  <div class="input-group-prepend">
+                    <select class="form-control" id="countryCode">
+                      <option value="+1">+1 (USA)</option>
+                      <option value="+44">+44 (UK)</option>
+                      <!-- Ajoutez d'autres options pour différents pays avec leurs codes respectifs -->
+                    </select>
+                  </div>
+                  <input type="number" class="form-control" name="phoneNumber" ngModel placeholder="Enter phone number" >
+                </div>
               </div>
             </div>
             <div class="col-md-4 px-1" style="margin-left:150px;">
@@ -143,9 +152,11 @@
                       <button class="btn btn-primary" (click)="delete(i)">
                         <i class="fas fa-trash-alt"></i>
                       </button>
-                      <button class="btn btn-primary" (click)="openDialog(i+1)">
-                        <i class="fas fa-edit"></i>
-                      </button>
+                      
+                        <button class="btn btn-primary" (click)="openDialog(i+1)">
+                          <i class="fas fa-edit"></i>
+                        </button>
+               
                     </td>
 
 

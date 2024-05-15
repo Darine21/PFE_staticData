@@ -4,10 +4,10 @@
   border-radius: 10px;
   background-color: #f9f9f9;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  overflow-y: hidden;
+  overflow-y: auto;
   overflow-x: hidden;
-  position: absolute;
-  top: 50%;
+  position: initial;
+  top: 30%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
@@ -48,6 +48,19 @@
   margin-right: 20px;
   margin-bottom: 20px;
 }
+.editable-content {
+  display: inline-block;
+  border: 1px solid #ced4da;
+  padding: .375rem .75rem;
+  line-height: 2;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border-radius: .25rem;
+  min-width: 300px; /* Ajustez la largeur selon vos préférences */
+  cursor: pointer; /* Ajoute un curseur de type pointeur */
+}
+
 
 .submit-button, .cancel-button {
   width: 120px;
@@ -90,7 +103,7 @@
 }
 
 .input-buttons {
-  /* Utiliser flexbox pour aligner les éléments horizontalement */
+ 
   align-items: center; /* Aligner verticalement les éléments sur l'axe des colonnes */
   justify-content: center; /* Aligner horizontalement les éléments sur l'axe principal */
 }
