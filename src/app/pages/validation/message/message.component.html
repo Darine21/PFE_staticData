@@ -1,28 +1,34 @@
 <div class="chatbot-dialog-container" *ngIf="showDialog">
+ 
+<div class="chatbot-dialog">
+  <div class="dialog-title">
     <i class="fas fa-times close-icon" (click)="onClose()" style="position: absolute; top: 70px; right: 20px; color: #888; font-size: 20px; cursor: pointer;"></i>
+  </div>
+  <div class="chatbot-messages">
+    <div *ngFor="let message of chatMessages">
+      <div [ngClass]="{'default-message': message.sender !== 'Moi', 'user-message': message.sender === 'Moi'}" class="flex">
 
-  <div class="chatbot-dialog">
-    <div class="chatbot-messages">
-      <!-- Afficher tous les messages de chat -->
-      <div class="chatbot-message" *ngFor="let message of chatMessages">
-        <p [ngClass]="{'default-message': message.sender !== 'Moi', 'user-message': message.sender === 'Moi'}">
-          <!-- Appliquer une classe CSS différente en fonction de l'expéditeur -->
-          <i class="far fa-user-circle message-icon"></i>
-          <strong class="message">{{ message.sender }} :</strong>
-          <span class="message">{{ message.content }}</span>
-          <span *ngIf="message.sender !== 'Moi'">
-            <!-- Icône indiquant que c'est un message de l'interlocuteur -->
+        <div class="message-body">
+          <div class="avatar-user" *ngIf="message.sender !== 'Moi'" >
+            <i class="far fa-user-circle"></i>
+          </div>
+          <div [ngClass]="{' message-from-bot': message.sender !== 'Moi', 'message-from-user': message.sender === 'Moi'}">
+            <span class="message-owner" *ngIf="message.sender !== 'Moi'">{{ message.sender }} :</span>
+            <span [ngClass]="{' message-content chat-owner-bot': message.sender !== 'Moi', 'chat-owner-user': message.sender === 'Moi'}">{{ message.content }}</span>
+            <!-- <span *ngIf="message.sender !== 'Moi'">
 
-          </span>
-        </p>
+            </span> -->
+          </div>
+        </div>
       </div>
     </div>
-    <div class="chatbot-input">
-      <textarea matInput placeholder="Entrez votre message ici..." [(ngModel)]="messageContent"></textarea>
-      <button mat-icon-button (click)="sendMessage()">
-        <!-- Icône d'envoi -->
-        <i class="fas fa-paper-plane"></i>
-      </button>
-    </div>
   </div>
+  
+  <div class="chatbot-input">
+    <textarea class="chat-input" matInput placeholder="Entrez votre message ici..." [(ngModel)]="messageContent"></textarea>
+    <button mat-icon-button (click)="sendMessage()">
+      <i class="fas fa-paper-plane"></i>
+    </button>
+  </div>
+</div>
 </div>
