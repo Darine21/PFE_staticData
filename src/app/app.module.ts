@@ -47,6 +47,7 @@ import { MapsComponent } from './pages/maps/maps.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { CustomDatePipe } from './custom-date.pipe';
 //import { I18nService } from './pages/static/details/Translate.service';
 
 
@@ -85,7 +86,7 @@ import { MatButtonModule } from '@angular/material/button';
     AdminLayoutComponent,
     AuthLayoutComponent,
     StaticComponent,
-
+    CustomDatePipe,
     ValidationComponent,
     RejectDiaComponent,
     ValidDiaComponent,
@@ -101,7 +102,8 @@ import { MatButtonModule } from '@angular/material/button';
     DialogEComponent,
     UserProfileComponent,
     DialogSpecComponent,
-    MapsComponent
+    MapsComponent,
+    CustomDatePipe
    
     //ValidDiaComponent,
     //ShareDiaComponent,

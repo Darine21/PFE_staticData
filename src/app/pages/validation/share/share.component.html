@@ -2,22 +2,34 @@
   <div class="dialog-header">
     <h2 class="mat-dialog-title">
       <span class="title">Partager</span>
-      <button mat-button class="close-button" (click)="closeDialog()">X</button>
     </h2>
+    <button mat-button class="close-button" (click)="closeDialog()">X</button>
   </div>
-  <hr>
-  <h2 class="h2">Information1</h2>
-  <input type="text" placeholder="Ecrire le nom de l'entite...">
-  <button mat-button class="share-button" color="primary">Partager maintenant</button>
-  <hr>
-  <h2 class="h2">Envoyer directement</h2>
+
+  <div class="modal-body">
+<div class="user-body">
+  <div class="avatar-user">
+            <i class="far fa-user-circle"></i>
+  </div>
+   <div class="user_information">
+            <span class="user-name" > user information</span>  
+            <span class="user-name" > <p>{{ date | customDate }}</p>
+</span>         
+   </div>
+</div>
+  <input type="text" placeholder="Write the name of the entity...">
+  <div class="share-centent">
+  <button mat-button class="share-button" color="primary">Share now</button>
+  </div>
+  </div>
+  <h2 class="title-footer h2">Send directly</h2>
   <div class="recent-entities">
     <button mat-button class="entity-button">
-      <div class="profile-circle"></div>
+      <div class="profile-circle"><i class="far fa-user-circle"></i></div>
       <span class="entity-text">Entity1</span>
     </button>
     <button mat-button class="entity-button">
-      <div class="profile-circle"></div>
+      <div class="profile-circle"><i class="far fa-user-circle"></i></div>
       <span class="entity-text">Entity2</span>
     </button>
   </div>

@@ -9,6 +9,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class ShareDialogComponent {
   searchTerm = '';
+  date=new Date();
   recentlySharedEntities = [{ name: 'Entity1' }, { name: 'Entity2' }];
   constructor(public dialogRef: MatDialogRef<ShareDialogComponent>) { }
 

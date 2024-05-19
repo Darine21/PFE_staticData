@@ -19,38 +19,35 @@
   align-items: center;
   width: 100%;
   box-sizing: border-box;
+  border-bottom: 1px #ddd solid;
 }
 
 /* Mat dialog title */
 .mat-dialog-title {
   display: flex;
-  align-items: center;
   flex-grow: 1;
+  margin: 10px;
+  justify-content: center;
 }
 
 /* Close button */
 .close-button {
   font-size: 18px;
   font-weight: bold;
-  background-color: #dfdcdc;
-  border: none;
-  border-radius: 50%;
+  border-radius: 100%;
   cursor: pointer;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: background-color 0.2s ease;
+  justify-content: end;
+  align-items: end;
 }
 
 .close-button:hover {
-  color: #337ab7;
+  color: black;
 }
 
 /* Title */
 .title {
   text-align: center;
+  justify-content: center;
 }
 
 /* Horizontal rule */
@@ -61,29 +58,39 @@ hr {
   box-sizing: border-box;
 }
 
+.modal-body{
+  margin: 5px;
+  border-bottom: 1px #ddd solid;
+}
+
+.share-centent{
+  display: flex;
+  justify-content: end;
+}
+
 /* Share button */
 .share-button {
   padding: 8px 16px;
   border: none;
-  border-radius: 4px;
+  border-radius: 10px;
   cursor: pointer;
   transition: background-color 0.2s ease;
   margin-top: 15px;
-}
-
-.share-button:hover {
-  background-color: #23527c;
+  display: flex;
+  justify-content: end;
+  align-items: end;
+  background-color: #00B1A5;
+  color:white;
 }
 
 .share-button:active {
-  background-color: #1a3d5d;
+  background-color: #028b82;
 }
 
 /* Recent entities */
 .recent-entities {
   display: flex;
-  gap: 16px;
-  margin-top: 5px;
+  margin: 10px;
 }
 
 /* Entity button */
@@ -109,10 +116,12 @@ hr {
 
 /* Profile circle */
 .profile-circle {
+  margin-inline: 10px;
+  font-size: 38px;
+  color:#00303C;
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background-color: #337ab7;
   margin-bottom: 2px;
 }
 
@@ -132,13 +141,41 @@ input[type="text"] {
   font-size: 16px;
   font-family: Arial, sans-serif;
   margin-top: 8px;
+  background-color: transparent;
 }
 
-/* H2 heading */
-.h2 {
-  margin: 16px 0;
+input[type="text"]:focus {
+  outline: none;
+box-shadow: none;
 }
+
 
 input[type="text"]::placeholder {
   text-align: start;
+}
+
+.avatar-user{
+  margin-inline: 10px;
+  font-size: 38px;
+  color:#00303C;
+  align-items: start;
+}
+
+.user_information{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly; 
+  align-items: start; 
+  margin-bottom: 0.15rem; 
+  flex-direction: column;
+  }
+  .user-name{
+    color:#00303C;
+    font-size: small;
+  }
+.user-body{
+    display: flex;
+  }
+.title-footer{
+  margin:10px;
 }
