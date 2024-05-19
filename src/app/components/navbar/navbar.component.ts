@@ -66,5 +66,7 @@ export class NavbarComponent implements OnInit {
     }
     return 'Dashboard';
   }
-
+  goToProfile() {
+    this.router.navigate(['/profile']);
+  }
 }

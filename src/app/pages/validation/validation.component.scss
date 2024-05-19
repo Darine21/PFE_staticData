@@ -6,7 +6,9 @@
   border-bottom: 1px solid black; /* Style de ligne */
   margin-top: 8px; /* Marge en haut de la ligne */
 }
-
+.table-responsive{
+    overflow-x:hidden;
+}
 
 .line.active {
   opacity: 1; /* Lorsque l'élément "Values" est actif, la ligne devient visible */

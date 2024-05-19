@@ -21,7 +21,7 @@ export class StaticService {
     Status: 'Inactive/Draft',
     DateCreated: new  Date(),
     CreatedBy: '',
-    InputValues:[],
+    null:[],
   };
   list: StaticData[];
 
@@ -47,6 +47,7 @@ export class StaticService {
   RejectedStaticData(model: string) {
     return this.http.put(`${environment.appUrl}/api/pages/static/StaticData`, model)
   }
+
 
 }
 

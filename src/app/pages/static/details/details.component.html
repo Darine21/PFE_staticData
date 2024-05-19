@@ -22,20 +22,20 @@
     </button>
 
     <!-- Collapsible wrapper -->
-    <div class="collapse navbar-collapse ml-auto" style="margin-top: 24px;">
+    <div class="collapse navbar-collapse ml-auto" style="margin-top: 24px; overflow-y: hidden; overflow-x: hidden;">
       <!-- Left links -->
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0 ">
-        <li class="nav-item mx-5" (click)="selectDetails()" [ngClass]="{'active': activeLineIndex === 0}" >
+        <li class="nav-item mx-5" (click)="selectDetails()" [ngClass]="{'active': activeLineIndex === 0}">
           <a class="nav-link">Details</a>
-       
+
         </li>
         <li class="nav-item mx-5" (click)="selectValues()" [ngClass]="{'active': activeLineIndex === 1}">
-          <a class="nav-link" >Values</a>
-         
+          <a class="nav-link">Values</a>
+
         </li>
-        <li class="nav-item mx-5" (click)="moveLine(2)" >
+        <li class="nav-item mx-5" (click)="moveLine(2)">
           <a class="nav-link" href="#/history">History</a>
-          
+
         </li>
       </ul>
     </div>
@@ -45,7 +45,7 @@
     <!-- Collapsible wrapper -->
   </div>
 
- 
+
 
   <!-- Container wrapper -->
 </nav>
@@ -57,18 +57,24 @@
 
         <div class="card card-user">
           <div class="card-header">
-            <h4 class="card-title" style="color: #fb6340 ; font-size:17px;">Edit Data</h4>
+            <h4 class="card-title" style="color: #fb6340 ; font-size:17px;">Edit Static Data "{{formDataName}}" </h4>
           </div>
-          <div class="card-body" >
+          <div class="card-body">
             <div *ngIf="showForm">
               <form (ngSubmit)="submit()">
                 <div id="detailsContent">
                   <div class="row">
                     <div class="col-md-6 pr-1">
-                      <div class="form-group">
-                        <label>Name</label>
-                        <input type="text" class="form-control" placeholder="Company" value="{{formDataName}}">
-                      </div>
+
+                      <label class="col-form-label" for="dataName">Name :</label>
+                      <br>
+                      <div *ngIf="!isEditingName" class="editable-content" (click)="startEditingName()">{{formDataName}}</div>
+                      <!-- Champ de texte pour modifier l'adresse -->
+                      <input *ngIf="isEditingName" name="Name" type="text" class="form-control" [(ngModel)]="editedName" style="width:650px" required>
+                      <!-- Bouton pour activer le mode édition -->
+                      <!-- Bouton pour enregistrer les modifications -->
+                      <button *ngIf="isEditingName" class="btn btn-primary" (click)="saveEditedName()">Save</button>
+
                     </div>
 
 
@@ -81,12 +87,12 @@
 
                           <tr>
 
-                            
-                            <div style="margin-left: 6px;"></div>
-                           
 
-                              <input type="text" id="valueInput{{i}}" class="form-control" [value]="inputValues[i]" (input)="$event.target.value" placeholder="{{formvalues}}" style="width:580px;">
-                            
+                            <div style="margin-left: 6px;"></div>
+
+
+                            <input type="text" id="valueInput{{i}}" class="editable-content" [value]="inputValues[i]" (input)="$event.target.value" placeholder="{{formvalues}}" style="width: 580px; margin-top: 15px">
+
 
 
 
@@ -94,7 +100,7 @@
 
 
                               <!-- Icone de trois points verticaux pour afficher les options -->
-                             
+
 
 
                             </td>
@@ -104,38 +110,57 @@
                       </div>
                     </div>
 
-                    
+
                   </div>
                   <div style="margin-bottom: 20px;"></div>
                   <div class="row">
                     <div class="col-md-6 pr-1">
                       <div class="form-group">
                         <label>Status</label>
-                        <input type="text" class="form-control" placeholder="Lorem by " value="Inactive">
+                        <input type="text" class="editable-content" placeholder="Lorem by " value="Inactive">
                       </div>
                     </div>
-                 
+
                     <div class="col-md-6 px-1">
                       <div class="form-group">
                         <label>Created By</label>
-                        <input type="text" class="form-control" placeholder="Lorem by" value="name ">
+                        <br>
+                        <div *ngIf="!isEditingCreateBy" class="editable-content" (click)="startEditingCreateBy()">{{formDataCreatedBy}}</div>
+                        <!-- Champ de texte pour modifier l'adresse -->
+                        <input *ngIf="isEditingCreateBy" name="CreateBy" type="text" class="form-control" [(ngModel)]="editedCreateBy" style="width:650px" required>
+                        <!-- Bouton pour activer le mode édition -->
+                        <!-- Bouton pour enregistrer les modifications -->
+                        <button *ngIf="isEditingCreateBy" class="btn btn-primary" (click)="saveEditedCreateBy()">Save</button>
                       </div>
                     </div>
                   </div>
                   <div style="margin-bottom: 20px;"></div>
                   <div class="row">
                     <div class="col-md-6 pr-1">
-                      <div class="form-group">
-                        <label>Types</label>
-                        <input type="text" class="form-control" placeholder="Lorem by " value="{{formDataTypes}}">
-                      </div>
+                      <label class="col-form-label" for="dataName">Types :</label>
+
+                      <br>
+                      <div *ngIf="!isEditingTypes" class="editable-content" (click)="startEditingTypes()">{{formDataTypes}}</div>
+                      <!-- Champ de texte pour modifier l'adresse -->
+                      <input *ngIf="isEditingTypes" name="Types" type="text" class="form-control" [(ngModel)]="editedTypes" style="width:650px" required>
+                      <!-- Bouton pour activer le mode édition -->
+                      <!-- Bouton pour enregistrer les modifications -->
+                      <button *ngIf="isEditingTypes" class="btn btn-primary" (click)="saveEditedTypes()">Save</button>
+
                     </div>
 
+
                     <div class="col-md-6 px-1">
-                      <div class="form-group">
-                        <label>Category</label>
-                        <input type="text" class="form-control" placeholder="" value="{{formDataCategory}}">
-                      </div>
+                      <label class="col-form-label" for="dataName">Category :</label>
+                      <br>
+                      <div *ngIf="!isEditingCategory" class="editable-content" (click)="startEditingCategory()">{{formDataCategory}}</div>
+                      <!-- Champ de texte pour modifier l'adresse -->
+                      <input *ngIf="isEditingCategory" name="Category" type="text" class="form-control" [(ngModel)]="editedCategory" style="width:650px" required>
+                      <!-- Bouton pour activer le mode édition -->
+                      <!-- Bouton pour enregistrer les modifications -->
+                      <button *ngIf="isEditingCategory" class="btn btn-primary" (click)="saveEditedCategory()">Save</button>
+
+
                     </div>
                   </div>
                   <div style="margin-bottom: 20px;"></div>
@@ -177,7 +202,7 @@
                     <div class="col-md-12">
                       <div class="d-flex justify-content-end align-items-end">
                         <button type="submit" class="btn btn-primary  btn-lg mx-2 w-40" (click)="goToStatic()">Save</button>
-                        <button  class="submit-button btn-lg mx-2 w-40">Submit</button>
+                        <button class="submit-button btn-lg mx-2 w-40">Submit</button>
 
                       </div>
                     </div>
@@ -192,69 +217,103 @@
             <table class="table">
               <thead>
                 <tr>
-                  <th scope="col" class=" bg-white text-primary mx-6" style="font-size:14px;">#</th>
-
-                  <th scope="col" class=" bg-white text-primary mx-6" style="font-size:14px;"> Value</th>
-                  <th scope="col" class=" bg-white text-primary mx-6" style="font-size:14px;">Options</th>
+                  <th scope="col" class="bg-white text-primary mx-6" style="font-size:14px;">#</th>
+                  <th scope="col" class="bg-white text-primary mx-6" style="font-size:14px;">Value</th>
+                  <ng-container *ngFor="let lang of selectedLanguages">
+                    <th scope="col" class="bg-white text-primary mx-6" style="font-size:14px;">{{ lang }}</th>
+                  </ng-container>
+                  <th scope="col" class="bg-white text-primary mx-6" style="font-size:14px;">Options</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>
-                    1
-                  </td>
-                  <td><a type="text" id="valueInput{{i}}" class="form-control" [(ngModel)]="inputValues[i]" placeholder="{{formvalues}}" style="width:480px;height:40px; margin-top:10px;"></a></td>
-
-                </tr>
-                <ng-container *ngFor="let value of inputValues; let i = index">
+                <ng-container *ngFor="let value of formvalues; let i = index; trackBy: trackByIndex">
                   <tr>
-                    <td>{{ i + 2 }}</td>
-
-
-
-                    <td><input type="text" id="valueInput{{i}}" class="form-control" [(ngModel)]="inputValues[i]" placeholder="enter your value" style="width:480px;"></td>
+                    <td>{{ i + 1 }}</td>
                     <td>
-                      <!-- Icone de trois points verticaux pour afficher les options -->
-                      <!-- app-options-menu.component.html -->
-                      <div *ngIf="showShareOptions" class="col-md-6 pr-1">
-                        <div class="form-group">
-
-                          <div class="colonne-multiselect">
-                            <angular2-multiselect [data]="dropdownList" [(ngModel)]="publishedVersions.selectedItems" (onSelect)="onItemSelect($event)" (onDeSelect)="onItemDeSelect($event)"></angular2-multiselect>
-                          </div>
-                        </div>
-                      </div>
-                      <div ngbDropdown #dropdown="ngbDropdown" class="options-menu col-md-6 pr-1">
-                        <button class="btn btn-options" id="dropdownButton{{ i }}" ngbDropdownToggle>
-                          <i class="fas fa-ellipsis-v"></i>
-                        </button>
-                        <div ngbDropdownMenu aria-labelledby="dropdownButton{{ i }}" class="dropdown-menu dropdown-menu-right">
-                          <button class="dropdown-item" (click)="addInput(i)">
-                            <i class="fas fa-plus"></i> Ajouter
-                          </button>
-                          <button class="dropdown-item" (click)="removeInput(i)">
-                            <i class="fas fa-trash-alt"></i> Supprimer
-                          </button>
-                          <button class="dropdown-item" (click)="shareOptions()">
-                            <i class="fas fa-share"></i> Partager
-                          </button>
-                        </div>
-                      </div>
-                      <!-- Champ "Share" inclus dans la même colonne -->
-
+                      <input type="text" id="valueInput{{ i }}" class="form-control" [(ngModel)]="formvalues[i]" placeholder="Enter value">
                     </td>
-                  </tr>
-                </ng-container>
-              </tbody>
+                    <ng-container *ngFor="let lang of selectedLanguages">
+                      <td>{{ translations[i] && translations[i][lang] ? translations[i][lang] : '' }}</td>
+                    </ng-container>
+                    <td>
+                      <div ngbDropdown #dropdown="ngbDropdown" class="options-menu col-md-6 pr-1">
+                        <button class="btn btn-options" id="dropdownButton{{ i + 1 }}" ngbDropdownToggle>
+                          <i class="fas fa-globe"></i>
+                        </button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownButton{{ i + 1 }}" class="dropdown-menu dropdown-menu-right">
+                          <button class="dropdown-item" (click)="translateText(formvalues[i], 'fr', i)">French</button>
+                          <button class="dropdown-item" (click)="translateText(formvalues[i], 'es', i)">Spanish</button>
+                          <button class="dropdown-item" (click)="translateText(formvalues[i], 'ar', i)">Arabic</button>
+                          <button class="dropdown-item" (click)="translateText(formvalues[i], 'zh', i)">Chinese</button>
+                          <button class="dropdown-item" (click)="translateText(formvalues[i], 'nl', i)">Dutch</button>
+                          <button class="dropdown-item" (click)="translateText(formvalues[i], 'fi', i)">Finnish</button>
+                          <button class="dropdown-item" (click)="translateText(formvalues[i], 'de', i)">German</button>
+                          <button class="dropdown-item" (click)="translateText(formvalues[i], 'hi', i)">Hindi</button>
+                          <button class="dropdown-item" (click)="translateText(formvalues[i], 'hu', i)">Hungarian</button>
+                          <button class="dropdown-item" (click)="translateText(formvalues[i], 'id', i)">Indonesian</button>
+                          <button class="dropdown-item" (click)="translateText(formvalues[i], 'ga', i)">Irish</button>
+                          <button class="dropdown-item" (click)="translateText(formvalues[i], 'it', i)">Italian</button>
+                          <button class="dropdown-item" (click)="translateText(formvalues[i], 'ja', i)">Japanese</button>
+                          <button class="dropdown-item" (click)="translateText(formvalues[i], 'ko', i)">Korean</button>
+                          <button class="dropdown-item" (click)="translateText(formvalues[i], 'pl', i)">Polish</button>
+                          <button class="dropdown-item" (click)="translateText(formvalues[i], 'pt', i)">Portuguese</button>
+                          <button class="dropdown-item" (click)="translateText(formvalues[i], 'ru', i)">Russian</button>
+                          <button class="dropdown-item" (click)="translateText(formvalues[i], 'sv', i)">Swedish</button>
+                          <button class="dropdown-item" (click)="translateText(formvalues[i], 'tr', i)">Turkish</button>
+                          <button class="dropdown-item" (click)="translateText(formvalues[i], 'uk', i)">Ukrainian</button>
+                          <button class="dropdown-item" (click)="translateText(formvalues[i], 'vi', i)">Vietnamese</button>
+                          <button class="dropdown-item" (click)="translateText(formvalues[i], 'da', i)">Danish</button>
+                          <button class="dropdown-item" (click)="translateText(formvalues[i], 'el', i)">Greek</button>
+                          <button class="dropdown-item" (click)="translateText(formvalues[i], 'ms', i)">Malay</button>
+                          <button class="dropdown-item" (click)="translateText(formvalues[i], 'sq', i)">Albanian</button>
+                          <!-- Ajoutez d'autres langues si nécessaire -->
+                        </div>
+                      </div>
+          
+
+
+
+
+            <!-- Icone de trois points verticaux pour afficher les options -->
+            <!-- app-options-menu.component.html -->
+            <div *ngIf="showShareOptions" class="col-md-6 pr-1">
+              <div class="form-group">
+
+                <div class="colonne-multiselect">
+                  <angular2-multiselect [data]="dropdownList" [(ngModel)]="publishedVersions.selectedItems" (onSelect)="onItemSelect($event)" (onDeSelect)="onItemDeSelect($event)"></angular2-multiselect>
+                </div>
+              </div>
+            </div>
+            <div ngbDropdown #dropdown="ngbDropdown" class="options-menu col-md-6 pr-1">
+              <button class="btn btn-options" id="dropdownButton{{ i }}" ngbDropdownToggle>
+                <i class="fas fa-ellipsis-v"></i>
+              </button>
+              <div ngbDropdownMenu aria-labelledby="dropdownButton{{ i }}" class="dropdown-menu dropdown-menu-right">
+                <button class="dropdown-item" (click)="addInput(i)">
+                  <i class="fas fa-plus"></i> Ajouter
+                </button>
+                <button class="dropdown-item" (click)="removeInput(i)">
+                  <i class="fas fa-trash-alt"></i> Supprimer
+                </button>
+                <button class="dropdown-item" (click)="shareOptions()">
+                  <i class="fas fa-share"></i> Partager
+                </button>
+              </div>
+            </div>
+            <!-- Champ "Share" inclus dans la même colonne -->
+            </td>
+            </tr>
+            </ng-container>
+            </tbody>
             </table>
           </div>
 
 
-         
 
-        </div>
+
         </div>
       </div>
     </div>
   </div>
+</div>
 

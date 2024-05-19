@@ -36,7 +36,7 @@
             <div class=" dropdown-header noti-title">
               <h6 class="text-overflow m-0">Welcome!</h6>
             </div>
-            <a routerLinkActive="active" [routerLink]="['/user-profile']" class="dropdown-item">
+            <a (click)="goToProfile()" class="dropdown-item">
               <i class="ni ni-single-02"></i>
               <span>My profile</span>
             </a>
@@ -71,7 +71,7 @@
           </div>
         </li>
       </ul>
-      <ul class="navbar-nav align-items-center ml-auto ml-md-0" >
+      <ul class="navbar-nav align-items-center ml-auto ml-md-0">
         <li class="nav-item btn-rotate" ngbDropdown placement="bottom-left">
           <a class="nav-link" ngbDropdownToggle id="navbarDropdownMenuLink" *ngIf="getTitle() =='Static Data'">
             <i class="fas fa-envelope" style="color:white; font-size:18px;"></i>
@@ -83,7 +83,7 @@
               <div class="notification-content" *ngIf="status[i] === 'Rejected'">
                 <span class="notification-type rejected"><i class="fas fa-times-circle"></i></span>
                 <p>{{ nom }} has been rejected.</p>
-         
+
                 <p>{{ status[i] }}</p>
               </div>
               <div class="notification-content" *ngIf="!(status[i] === 'Rejected')">
@@ -97,8 +97,14 @@
             </div>
           </div>
         </li>
+        <li class="nav-item btn-rotate" ngbDropdown placement="bottom-left">
+          <a class="nav-link" ngbDropdownToggle id="navbarDropdownMenuLink" *ngIf="getTitle() =='Specific Data'">
+            <i class="fas fa-envelope" style="color:white; font-size:18px;"></i>
+            <span class="badge badge-danger"></span>
+          </a>
+          
+        </li>
 
-        
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['/settings']">
             <i class="fas fa-cog"></i>
@@ -127,7 +133,7 @@
           <div ngbDropdownMenu aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu dropdown-menu-right">
             <a ngbDropdownItem href="javascript:void(0)"><i class="fas fa-user"></i>My profile</a>
             <a ngbDropdownItem href="javascript:void(0)"><i class="fas fa-cog"></i>Settings</a>
-            <a ngbDropdownItem href="javascript:void(0)"[routerLink]="['/login']" ><i class="fas fa-sign-out-alt"></i>Logout</a>
+            <a ngbDropdownItem href="javascript:void(0)" [routerLink]="['/login']"><i class="fas fa-sign-out-alt"></i>Logout</a>
           </div>
         </li>
       </ul>

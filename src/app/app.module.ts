@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import { AppComponent } from './app.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
-
+import { AgmCoreModule } from '@agm/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
 import { AppRoutingModule } from './app.routing';
@@ -21,7 +21,7 @@ import { ValidationComponent } from './pages/validation/validation.component';
 import { RejectDiaComponent } from './pages/validation/reject-dia/reject-dia.component';
 import { ValidDiaComponent } from './pages/validation/valid-dia/valid-dia.component';
 import { ToastrModule } from 'ngx-toastr';
-import { ShareComponent } from './pages/validation/share/share.component';
+import { ShareDialogComponent } from './pages/validation/share/share.component';
 import { MultiSelectComponent, MultiSelectModule } from '@syncfusion/ej2-angular-dropdowns';
 import { ComplaintComponent } from './pages/validation/complaint/complaint.component';
 import { MessageDialogComponent } from './pages/validation/message/message.component'
@@ -41,6 +41,13 @@ import { CreateEntityComponent } from './pages/create-entity/create-entity.compo
 import { JwtInterceptor } from './Auth.gard';
 import { AdminLocalComponent } from './pages/admin-local/admin-local.component';
 import { DialogEComponent } from './pages/create-entity/dialog-e/dialog-e.component';
+import { UserProfileComponent } from './pages/user-profile/user-profile.component';
+import { DialogSpecComponent } from './pages/admin-local/dialog-spec/dialog-spec.component';
+import { MapsComponent } from './pages/maps/maps.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+//import { I18nService } from './pages/static/details/Translate.service';
 
 
 @NgModule({
@@ -61,10 +68,17 @@ import { DialogEComponent } from './pages/create-entity/dialog-e/dialog-e.compon
     AngularMultiSelectModule,
     MultiSelectModule,
     MatIconModule,
-    MatExpansionModule
+    MatExpansionModule,
     //MdbTabsModule,
     //MdbTabModule,
-   
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+   AgmCoreModule.forRoot({
+     
+     apiKey: 'AIzaSyAvcDy5ZYc2ujCS6TTtI3RYX5QmuoV8Ffw'
+   })
+
   ],
   declarations: [
     AppComponent,
@@ -75,7 +89,7 @@ import { DialogEComponent } from './pages/create-entity/dialog-e/dialog-e.compon
     ValidationComponent,
     RejectDiaComponent,
     ValidDiaComponent,
-    ShareComponent,
+    ShareDialogComponent,
     ComplaintComponent,
     MessageDialogComponent,
     CardRejectedComponent,
@@ -84,7 +98,10 @@ import { DialogEComponent } from './pages/create-entity/dialog-e/dialog-e.compon
     ReasonDialogComponent,
     CreateEntityComponent,
     AdminLocalComponent,
-    DialogEComponent
+    DialogEComponent,
+    UserProfileComponent,
+    DialogSpecComponent,
+    MapsComponent
    
     //ValidDiaComponent,
     //ShareDiaComponent,
@@ -93,6 +110,7 @@ import { DialogEComponent } from './pages/create-entity/dialog-e/dialog-e.compon
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
+    
   ],
   bootstrap: [AppComponent],
 })

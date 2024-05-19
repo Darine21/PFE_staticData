@@ -200,12 +200,7 @@ export class ValidationComponent implements OnInit {
     });
 
 
-      const storedData = localStorage.getItem('submittedDataList');
-      console.log(storedData);
-    if (storedData) {
-      this.submittedDataList = JSON.parse(storedData);
-      console.log("en", this.submittedDataList);
-    }
+   
       this.submittedDataList = this.dataService.submittedDataList;
       console.log("Liste initiale:", this.submittedDataList);
     
@@ -216,10 +211,7 @@ export class ValidationComponent implements OnInit {
   
 
    // localStorage.setItem('submittedDataList', JSON.stringify(this.submittedDataList));
-    this.submittedDataList.forEach(item => {
-      item.showRejectDialog = this.showRejectDialog;
-      item.showValidDialog = this.showValidDialog;// Ajoutez la variable `rejected` à chaque objet
-    });
+
     for (let i = 0; i <this.submittedDataList.length; i++) {
       this.formDataName = this.submittedDataList[i].Name;
       this.formDataNameList.push(this.formDataName);

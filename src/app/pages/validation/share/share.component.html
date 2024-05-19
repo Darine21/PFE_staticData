@@ -1,125 +1,24 @@
-
-<div class="header bg-gradient-danger custom-header" style="height: 53px;">
-  <div class="container-fluid">
-    <div class="header-body">
-      <!-- Content here -->
-    </div>
+<div class="dialog-container">
+  <div class="dialog-header">
+    <h2 class="mat-dialog-title">
+      <span class="title">Partager</span>
+      <button mat-button class="close-button" (click)="closeDialog()">X</button>
+    </h2>
+  </div>
+  <hr>
+  <h2 class="h2">Information1</h2>
+  <input type="text" placeholder="Ecrire le nom de l'entite...">
+  <button mat-button class="share-button" color="primary">Partager maintenant</button>
+  <hr>
+  <h2 class="h2">Envoyer directement</h2>
+  <div class="recent-entities">
+    <button mat-button class="entity-button">
+      <div class="profile-circle"></div>
+      <span class="entity-text">Entity1</span>
+    </button>
+    <button mat-button class="entity-button">
+      <div class="profile-circle"></div>
+      <span class="entity-text">Entity2</span>
+    </button>
   </div>
 </div>
-<div style="margin-top:20px; margin-left:20px;">
-  <i class="fas fa-database navbar-icon"></i>
-  <span class="nav-text" style="font-size:15px; margin-left:10px;">StaticData</span>
-  <!-- Séparateur -->
-  <span class="separator"></span>
-
-  <i class="fas fa-chevron-right navbar-icon"></i>
-  <i class="fas fa-check-circle navbar-icon" style="margin-left: 10px;"></i>
-  <span class="nav-text" style="font-size:15px; margin-left:10px;">Validation</span>
-  <span class="separator" style="margin-right:-15px"></span>
-  <i class="fas fa-chevron-right navbar-icon"></i>
-  <i class="fas fa-share-alt navbar-icon" style="margin-left: 10px;"></i>
-
-  <span class="nav-text" style="font-size:15px; margin-left:10px;">Share</span>
-</div>
-
-
-
-<!-- Page content -->
-<div class="container-fluid mt-4 mb-4">
-
-  <!-- Table -->
-  <div class="row">
-    <div class="col">
-      <div class="card shadow">
-        <div class="card-header border-0 d-flex justify-content-between align-items-center mt-n2" style="height: 75px;">
-          <!-- Appliquez des classes de taille Bootstrap à l'élément h3 -->
-          <h3 class="mb-0">List of Sharing {{ selectedItemName }} </h3>
-          <div class="d-flex align-items-center ml-auto">
-            <div class="col-md">
-              <div class="input-group input-group-alternative mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="fa fa-filter" aria-hidden="true"></i></span>
-                </div>
-                <input type="text" class="form-control form-control-sm custom-filter-input" placeholder="Filter..." style="margin-top: 4px;" (input)="applyFilter($event.target.value)">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="table-responsive">
-        <!-- Tableau -->
-        <table class="table align-items-center table-flush custom-table bg-white">
-          <!-- Entête de tableau -->
-          <!-- Entête de tableau -->
-          <!-- Entête de tableau -->
-          <thead>
-            <tr>
-              <th scope="col" class="px-4 py-3 bg-white text-primary mx-6">ID</th>
-              <th scope="col" class="px-4 py-3 bg-white text-primary mx-6">Version</th>
-              <th scope="col" class="px-4 py-3 bg-white text-primary mx-6">CreatedDate</th>
-              <th scope="col" class="px-4 py-3 bg-white text-primary mx-6" *ngIf="showShareField">Share</th>
-              <th scope="col" class="px-4 py-3 bg-white text-primary mx-6" *ngIf="showLanguageSelect">Language</th>
-              <th scope="col" class="px-4 py-3 bg-white text-primary mx-6 ml-6" *ngIf="showShareField">Actions</th>
-              <th scope="col" class="px-4 py-3 bg-white text-primary mx-6 ml-6" *ngIf="showStatusField">Status</th>
-              <th scope="col" class="px-4 py-3 bg-white text-primary mx-6" *ngIf="showEntitieField">Entities/Language</th>
-            
-            </tr>
-          </thead>
-          <!-- Corps de tableau -->
-          <tbody>
-            <tr *ngFor="let version of publishedVersions ; let i=index">
-              <td class="px-4 py-3 mx-6">{{ i+1 }}</td>
-              <td class="px-4 py-3 mx-6">New {{selectedItemName}} version V {{ version.versionNumber }}</td>
-              <td class="px-4 py-3 mx-6">{{ version.generatedPDFDate }}</td>
-              <td class="colonne-multiselect" *ngIf="showShareField">
-                <angular2-multiselect [data]="dropdownList" [(ngModel)]="version.selectedItems"
-                                      (onSelect)="onItemSelect($event, version)"
-                                      (onDeSelect)="onItemDeSelect($event, version)"></angular2-multiselect>
-              </td>
-              <td class="colonne-multiselect" *ngIf="showLanguageSelect">
-                <div *ngFor="let entity of version.selectedItems">
-                  <angular2-multiselect [data]="dropdownList2" [(ngModel)]="entity.selectedLanguages"
-                                        (onSelect)="onLanguageSelect($event)"
-                                        (onDeSelect)="onLanguageDeselect($event)"></angular2-multiselect>
-                </div>
-
-              </td>
-              <!-- Ajoutez une colonne pour afficher le nom de l'entité -->
-
-              <td *ngIf="showStatusField" class="px-4 py-3 mx-6">
-                <ng-container *ngIf="version.selectedItems && version.selectedItems.length > 0">
-                  <a>shareable</a>
-                </ng-container>
-                <ng-container *ngIf="!(version.selectedItems && version.selectedItems.length > 0)">
-                  <span>No Shareable</span>
-                </ng-container>
-              </td>
-              <td class="px-4 py-3 mx-6" *ngIf="showShareField">
-                <button class="btn btn-success btn-sm" (click)="valider(version)">Submit</button>
-              </td>
-              <td class="px-4 py-3 mx-6" *ngIf="showEntitieField">
-        
-                <div *ngFor="let entity of version.selectedItems">
-                  {{ entity.itemName }} :
-                  <span *ngFor="let language of entity.selectedLanguages">
-                    {{ language.itemName }}
-                  </span>
-                </div>
-              </td>
-
-           
-
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

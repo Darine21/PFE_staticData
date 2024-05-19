@@ -86,7 +86,7 @@ export class DialogsComponent {
       Status: 'Inactive/Draft', // Assurez-vous de donner le statut approprié
       DateCreated: new Date(), // Ajoutez la date de création actuelle
       CreatedBy: 'username', 
-      InputValues: formData.null 
+      null: formData.null 
     };
 
     this.staticService.Addition(staticData).subscribe({

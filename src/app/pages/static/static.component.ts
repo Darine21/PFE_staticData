@@ -135,7 +135,7 @@ export class StaticComponent {
         this.showDeleteButton = true
         console.log("yalaa2", this.formData);
         this.formDataList.push(formData);
-        localStorage.setItem('staticData', JSON.stringify(this.formDataList));
+       
         console.log("darine", this.formDataList);
         this.index += 1;
         console.log("index", this.index);
@@ -153,7 +153,7 @@ export class StaticComponent {
         this.showDeleteButton = true;
         //this.formvalues = formData.null;
         this.listValues.push(formData.null);
-       
+        console.log("null", this.listValues);
         this.show = true;
         this.items.push(formData);
         console.log("name&", this.formDataList);
@@ -162,8 +162,8 @@ export class StaticComponent {
           item.DateCreated = new Date();
           item.Status = "Inactive/Draft";
           item.CreatedBy = this.formDataCreatedBy;
-          item.InputValues = this.listValues;
-          console.log("wwwwwoooo", item.InputValues);
+          //item.InputValues = this.listValues;
+          //console.log("wwwwwoooo", item.InputValues);
         // Ajoutez la variable `rejected` à chaque objet
         });
         console.log("name22", this.formDataList);
@@ -175,7 +175,7 @@ export class StaticComponent {
           console.log("category", category);
           console.log("date", date)
         }
-        
+        localStorage.setItem('staticData', JSON.stringify(this.formDataList));
         this.dataService.formDataList$.subscribe(formData => {
           this.formDataList = formData;
         });
@@ -184,12 +184,47 @@ export class StaticComponent {
       } else {
         console.log('Aucune donnée dans formData ou formData est null.');
       }
+      console.log("roro", this.formDataList);
       this.dataService.updateFormDataList(this.formDataList);
     });
     
     
   
     
+  }
+  Update(i: number) {
+
+    const modifiedName = this.dataService.getModifiedName();
+    console.log("MN", modifiedName);
+    if (modifiedName == undefined) {
+      this.formDataList[i].Name = this.formData.Name;
+    } else {
+      this.formDataList[i].Name = modifiedName;
+    }
+    const modifiedCategory = this.dataService.getModifiedCategory();
+    console.log("MC", modifiedCategory);
+    if (modifiedCategory == undefined) {
+      this.formDataList[i].Category = this.formData.Category;
+
+    } else {
+      this.formDataList[i].Category = modifiedCategory;
+    }
+    
+    const modifiedTypes = this.dataService.getModifiedTypes();
+    if (modifiedTypes == undefined) {
+      console.log("MT", modifiedTypes);
+      this.formDataList[i].Types = this.formData.Types;
+    } else {
+      this.formDataList[i].Types = modifiedTypes;
+    }
+    
+    const modifiedCreated = this.dataService.getModifiedCreatedBy();
+    console.log("MT", modifiedCreated);
+    if (modifiedCreated == undefined) {
+      this.formDataList[i].CreatedBy = this.formData.CreatedBy;
+    } else {
+      this.formDataList[i].CreatedBy = modifiedCreated;    }
+   
   }
   
   incrementIndex() {

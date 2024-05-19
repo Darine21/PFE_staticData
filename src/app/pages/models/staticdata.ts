@@ -6,5 +6,5 @@ export interface StaticData {
   Status: "Inactive/Draft"; // Utiliser une chaîne au lieu d'un type spécifique
   DateCreated: Date;
   CreatedBy: string;
-  InputValues: string[];
+  null: string[];
 }

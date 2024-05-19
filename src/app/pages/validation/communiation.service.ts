@@ -28,4 +28,13 @@ export class SelectedItemService {
   getPublishedVersions(): any[] {
     return this.publishedVersions;
   }
+  private sharedData: any;
+
+  setSharedData(data: any) {
+    this.sharedData = data;
+  }
+
+  getSharedData() {
+    return this.sharedData;
+  }
 }

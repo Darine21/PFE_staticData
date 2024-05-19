@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { DialogsComponent } from '../dialogue/dialogue.component';
 import { MatDialog } from '@angular/material/dialog';
 import { CollapseModule } from 'ng-uikit-pro-standard';
@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../data.service';
 import { SelectedItemService } from '../../validation/communiation.service';
 import { StaticData } from '../../models/staticdata';
+import { TranslationService } from './Translate.service';
 //import { ShareDiaComponent } from '../share-dia/share-dia.component';
 interface Version {
   id: number;
@@ -44,9 +45,16 @@ export class DetailsComponent implements OnInit {
   list: any[] = [];
     checked: boolean;
     selectedItemID: number;
-  
+    oldName: string;
+    oldC: string;
+    oldT: string;
+    oldS: string;
+  formvaluess: string[] = ['hello', 'welcome'];
+  translatedValues: { [key: string]: string[] } = {};
+    selectedLanguage: string[]=[];
+    listTrans: string[]=[];
 
-  constructor(private route: ActivatedRoute ,private dialog: MatDialog, private router: Router, private dataService: DataService, private selectedItemService: SelectedItemService) { }
+  constructor(private cd: ChangeDetectorRef,private route: ActivatedRoute, private translationService: TranslationService, private dialog: MatDialog, private router: Router, private dataService: DataService, private selectedItemService: SelectedItemService) { }
   checkAndAddValue() {
     // Vérifiez si la valeur saisie correspond à l'une des valeurs prédéfinies
     if (this.predefinedValues.includes(this.newValue)) {
@@ -120,6 +128,7 @@ export class DetailsComponent implements OnInit {
   ];
   publishedVersions: Version[] = [];
   showStatusField: boolean = false;
+ 
 
 
   getselectedEntities(): string[] {
@@ -157,12 +166,52 @@ export class DetailsComponent implements OnInit {
       });
     }
   }
+  
+  translatedText: string='';
+  textToTranslate: string = 'Hello, how are you?';
 
   formvaluesList: any[] = [];
   itemId: number;
+  formDataList2: any[];
+  translations: { [key: number]: { [key: string]: string } } = {};
+  selectedLanguages: string[] = [];
 
-  ngOnInit(): void {
-   
+  translateText(name: string, target: string, index: number) {
+    this.translationService.translate(name, 'en', target).subscribe(
+      (response: any) => {
+        // Vérifier si la réponse est correcte et contient la traduction
+        if (response && response.trans) {
+          // Ajouter la traduction au tableau de traductions
+          if (!this.translations[index]) {
+            this.translations[index] = {}; // Initialiser l'objet de traduction si ce n'est pas déjà fait
+          }
+          this.translations[index][target] = response.trans;
+
+          // Ajouter la langue aux langues sélectionnées si elle n'est pas déjà présente
+          if (!this.selectedLanguages.includes(target)) {
+            this.selectedLanguages.push(target);
+          }
+
+          console.log("Traductions:", this.translations);
+          this.cd.detectChanges(); // Déclencher manuellement la détection des changements
+        } else {
+          console.error('Réponse de traduction incorrecte:', response);
+        }
+      },
+      (error) => {
+        console.error('Erreur de traduction:', error);
+      }
+    );
+  }
+
+
+  trackByIndex(index: number, item: any): any {
+    return index;
+  }
+
+ ngOnInit(): void {
+ 
+ 
       this.dataService.inputValues$.subscribe(values => {
         this.dialogInputValues = values;
       });
@@ -181,24 +230,31 @@ export class DetailsComponent implements OnInit {
     console.log('selectedItemID:', this.selectedItemID);
   
     this.dataService.formDataList$.subscribe(formDataList => {
+      this.formDataList2 = formDataList;
+      console.log(this.formDataList2);
       if (formDataList) {
         const storedData = localStorage.getItem('formDataList');
         console.log(storedData);
-        if (storedData) {
-          formDataList = JSON.parse(storedData);
-        }
+       
         console.log('Données reçues dans StaticComponent :', formDataList);
-          this.formDataName = formDataList[this.selectedItemID-1].Name;
+        console.log(formDataList[this.selectedItemID - 1]);
+        this.formDataName = formDataList[this.selectedItemID - 1].Name;
+        this.oldName = formDataList[this.selectedItemID - 1].Name;
           console.log("bellah", this.formDataName);
-          this.formDataCategory = formDataList[this.selectedItemID-1].Category;
-          this.formDataTypes = formDataList[this.selectedItemID-1].Types;
-          this.formDataStatus = 'Inactive/Draft';
+        this.formDataCategory = formDataList[this.selectedItemID - 1].Category;
+        this.oldC = formDataList[this.selectedItemID - 1].Category;
+        this.formDataTypes = formDataList[this.selectedItemID - 1].Types;
+        this.oldT = formDataList[this.selectedItemID - 1].Types;
+        this.formDataStatus = 'Inactive/Draft';
+        this.oldS = 'Inactive/Draft';
           this.formDataId = 1;
         this.formDataCreateDate = new Date();
-          this.formDataCreatedBy = 'name';
+     
+        this.formDataCreatedBy = 'name';
+
         this.showDeleteButton = true;
     
-        this.formvalues = formDataList[this.selectedItemID - 1].InputValues;
+        this.formvalues = formDataList[this.selectedItemID -1].null;
        
         console.log("valuessss", this.formvalues);
         
@@ -319,7 +375,7 @@ export class DetailsComponent implements OnInit {
   // Méthode pour ajouter une nouvelle valeur
  
   addInput(index: number) {
-    this.inputValues.splice(index + 1, 0, '');
+    this.formvalues.splice(index + 1, 0, '');
     this.showOptions.splice(index + 1, 0, false); // Ajouter un champ d'entrée vide après l'index spécifié
   }
 
@@ -367,7 +423,7 @@ export class DetailsComponent implements OnInit {
       Types: this.formDataTypes,
       DateCreated: this.formDataCreateDate,
      CreatedBy: this.formDataCreatedBy,
-      InputValues: this.formvalues,
+      null: this.formvalues,
      
       // Ajoutez d'autres propriétés si nécessaire
     };
@@ -384,8 +440,128 @@ export class DetailsComponent implements OnInit {
   moveLine(index: number) {
     this.activeLineIndex = index;
   }
+  isEditingName = false;
+  editedName: string;
+  startEditingName() {
+    this.isEditingName = true;
+    this.editedName = this.formDataList2[this.selectedItemID - 1].Name;
 
+    console.log("save", this.editedName);
 
-    
   }
+  isEditingDescription = false;
+  saveEditedName() {
+    this.formDataList2[this.selectedItemID - 1].Name = this.editedName;
+    this.formDataName = this.editedName; // Mettre à jour formDataName
+    this.isEditingName = false;
+    console.log("save1", this.formDataName);
+    this.dataService.setModifiedName(this.editedName);
+  }
+  isEditingStatus = false;
+  editedStatus: string;
+  startEditingStatus() {
+    this.isEditingStatus = true;
+    this.editedStatus = this.formDataList2[this.selectedItemID - 1].Status;
+    console.log("save", this.editedStatus);
+    this.dataService.setModifiedStatus(this.editedStatus);
+  }
+  saveEditedStatus() {
+    this.formDataList2[this.selectedItemID - 1].Status = this.editedStatus;
+    this.formDataStatus = this.formDataList2[this.selectedItemID - 1].Status,
+      this.isEditingStatus = false;
+    console.log("save1", this.formDataList2[this.selectedItemID - 1].Status);
+  }
+  isEditingCategory = false;
+  editedCategory: string;
+  startEditingCategory() {
+    this.isEditingCategory = true;
+    this.editedCategory = this.formDataList2[this.selectedItemID - 1].Category;
+    console.log("save", this.editedCategory);
+    this.dataService.setModifiedCategory(this.editedCategory);
+  }
+
+
+  saveEditedCategory() {
+    this.formDataList2[this.selectedItemID - 1].Category = this.editedCategory ;
+    this.formDataCategory = this.formDataList2[this.selectedItemID - 1].Category,
+      this.isEditingCategory = false;
+    console.log("save1", this.formDataList2[this.selectedItemID - 1].Category);
+  }
+
+  isEditingTypes = false;
+  editedTypes: string;
+  startEditingTypes() {
+    this.isEditingTypes = true;
+    this.editedTypes = this.formDataList2[this.selectedItemID - 1].Types;
+    console.log("save", this.editedTypes);
+  
+  }
+
+
+  saveEditedTypes() {
+    this.formDataList2[this.selectedItemID - 1].Types = this.editedTypes;
+    this.formDataTypes = this.formDataList2[this.selectedItemID - 1].Types,
+      this.isEditingTypes = false;
+    console.log("save1", this.formDataList2[this.selectedItemID - 1].Types);
+    this.dataService.setModifiedTypes(this.editedTypes);
+
+  }
+  isEditingCreateby =false;
+  editedCreatedBy: string;
+  startEditingCreateBy() {
+    this.isEditingCreateby = true;
+    this.editedCreatedBy = this.formDataList2[this.selectedItemID - 1].CreatedBy;
+    console.log("save", this.editedTypes);
+    this.dataService.setModifiedCreatedBy(this.editedCreatedBy);
+  }
+
+
+  saveEditedCreateBy() {
+    this.formDataList2[this.selectedItemID - 1].CreatedBy = this.editedCreatedBy;
+    this.formDataCreatedBy = this.formDataList2[this.selectedItemID - 1].CreatedBy,
+      this.isEditingCreateby = false;
+    console.log("save1", this.formDataList2[this.selectedItemID - 1].CreatedBy);
+  }
+ 
+  newName: string;
+  newS: string;
+  newR: string;
+  newA: string;
+  newD: string;
+  newN: number;
+  saveChanges() {
+    if (this.formDataName == undefined) {
+      this.newName = this.oldName;
+      console.log("apres", this.newName);
+    } else {
+      this.newName = this.formDataName;
+      console.log("apres", this.newName);
+    };
+    if (this.formDataStatus == undefined) {
+      this.newS = this.oldS;
+      console.log("apres", this.newS);
+    } else {
+      this.newS = this.formDataStatus;
+      console.log("apres", this.newS);
+    };
+    if (this.formDataCategory == undefined) {
+      this.newA = this.oldC;
+      console.log("apres", this.newA);
+    } else {
+      this.newA = this.formDataCategory;
+      console.log("apres", this.newA);
+    };
+    if (this.formDataTypes == undefined) {
+      this.newR = this.oldT;
+      console.log("apres", this.newR);
+    } else {
+      this.newR = this.formDataTypes;
+      console.log("apres", this.newR);
+    };
+
+    this.router.navigate(['/static']);
+
+    console.log("old", this.oldName);
+  }
+}
     

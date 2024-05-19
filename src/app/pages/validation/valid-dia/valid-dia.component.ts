@@ -1,14 +1,18 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { StaticService } from '../../static/static.service';
 import { Router } from '@angular/router';
 import * as html2pdf from 'html2pdf.js';
 import { SelectedItemService } from '../communiation.service';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { ValidService } from '../validation.service';
 import { ValidSD } from '../../models/ValidSD';
+import { ShareDialogComponent } from '../share/share.component';
+import { Entity } from '../../models/Entity';
+import { Language } from '../../models/Language';
+import { Entity1 } from '../../models/Entity1';
 
 @Component({
   selector: 'app-valid-dia',
@@ -47,7 +51,11 @@ export class ValidDiaComponent implements OnInit {
     selectedVersion: any;
     formattedVersions: string[]=[];
 
-  constructor(private dialogue: StaticService, private validService: ValidService, private fb: FormBuilder, private toastr: ToastrService, private router: Router, private selectedItemService: SelectedItemService, private dialogRef: MatDialogRef<any> ) { }
+  constructor(private dialogue: StaticService,
+    @Inject(MAT_DIALOG_DATA) public data: { entities: Entity[], entityNames: { id: number, itemName: string }[] }, private dialog: MatDialog, private validService: ValidService, private fb: FormBuilder, private toastr: ToastrService, private router: Router, private selectedItemService: SelectedItemService, private dialogRef: MatDialogRef<any>) {
+      this.entities.forEach((entity, index) => {
+        this.entityNames.push({ id: index + 1, itemName: entity.name });
+      }); }
   ngOnInit() {
     
 
@@ -126,18 +134,35 @@ export class ValidDiaComponent implements OnInit {
    
 
   }
-  generatePDF() {
-    this.showConfirmationMessage = true;
-    const element = document.getElementById('detailsContent');
-    const options = {
-      margin: 0,
-      filename: 'details.pdf',
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-    };
-    html2pdf().from(element).set(options).save();
+  entities: Entity1[] = [
+    {
+      name: 'Entity 1',
+      language: [
+        new Language('en', 'English'),
+        new Language('fr', 'French')
+      ]
+    },
+    {
+      name: 'Entity 2',
+      language: [
+        new Language('es', 'Spanish'),
+        new Language('de', 'German')
+      ]
+    }
+  ];
+  entityNames: { id: number, itemName: string }[] = [];
+  openShareDialog() {
+    const dialogRef = this.dialog.open(ShareDialogComponent, {
+      width: '400px', // Customize the width as needed
+      autoFocus: false // Prevent autofocus on the first input
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      // Handle after close
+    });
   }
+
   onClose() {
     this.dataName = '';
     this.showFirstDialog = false;

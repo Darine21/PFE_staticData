@@ -11,9 +11,11 @@ export const ROUTES: RouteInfo[] = [
   { path: '/static', title: 'Static Data', icon: 'ni-bullet-list-67 text-green', class: '' },
   { path: '/ details/: id', title: '', icon: '', class: '' },
   { path: '/valide', title: 'Validation Data', icon: 'fa fa-check text-green', class: '' },
-  { path: '/share', title: 'Share Data', icon: 'fa fa-check text-green', class: '' },
   {
     path: '/create-entity', title: ' Creation Entity', icon: 'fas fa-cube text-green', class: ''
+  },
+  {
+    path: '/local-user', title: ' Specific Data', icon: 'ni-bullet-list-67 text-green', class: ''
   },
 
  

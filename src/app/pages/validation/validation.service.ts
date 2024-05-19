@@ -12,6 +12,7 @@ import { ValidSD } from '../models/ValidSD';
 import { RejectSD } from '../models/RejectSD';
 import { SharedSD } from '../models/SharedSD';
 import { Entity } from '../models/Entity';
+import { EntityLocal } from '../models/EntityLocal';
 @Injectable({
   providedIn: 'root'
 })
@@ -55,5 +56,9 @@ export class ValidService {
   }
   UpdateEntity(name: string, model: Entity)  {
     return this.http.put(`${environment.appUrl}/api/pages/CreateE/Entity/${name}`, model);
+  }
+  DeleteDataEntity(model: EntityLocal) {
+    return this.http.delete(`${environment.appUrl}/api/pages/entity/Entity1/${model.Name}`);
+
   }
 }

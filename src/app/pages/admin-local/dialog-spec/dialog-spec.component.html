@@ -1,0 +1,73 @@
+<div *ngIf="showFirstDialog" class="dialog-container right-dialog" style="width: 600px; height: auto; max-height: 700px; border-radius: 10px; background-color: #f9f9f9; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); overflow-y: auto;  top: 50%; left: 50%; transform: translate(-50%, -50%);margin-right:-30px;">
+  <i class="fas fa-times close-icon" (click)="onClose()" style="position: absolute; top: 20px; right: 20px; color: #888; font-size: 20px; cursor: pointer;"></i>
+  <h2 style="text-align: start; margin-left:30px;margin-top:20px;margin-bottom:30px; color: #333;  font-size: 36px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);"> Add Specific Static Data </h2>
+
+  <form #form="ngForm" autocomplete="off" (submit)="onSubmit(form)">
+    <div class="ml-3">
+      <div class="col-lg-12">
+        <label class="col-form-label" for="dataName">Name :</label>
+        <input name="Name" type="text" class="form-control" [(ngModel)]="dataName" placeholder="Enter static data name" required>
+      </div>
+
+      <div class="col-lg-12">
+        <div class="mb-3">
+          <label class="col-form-label">Type :</label>
+          <input name="Types" type="text" class="form-control" placeholder="Enter static data type" [(ngModel)]="dataType" required>
+        </div>
+      </div>
+      <div class="col-lg-12">
+        <div class="mb-3">
+          <label class="col-form-label">Category :</label>
+          <input name="Category" type="text" class="form-control" placeholder="Enter static data category" [(ngModel)]="dataCategory" required>
+        </div>
+      </div>
+
+      <div class="ml-2 mt-5">
+        <div class="input-group">
+          <label class="label-name" style="color: #555; font-size: 20px; font-weight: bold;">Add Values :</label>
+          <select class="input-name ml-3" [(ngModel)]="selectedOption" (change)="updateSelectedOption($event.target.value)"
+                  style="width:350px; padding: 12px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; outline: none;">
+
+            
+            
+            <option  [selected]="selectedOption === 'Choose your option'">Choose your option</option>
+            <option value="bulk">Bulk Input</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <div style="margin-top: 30px;"> </div>
+    <!-- Input for bulk entry -->
+    <div *ngIf="selectedOption === 'bulk'" style="margin: 0px 20px;">
+      <label class="label-name" for="multiValueInput">Bulk Values :</label>
+      <textarea id="multiValueInput" class="input-name" [(ngModel)]="bulkValues" placeholder="Enter multiple values separated by commas or new lines" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; outline: none;"></textarea>
+      <div style="margin-top: 35px; max-height: 200px; overflow-y: auto;">
+        <p style="color: #555; font-size: 16px; font-weight: bold;">Added Values:</p>
+        <div [style.flexDirection]="addedBulkValues.length > 1 ? 'column' : 'row'" style="display: flex; flex-wrap: wrap;">
+          <div *ngFor="let value of addedBulkValues; let i = index" style="margin-bottom: 10px; display: flex; align-items: center;">
+            <div style="flex: 1; padding: 5px; background-color: #f0f0f0; border-radius: 5px; margin-right: 5px;">{{ value }}</div>
+            <div style="display: flex; align-items: center;">
+              <button class="btn btn-circle btn-minus" style="margin-left: 5px; margin-bottom: 10px;" (click)="removeBulkValue(i)">-</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+    </div>
+    <div class="button-container " style="">
+      <button class="submit-button btn-md" type="submit">Submit</button>
+
+      <button class="cancel-button btn-md" (click)="onClose()">Cancel</button>
+    </div>
+  </form>
+
+
+
+
+</div>

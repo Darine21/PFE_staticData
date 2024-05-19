@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ShareComponent } from './share.component';
+import { ShareDialogComponent } from './share.component';
 
 describe('ShareComponent', () => {
-  let component: ShareComponent;
-  let fixture: ComponentFixture<ShareComponent>;
+  let component: ShareDialogComponent;
+  let fixture: ComponentFixture<ShareDialogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ShareComponent ]
+      declarations: [ ShareDialogComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ShareComponent);
+    fixture = TestBed.createComponent(ShareDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

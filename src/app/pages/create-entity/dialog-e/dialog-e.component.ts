@@ -10,6 +10,7 @@ import { StaticService } from '../../static/static.service';
 import { DataService } from '../../static/data.service';
 import { ValidService } from '../../validation/validation.service';
 import { Entity } from '../../models/Entity';
+import { Language } from '../../models/Language';
 
 
 
@@ -48,6 +49,7 @@ export class DialogEComponent implements OnInit {
     formDataResponsible: string;
     CreateDate: String;
   formDatanum: number;
+    formDataLanguage: string[];
   constructor(private staticService: StaticService, private fb: FormBuilder, private toastr: ToastrService, private dataService: DataService, private validService: ValidService) {
 
   }
@@ -99,6 +101,7 @@ export class DialogEComponent implements OnInit {
         this.oldDate = formDataList[this.selectedItemID - 1].dateCreated;
         this.formDataCreatedBy = formDataList[this.selectedItemID - 1].descreption;
         this.oldDes = formDataList[this.selectedItemID - 1].descreption;
+        this.formDataLanguage = formDataList[this.selectedItemID - 1].language;
         this.showDeleteButton = true;
       }
 });
@@ -357,7 +360,8 @@ export class DialogEComponent implements OnInit {
       responsible: this.newR,
       address: this.newA,
       dateCreated: Datee,
-      phoneNumber: this.newN
+      phoneNumber: this.newN,
+      language: this.formDataLanguage
 
     }
     this.validService.UpdateEntity(this.oldName, entityE).subscribe(

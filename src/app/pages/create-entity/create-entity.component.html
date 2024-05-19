@@ -48,7 +48,7 @@
                       <!-- Ajoutez d'autres options pour différents pays avec leurs codes respectifs -->
                     </select>
                   </div>
-                  <input type="number" class="form-control" name="phoneNumber" ngModel placeholder="Enter phone number" >
+                  <input type="number" class="form-control" name="phoneNumber" ngModel placeholder="Enter phone number">
                 </div>
               </div>
             </div>
@@ -62,7 +62,7 @@
           <div class="row">
             <div class="col-md-4 px-1" style="margin-left:40px;">
               <div class="form-group">
-                <label for="status" > Status:</label>
+                <label for="status"> Status:</label>
                 <select class="form-control" name="status" style="width:520px;" ngModel>
                   <option value="active">Active</option>
                   <option value="inactive">Inactive</option>
@@ -73,108 +73,130 @@
             <div class="col-md-4 px-1" style="margin-left:150px;">
               <div class="form-group">
                 <label for="descreption">    Description:</label>
-                <input type="text" class="form-control" name="descreption" ngModel placeholder="Enter responsible person"  style="width:560px;">
+                <input type="text" class="form-control" name="descreption" ngModel placeholder="Enter responsible person" style="width:560px;">
               </div>
             </div>
+          </div>
+          <!-- Ajout d'un champ pour la sélection des langues -->
+          <div class="col-md-4 px-1" style="margin-left:25px;">
+            <div class="form-group">
+              <label for="languages">Languages:</label>
+              <div class="white-block">
+                <!-- Utilisation d'une classe CSS personnalisée pour créer un bloc blanc -->
+                <angular2-multiselect [data]="dropdownList2" [(ngModel)]="selectedLanguages"
+                                       [settings]="dropdownSettings2"
+                                      (onSelect)="onLanguageSelect($event)"
+                                      (onDeSelect)="onLanguageDeselect($event)">
+                </angular2-multiselect>
+              </div>
             </div>
-            <div class="form-group text-center" style="margin-top:20px;margin-left:-10px;">
-              <button type="submit" class="btn btn-primary" style="width:150px; font-size:17px"><i class="fas fa-plus" style="margin-right:10px;"></i>Create</button>
-            </div>
-</form>
-     
-      
+          </div>
+
+          <div class="form-group text-center" style="margin-top:20px;margin-left:-10px;">
+            <button type="submit" class="btn btn-primary" style="width:150px; font-size:17px"><i class="fas fa-plus" style="margin-right:10px;"></i>Create</button>
+          </div>
+        </form>
+
+
+      </div>
     </div>
   </div>
-</div>
 
-<div class="main-content" style="margin-left:-25px ; margin-top:20px;">
-  <div class="container-fluid" style="width:1270px;">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="card">
-       
-            <h4 class="card-title "style="font-size: 30px; margin-top: 20px; margin-left: 30px; color: #f27e01;">List of Entity</h4>
-      
-          <div class="card-body" >
-            <div class="table-responsive">
-              <table class="table">
-                <thead class=" text-primary">
-                <th style="font-size:12px;">
-                  ID
-                </th>
-                <th style="font-size:12px;">
-                  Name
-                </th>
-                <th style="font-size:12px;">
-                  Status
-                </th>
-                <th style="font-size:12px;">
-                  Address
-                </th>
-                <th style="font-size:12px;">
-                  Responsible
-                </th>
-                <th style="font-size:12px;">
-                  Create-Date
-                </th>
-                <th style="font-size:12px;">Phone Number</th>
-                <th style="font-size:12px;">Description</th>
-                <th style="font-size:12px;">Actions</th>
-                
+  <div class="main-content" style="margin-left:-25px ; margin-top:20px;">
+    <div class="container-fluid" style="width:1270px;">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
 
-                <tbody>
-                  <tr *ngFor="let item of formDataList; let i=index">
-                    <td>
-                      {{i+1}}
-                    </td>
-                    <td>
-                      {{item.name}}
-                    </td>
-                    <td>
-                      {{item.status}}
-                    </td>
-                    <td>
-                      {{item.address}}
-                    </td>
-                    <td>
-                      {{item.responsible}}
-                    </td>
-                    <td>
-                      {{item.dateCreated}}
-                    </td>
-                    <td>
-                      {{item.phoneNumber}}
-                    </td>
-                    <td>  {{item.descreption}}</td>
+            <h4 class="card-title " style="font-size: 30px; margin-top: 20px; margin-left: 30px; color: #f27e01;">List of Entity</h4>
 
-                    
-                    <td>
-                      <button class="btn btn-primary" (click)="delete(i)">
-                        <i class="fas fa-trash-alt"></i>
-                      </button>
-                      
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table">
+                  <thead class=" text-primary">
+                  <th style="font-size:12px;">
+                    ID
+                  </th>
+                  <th style="font-size:12px;">
+                    Name
+                  </th>
+                  <th style="font-size:12px;">
+                    Status
+                  </th>
+                  <th style="font-size:12px;">
+                    Address
+                  </th>
+                  <th style="font-size:12px;">
+                    Responsible
+                  </th>
+                  <th style="font-size:12px;">
+                    Create-Date
+                  </th>
+                  <th style="font-size:12px;">Phone Number</th>
+                  <th style="font-size:12px;">Description</th>
+                 
+                  <th style="font-size:12px;">Languages</th>
+                  <th style="font-size:12px;">Actions</th>
+
+
+                  <tbody>
+                    <tr *ngFor="let item of formDataList; let i=index">
+                      <td>
+                        {{i+1}}
+                      </td>
+                      <td>
+                        {{item.name}}
+                      </td>
+                      <td>
+                        {{item.status}}
+                      </td>
+                      <td>
+                        {{item.address}}
+                      </td>
+                      <td>
+                        {{item.responsible}}
+                      </td>
+                      <td>
+                        {{item.dateCreated}}
+                      </td>
+                      <td>
+                        {{item.phoneNumber}}
+                      </td>
+                      <td>  {{item.descreption}}</td>
+                      <td>
+                        <ul>
+                          <li *ngFor="let lang of item.null">
+                            {{ lang.itemName }}
+                          </li>
+                        </ul>
+                      </td>
+                      <td>
+                        <button class="btn btn-primary" (click)="delete(i)">
+                          <i class="fas fa-trash-alt"></i>
+                        </button>
+
                         <button class="btn btn-primary" (click)="openDialog(i+1)">
                           <i class="fas fa-edit"></i>
                         </button>
-               
-                    </td>
+
+                      </td>
 
 
-                 
 
-                  </tr>
-                </tbody>
-              </table>
+
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<div class="col-md-6" style="margin-top: 80px; ">
-  
+  <div class="col-md-6" style="margin-top: 80px; ">
+
     <div class="card" style="width: 1200px;">
       <div class="card-header" style="color: #f27e01;font-size:15px;">
         <i class="fas fa-map-marked-alt"></i> View Entity

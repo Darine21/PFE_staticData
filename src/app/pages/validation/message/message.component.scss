@@ -148,7 +148,8 @@ height: 50px;
     flex-direction: column;
     }
 
- .chat-input:focus {
-      outline: none; 
-      ring: 0;
-    }
+.chat-input:focus {
+  outline: none;
+  box-shadow: none; /* ou box-shadow: 0 0 0 transparent; */
+}
+

@@ -1,5 +1,144 @@
-/* Styles CSS pour limiter la taille de la colonne */
-.colonne-multiselect {
-  max-width: 200px; /* Définissez la largeur maximale souhaitée */
-  overflow-x: auto; /* Activer le défilement horizontal si nécessaire */
+.dialog-container {
+  width: 600px;
+  max-height: 600px;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Dialog header */
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Mat dialog title */
+.mat-dialog-title {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+}
+
+/* Close button */
+.close-button {
+  font-size: 18px;
+  font-weight: bold;
+  background-color: #dfdcdc;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.2s ease;
+}
+
+.close-button:hover {
+  color: #337ab7;
+}
+
+/* Title */
+.title {
+  text-align: center;
+}
+
+/* Horizontal rule */
+hr {
+  border: none;
+  border-top: 1px solid #ddd;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Share button */
+.share-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-top: 15px;
+}
+
+.share-button:hover {
+  background-color: #23527c;
+}
+
+.share-button:active {
+  background-color: #1a3d5d;
+}
+
+/* Recent entities */
+.recent-entities {
+  display: flex;
+  gap: 16px;
+  margin-top: 5px;
+}
+
+/* Entity button */
+.entity-button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 4px;
+  background-color: #fff;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.entity-button:hover {
+  background-color: #f0f0f0;
+}
+
+.entity-button:active {
+  background-color: #ccc;
+}
+
+/* Profile circle */
+.profile-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #337ab7;
+  margin-bottom: 2px;
+}
+
+/* Entity text */
+.entity-text {
+  font-size: 14px;
+  color: #333;
+  text-align: center;
+}
+
+/* Input field */
+input[type="text"] {
+  padding: 12px;
+  border: none;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+  margin-top: 8px;
+}
+
+/* H2 heading */
+.h2 {
+  margin: 16px 0;
+}
+
+input[type="text"]::placeholder {
+  text-align: start;
 }
