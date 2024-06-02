@@ -1,6 +1,6 @@
-<div *ngIf="showFirstDialog" class="dialog-container right-dialog" style="width: 600px; height: auto; max-height: 700px; border-radius: 10px; background-color: #f9f9f9; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); overflow-y: auto;  top: 50%; left: 50%; transform: translate(-50%, -50%);margin-right:-30px;">
+<div *ngIf="showFirstDialog" class="dialog-container right-dialog" style="width: 650px; height: auto; max-height: 700px; border-radius: 10px; background-color: #fffffe; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); overflow-y: auto; top: 60%; left: 55%; transform: translate(-50%, -50%); margin-right: -30px;">
   <i class="fas fa-times close-icon" (click)="onClose()" style="position: absolute; top: 20px; right: 20px; color: #888; font-size: 20px; cursor: pointer;"></i>
-  <h2 style="text-align: start; margin-left:30px;margin-top:20px;margin-bottom:30px; color: #333;  font-size: 36px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);"> Add Specific Static Data </h2>
+  <h2 style="text-align: start; margin-left: 30px; margin-top: 20px; margin-bottom: 30px; color: #ef8404; font-family: ' Verdana, Arial, Helvetica, sans-serif'; font-size: 30px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); text-align: center ">Add Specific Static Data</h2>
 
   <form #form="ngForm" autocomplete="off" (submit)="onSubmit(form)">
     <div class="ml-3">
@@ -12,62 +12,99 @@
       <div class="col-lg-12">
         <div class="mb-3">
           <label class="col-form-label">Type :</label>
-          <input name="Types" type="text" class="form-control" placeholder="Enter static data type" [(ngModel)]="dataType" required>
+          <select name="Types" class="form-control" [(ngModel)]="dataType" required>
+            <option value="" disabled selected hidden>Choose your type</option>
+            <option value="public">Public</option>
+            <option value="private">Private</option>
+          </select>
         </div>
       </div>
+
       <div class="col-lg-12">
         <div class="mb-3">
           <label class="col-form-label">Category :</label>
-          <input name="Category" type="text" class="form-control" placeholder="Enter static data category" [(ngModel)]="dataCategory" required>
+          <select name="Category" class="form-control" [(ngModel)]="dataCategory" required>
+            <option value="" disabled selected hidden>Choose your category</option>
+            <option value="client">Client</option>
+            <option value="company">Company</option>
+            <option value="other">Other</option>
+          </select>
         </div>
       </div>
 
       <div class="ml-2 mt-5">
-        <div class="input-group">
-          <label class="label-name" style="color: #555; font-size: 20px; font-weight: bold;">Add Values :</label>
-          <select class="input-name ml-3" [(ngModel)]="selectedOption" (change)="updateSelectedOption($event.target.value)"
-                  style="width:350px; padding: 12px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; outline: none;">
-
-            
-            
-            <option  [selected]="selectedOption === 'Choose your option'">Choose your option</option>
-            <option value="bulk">Bulk Input</option>
-          </select>
-        </div>
-      </div>
-    </div>
-
-
-
-
-    <div style="margin-top: 30px;"> </div>
-    <!-- Input for bulk entry -->
-    <div *ngIf="selectedOption === 'bulk'" style="margin: 0px 20px;">
-      <label class="label-name" for="multiValueInput">Bulk Values :</label>
-      <textarea id="multiValueInput" class="input-name" [(ngModel)]="bulkValues" placeholder="Enter multiple values separated by commas or new lines" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; outline: none;"></textarea>
-      <div style="margin-top: 35px; max-height: 200px; overflow-y: auto;">
-        <p style="color: #555; font-size: 16px; font-weight: bold;">Added Values:</p>
-        <div [style.flexDirection]="addedBulkValues.length > 1 ? 'column' : 'row'" style="display: flex; flex-wrap: wrap;">
-          <div *ngFor="let value of addedBulkValues; let i = index" style="margin-bottom: 10px; display: flex; align-items: center;">
-            <div style="flex: 1; padding: 5px; background-color: #f0f0f0; border-radius: 5px; margin-right: 5px;">{{ value }}</div>
-            <div style="display: flex; align-items: center;">
-              <button class="btn btn-circle btn-minus" style="margin-left: 5px; margin-bottom: 10px;" (click)="removeBulkValue(i)">-</button>
+        <!-- Flex container to align label and buttons -->
+        <div class="d-flex justify-content-between align-items-center">
+          <label class="label-name" style=" font-size: 20px; color: #ef8404; font-family: ' Verdana, Arial, Helvetica, sans-serif';">Values :</label>
+          <div style="display: flex; align-items: center;">
+            <button type="button" class="btn btn-primary btn-md" (click)="showBulkInput = !showBulkInput" style="margin-right: 10px;">
+              <i class="fa fa-plus" aria-hidden="true"></i> Add Bulk
+            </button>
+            <div ngbDropdown class="options-menu">
+              <button class="btn btn-outline-success" id="dropdownButtonAll" (click)="preventSubmit($event)" ngbDropdownToggle>
+                <i class="fa fa-plus"></i> Language
+              </button>
+              <div ngbDropdownMenu aria-labelledby="dropdownButtonAll" class="dropdown-menu dropdown-menu-right">
+                <button class="dropdown-item" (click)="preventSubmit($event);translateAllTexts('fr')">French</button>
+                <button class="dropdown-item" (click)="preventSubmit($event);translateAllTexts('es')">Spanish</button>
+                <button class="dropdown-item" (click)="preventSubmit($event);translateAllTexts('ar')">Arabic</button>
+                <button class="dropdown-item" (click)="preventSubmit($event);translateAllTexts('zh')">Chinese</button>
+                <button class="dropdown-item" (click)="preventSubmit($event);translateAllTexts('nl')">Dutch</button>
+                <button class="dropdown-item" (click)="preventSubmit($event);translateAllTexts('fi')">Finnish</button>
+                <button class="dropdown-item" (click)="preventSubmit($event);translateAllTexts('de')">German</button>
+                <button class="dropdown-item" (click)="preventSubmit($event);translateAllTexts('hi')">Hindi</button>
+                <button class="dropdown-item" (click)="preventSubmit($event);translateAllTexts('hu')">Hungarian</button>
+                <button class="dropdown-item" (click)="preventSubmit($event);translateAllTexts('id')">Indonesian</button>
+                <button class="dropdown-item" (click)="preventSubmit($event);translateAllTexts('ga')">Irish</button>
+                <button class="dropdown-item" (click)="preventSubmit($event);translateAllTexts('it')">Italian</button>
+                <button class="dropdown-item" (click)="preventSubmit($event);translateAllTexts('ja')">Japanese</button>
+                <button class="dropdown-item" (click)="preventSubmit($event);translateAllTexts('ko')">Korean</button>
+                <button class="dropdown-item" (click)="preventSubmit($event);translateAllTexts('pl')">Polish</button>
+                <button class="dropdown-item" (click)="preventSubmit($event);translateAllTexts('pt')">Portuguese</button>
+                <button class="dropdown-item" (click)="preventSubmit($event);translateAllTexts('ru')">Russian</button>
+                <button class="dropdown-item" (click)="preventSubmit($event);translateAllTexts('sv')">Swedish</button>
+                <button class="dropdown-item" (click)="preventSubmit($event);translateAllTexts('tr')">Turkish</button>
+                <button class="dropdown-item" (click)="preventSubmit($event);translateAllTexts('uk')">Ukrainian</button>
+                <button class="dropdown-item" (click)="preventSubmit($event);translateAllTexts('vi')">Vietnamese</button>
+                <button class="dropdown-item" (click)="preventSubmit($event);translateAllTexts('da')">Danish</button>
+                <button class="dropdown-item" (click)="preventSubmit($event);translateAllTexts('el')">Greek</button>
+                <button class="dropdown-item" (click)="preventSubmit($event);translateAllTexts('ms')">Malay</button>
+                <button class="dropdown-item" (click)="preventSubmit($event);translateAllTexts('sq')">Albanian</button>
+                <!-- Other languages... -->
+              </div>
             </div>
           </div>
         </div>
       </div>
 
+      <div *ngFor="let value of inputValues; let i = index; trackBy: trackByIndex" style="margin-top: 20px;">
+        <div style="display: flex; align-items: center;">
+          <label class="label-name" style="color: #555; font-size: 16px;">Value {{i + 1}} :</label>
+          <input type="text" class="form-control" [value]="value" (input)="updateInputValue($event.target.value, i)" placeholder="Enter value" style="flex: 1; margin-right: 10px;">
+          <button type="button" class="btn btn-options" (click)="addInput(i, value)">+</button>
+          <button type="button" class="btn btn-options" (click)="removeInput(i)" *ngIf="inputValues.length > 1">-</button>
+        </div>
 
+        <ng-container>
+          <div *ngFor="let lang of selectedLanguages;" class="translation-container" style="margin-left: 20px; margin-top: 10px;">
+            <label>{{ lang }}</label>
+            <input type="text" [(ngModel)]="translations[i][lang]" *ngIf="translations[i] && translations[i][lang]" class="translation-input">
+          </div>
+        </ng-container>
+      </div>
 
+      <div *ngIf="showBulkInput" style="margin-top: 30px; margin-left:-30px;">
+        <div style="margin: 0px 20px;">
+          <label class="label-name" for="multiValueInput">Bulk Values :</label>
+          <textarea id="multiValueInput" class="input-name" [(ngModel)]="bulkValues" placeholder="Enter multiple values separated by commas or new lines" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; outline: none;"></textarea>
+        </div>
+        <button type="button" class="btn btn-primary" style=" margin-left:20px;" (click)="addBulkValues()">Add Bulk Values</button>
+      </div>
     </div>
-    <div class="button-container " style="">
-      <button class="submit-button btn-md" type="submit">Submit</button>
 
-      <button class="cancel-button btn-md" (click)="onClose()">Cancel</button>
+    <div class="button-container">
+      <button type="submit" class="submit-button btn-md">Submit</button>
+      <button type="button" class="cancel-button btn-md" (click)="onClose()">Cancel</button>
     </div>
   </form>
-
-
-
-
 </div>

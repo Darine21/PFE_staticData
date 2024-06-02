@@ -13,6 +13,7 @@ import { ShareDialogComponent } from '../share/share.component';
 import { Entity } from '../../models/Entity';
 import { Language } from '../../models/Language';
 import { Entity1 } from '../../models/Entity1';
+import { ShareVComponent } from '../details-v/share-v/share-v.component';
 
 @Component({
   selector: 'app-valid-dia',
@@ -59,8 +60,9 @@ export class ValidDiaComponent implements OnInit {
   ngOnInit() {
     
 
-    this.selectedItemService.selectedItem$.subscribe(name => {
+    this.selectedItemService.currentName.subscribe(name => {
       this.selectedItemName = name;
+      console.log("nammeee", this.selectedItemName);
     });
   }
   @Output() statusUpdate: EventEmitter<string> = new EventEmitter<string>();
@@ -105,12 +107,12 @@ export class ValidDiaComponent implements OnInit {
     const validStaticData: ValidSD = {
    
       Name: this.selectedItemName,
-      Versions: this.formattedVersions,
-      PDF: 'ddd',
+     
+      
       Status: "Approval",
       DateCreated: new Date(),
       CreatedBy: 'name',
-      Entity: ['']
+      values: ['']
     };
 
     // Appelez l'API pour enregistrer les données
@@ -150,11 +152,13 @@ export class ValidDiaComponent implements OnInit {
       ]
     }
   ];
-  entityNames: { id: number, itemName: string }[] = [];
+  Vshare: boolean = false;
   openShareDialog() {
-    const dialogRef = this.dialog.open(ShareDialogComponent, {
-      width: '400px', // Customize the width as needed
-      autoFocus: false // Prevent autofocus on the first input
+
+    const dialogRef = this.dialog.open(ShareVComponent, {
+      width: '600px', // Customize the width as needed
+      autoFocus: false, // Prevent autofocus on the first input
+      panelClass: 'custom-dialog-container' // Custom class for additional styling
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -162,6 +166,17 @@ export class ValidDiaComponent implements OnInit {
       // Handle after close
     });
   }
+
+  goTovalid() {
+    this.dataName = '';
+    this.showFirstDialog = false;
+    this.showSecondDialog = false;
+    this.Vshare = true;
+    this.selectedItemService.changeshare(this.Vshare);
+    this.openShareDialog();
+    console.log("Vous avez share ou none ");
+  }
+  entityNames: { id: number, itemName: string }[] = [];
 
   onClose() {
     this.dataName = '';

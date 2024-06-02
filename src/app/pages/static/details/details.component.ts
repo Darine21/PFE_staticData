@@ -11,20 +11,52 @@ import { DataService } from '../data.service';
 import { SelectedItemService } from '../../validation/communiation.service';
 import { StaticData } from '../../models/staticdata';
 import { TranslationService } from './Translate.service';
+import { ToastrService } from 'ngx-toastr';
+import { StaticService } from '../static.service';
+import { NotificationService } from './notification.service';
+
+
 //import { ShareDiaComponent } from '../share-dia/share-dia.component';
 interface Version {
   id: number;
   // Autres propriétés de votre modèle de données...
   selectedItems: any[]; // Déclaration de la propriété selectedItems
 }
+interface Change {
+  History: string;
+  Name: string;
+  Changer: string;
+  date: string;
+}
 @Component({
   selector: 'app-details',
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.scss'],
+  styles: [`
+    .toast-custom-center {
+      top: 50% !important;
+      left: 50% !important;
+      transform: translate(-50%, -50%) !important;
+    }
+    .toast-info-custom {
+      background-color: #17a2b8 !important;
+      color: white !important;
+    }
+    .toast-success-custom {
+      background-color: #28a745 !important;
+      color: white !important;
+    }
+    .toast-error-custom {
+      background-color: #dc3545 !important;
+      color: white !important;
+    }
+  `]
 })
-export class DetailsComponent implements OnInit {
 
+export class DetailsComponent implements OnInit {
+  deta: any[] = [];
   data: any[] = [];
+  changeM: any[] = [];
   filteredData: any[];
   isNavbarCollapsed = true;
   selectedNavItem: string | null = null;
@@ -53,8 +85,9 @@ export class DetailsComponent implements OnInit {
   translatedValues: { [key: string]: string[] } = {};
     selectedLanguage: string[]=[];
     listTrans: string[]=[];
+   
 
-  constructor(private cd: ChangeDetectorRef,private route: ActivatedRoute, private translationService: TranslationService, private dialog: MatDialog, private router: Router, private dataService: DataService, private selectedItemService: SelectedItemService) { }
+  constructor(private notificationService: NotificationService, private cd: ChangeDetectorRef, private route: ActivatedRoute, private translationService: TranslationService, private dialog: MatDialog, private router: Router, private dataService: DataService, private selectedItemService: SelectedItemService, private staticservice: StaticService, private toastr: ToastrService) { }
   checkAndAddValue() {
     // Vérifiez si la valeur saisie correspond à l'une des valeurs prédéfinies
     if (this.predefinedValues.includes(this.newValue)) {
@@ -94,7 +127,7 @@ export class DetailsComponent implements OnInit {
   formDataTypes: string;
   formDataStatus: string;
   formDataId: number;
-  formDataCreateDate: Date;
+  formDataCreateDate: string;
   formDataCreatedBy: string;
   showDeleteButton: Boolean = false;
   showShareOptions: boolean = false;
@@ -118,8 +151,10 @@ export class DetailsComponent implements OnInit {
   dataName: string = '';
   //isItemSelected: boolean = false;
   dropdownList = [];
+  dropdownList1 = [];
   selectedItems = [];
   dropdownSettings = {};
+  dropdownSettings1 = {};
   entities = [
     { id: 1, name: 'Entity 1', selected: false },
     { id: 2, name: 'Entity 2', selected: false },
@@ -176,24 +211,45 @@ export class DetailsComponent implements OnInit {
   translations: { [key: number]: { [key: string]: string } } = {};
   selectedLanguages: string[] = [];
 
-  translateText(name: string, target: string, index: number) {
-    this.translationService.translate(name, 'en', target).subscribe(
+  translateAllTexts(language: string) {
+    this.formvalues.forEach((value, index) => {
+      this.translateText(value, 'en', language, index);
+    });
+    this.saveLocally();
+  }
+
+  saveLocally() {
+    // Récupérez les valeurs et les traductions actuelles
+    const dataToSave = {
+      formvalues: this.formvalues,
+      translations: this.translations
+    };
+
+    // Convertissez l'objet en chaîne JSON
+    const jsonData = JSON.stringify(dataToSave);
+
+    // Enregistrez les données dans le stockage local du navigateur
+    localStorage.setItem('formData', jsonData);
+
+    // Affichez un message de confirmation
+    this.toastr.success('Modifications enregistrées localement.', 'Succès');
+  }
+
+  translateText(name: string, source: string, target: string, index: number) {
+    this.translationService.translate(name, source, target).subscribe(
       (response: any) => {
-        // Vérifier si la réponse est correcte et contient la traduction
         if (response && response.trans) {
-          // Ajouter la traduction au tableau de traductions
           if (!this.translations[index]) {
-            this.translations[index] = {}; // Initialiser l'objet de traduction si ce n'est pas déjà fait
+            this.translations[index] = {};
           }
           this.translations[index][target] = response.trans;
 
-          // Ajouter la langue aux langues sélectionnées si elle n'est pas déjà présente
           if (!this.selectedLanguages.includes(target)) {
             this.selectedLanguages.push(target);
           }
 
           console.log("Traductions:", this.translations);
-          this.cd.detectChanges(); // Déclencher manuellement la détection des changements
+          this.cd.detectChanges();
         } else {
           console.error('Réponse de traduction incorrecte:', response);
         }
@@ -205,12 +261,34 @@ export class DetailsComponent implements OnInit {
   }
 
 
+
   trackByIndex(index: number, item: any): any {
     return index;
   }
+  onItemSelect1(item: any) {
+    console.log('Selected Item:', item);
+    this.translateAllTexts(item);
+  }
 
+  onItemDeSelect(item: any) {
+    console.log('De-Selected Item:', item);
+    // Vous pouvez également exécuter une autre logique ici si nécessaire
+  }
+  historyList: any[] = []; 
+
+  
  ngOnInit(): void {
+   const savedData = localStorage.getItem('formData');
  
+   if (savedData) {
+     // Si des données sont présentes dans le stockage local, récupérez-les
+     const parsedData = JSON.parse(savedData);
+     console.log("local", parsedData);
+     // Mettez à jour les valeurs et les traductions avec les données sauvegardées
+     this.formvalues = parsedData.formvalues;
+     console.log("form", this.formvalues);
+     this.translations = parsedData.translations;
+   }
  
       this.dataService.inputValues$.subscribe(values => {
         this.dialogInputValues = values;
@@ -219,6 +297,7 @@ export class DetailsComponent implements OnInit {
     this.selectedItemService.selectedItem$.subscribe(name => {
       this.selectedItemName = name; // Mettre à jour le selectedItemName lorsque des mises à jour sont émises
     });
+
     this.loadPublishedVersions();
     this.selectedItemService.selectedVersion$.subscribe((newVersion: any) => {
       this.selectedVersion = newVersion;
@@ -228,7 +307,8 @@ export class DetailsComponent implements OnInit {
     this.showOptions.push(false);
     this.selectedItemID = this.dataService.getSelectedItemID();
     console.log('selectedItemID:', this.selectedItemID);
-  
+   this.submittedDataList = this.dataService.submittedDataList;
+   console.log("Liste initiale:", this.submittedDataList);
     this.dataService.formDataList$.subscribe(formDataList => {
       this.formDataList2 = formDataList;
       console.log(this.formDataList2);
@@ -245,24 +325,25 @@ export class DetailsComponent implements OnInit {
         this.oldC = formDataList[this.selectedItemID - 1].Category;
         this.formDataTypes = formDataList[this.selectedItemID - 1].Types;
         this.oldT = formDataList[this.selectedItemID - 1].Types;
-        this.formDataStatus = 'Inactive/Draft';
-        this.oldS = 'Inactive/Draft';
+        this.formDataStatus = formDataList[this.selectedItemID - 1].Status;
+        this.oldS = formDataList[this.selectedItemID - 1].Status;
           this.formDataId = 1;
-        this.formDataCreateDate = new Date();
+        this.formDataCreateDate = new Date().toLocaleDateString('fr-FR', {
+          hour12: false,
+          timeZone: 'UTC'
+        });
      
         this.formDataCreatedBy = 'name';
 
         this.showDeleteButton = true;
     
-        this.formvalues = formDataList[this.selectedItemID -1].null;
+        this.formvalues = formDataList[this.selectedItemID - 1].inputValues;
        
         console.log("valuessss", this.formvalues);
         
           this.values = this.formvalues[this.selectedItemID -1 ];
           console.log("values", this.values);
-        window.addEventListener('beforeunload', () => {
-          localStorage.setItem('formDataList', JSON.stringify(formDataList));
-        });
+     
           this.checked = false;
           console.log("showDeleteButton:", this.showDeleteButton);
         } else {
@@ -270,8 +351,56 @@ export class DetailsComponent implements OnInit {
         }
     // Initialise showOptions pour la première valeur
     });
-   
 
+   this.dataService.changeData$.subscribe(dataa => {
+
+     this.deta = dataa;
+     console.log("dataaaa", this.deta);
+     this.historyList.push({ ...this.deta });
+
+
+     console.log(this.historyList);
+
+
+   });
+   
+   this.dropdownList1 = [
+     { item_id: 'fr', item_text: 'French' },
+     { item_id: 'es', item_text: 'Spanish' },
+     { item_id: 'ar', item_text: 'Arabic' },
+     { item_id: 'zh', item_text: 'Chinese' },
+     { item_id: 'nl', item_text: 'Dutch' },
+     { item_id: 'fi', item_text: 'Finnish' },
+     { item_id: 'de', item_text: 'German' },
+     { item_id: 'hi', item_text: 'Hindi' },
+     { item_id: 'hu', item_text: 'Hungarian' },
+     { item_id: 'id', item_text: 'Indonesian' },
+     { item_id: 'ga', item_text: 'Irish' },
+     { item_id: 'it', item_text: 'Italian' },
+     { item_id: 'ja', item_text: 'Japanese' },
+     { item_id: 'ko', item_text: 'Korean' },
+     { item_id: 'pl', item_text: 'Polish' },
+     { item_id: 'pt', item_text: 'Portuguese' },
+     { item_id: 'ru', item_text: 'Russian' },
+     { item_id: 'sv', item_text: 'Swedish' },
+     { item_id: 'tr', item_text: 'Turkish' },
+     { item_id: 'uk', item_text: 'Ukrainian' },
+     { item_id: 'vi', item_text: 'Vietnamese' },
+     { item_id: 'da', item_text: 'Danish' },
+     { item_id: 'el', item_text: 'Greek' },
+     { item_id: 'ms', item_text: 'Malay' },
+     { item_id: 'sq', item_text: 'Albanian' }
+   ];
+
+   this.dropdownSettings1 = {
+     singleSelection: false,
+     idField: 'item_id',
+     textField: 'item_text',
+     selectAllText: 'Select All',
+     unSelectAllText: 'UnSelect All',
+     itemsShowLimit: 5,
+     allowSearchFilter: true
+   };
     this.dropdownList = [
       { "id": 1, "itemName": "Entity 1" },
       { "id": 2, "itemName": "Entity 2" },
@@ -369,19 +498,20 @@ export class DetailsComponent implements OnInit {
   toggleOptions(index: number): void {
     this.showOptions[index] = !this.showOptions[index];
   }
-
+  
   // Tableau pour stocker les valeurs saisies
 
   // Méthode pour ajouter une nouvelle valeur
  
-  addInput(index: number) {
-    this.formvalues.splice(index + 1, 0, '');
-    this.showOptions.splice(index + 1, 0, false); // Ajouter un champ d'entrée vide après l'index spécifié
+  addInput() {
+    this.formvalues.splice(this.formvalues.length + 1, 0, '');
+    this.showOptions.splice(this.formvalues.length, 0, false);
+    this.saveLocally();// Ajouter un champ d'entrée vide après l'index spécifié
   }
 
   // Méthode pour supprimer une valeur à l'index spécifié
   removeInput(index: number) {
-    this.inputValues.splice(index, 1); // Supprimer le champ d'entrée à l'index spécifié
+    this.formvalues.splice(index, 1); // Supprimer le champ d'entrée à l'index spécifié
   }
 
   // Méthode pour partager la valeur à l'index spécifié
@@ -402,20 +532,30 @@ export class DetailsComponent implements OnInit {
       line.style.display = 'none';
     });
   }
-    
-    
+ 
+   showHis: boolean = false
+  selectedSection: string = 'details'; // Par défaut, afficher la section 'details'
+
   selectDetails() {
-    this.showForm = true;
-    this.activeLineIndex = 0;// Afficher le formulaire lorsque vous cliquez sur "Details"
+    this.selectedSection = 'details';
+    this.activeLineIndex = 0;
   }
 
   selectValues() {
-    this.showForm = false;
-    this.activeLineIndex = 1 ; // Afficher la table lorsque vous cliquez sur "Values"
+    this.selectedSection = 'values';
+    this.activeLineIndex = 1;
   }
+
+  selectHistory() {
+    this.selectedSection = 'history';
+    this.showHis = true;
+    this.activeLineIndex = 2;
+  }
+  submitt: boolean = false;
   submit(): void {
     console.log('Submitting data...');
-
+    console.log("this", this.selectedItemID);
+    this.dataService.changeIDName(this.selectedItemID);
     const formDataToSend :StaticData = {
       Name: this.formDataName,
       Status: "Inactive/Draft",
@@ -423,18 +563,24 @@ export class DetailsComponent implements OnInit {
       Types: this.formDataTypes,
       DateCreated: this.formDataCreateDate,
      CreatedBy: this.formDataCreatedBy,
-      null: this.formvalues,
-     
-      // Ajoutez d'autres propriétés si nécessaire
+      inputValues: this.formvalues,
     };
-  
- 
-    //this.dataService.setFormData(formDataToSend);
-    this.dataService.addToSubmittedDataList(formDataToSend); // Ajoutez les données soumises à la liste
+    this.submitt = true;
+    this.dataService.submitDeletedState(this.submitt);
+    this.dataService.changeDataName(formDataToSend.Name);
 
+    this.dataService.addToSubmittedDataList(formDataToSend);
+    this.notificationService.show('This static data has been submitted for review');
+    console.log("notif", this.notificationService.show('This static data has been submitted for review'));
+    this.router.navigate(['/static']);
   }
+ 
+  
+
   goToStatic() {
-    this.router.navigate(['/static'])
+    this.router.navigate(['/static']);
+    this.saveLocally();
+
   }
 
   moveLine(index: number) {
@@ -444,11 +590,10 @@ export class DetailsComponent implements OnInit {
   editedName: string;
   startEditingName() {
     this.isEditingName = true;
-    this.editedName = this.formDataList2[this.selectedItemID - 1].Name;
-
-    console.log("save", this.editedName);
-
+    // Vous n'avez pas besoin de copier la valeur actuelle dans editedName car les modifications sont directement liées à formDataName
+    this.dataService.setModifiedName(this.formDataName); // Sauvegardez directement ici
   }
+
   isEditingDescription = false;
   saveEditedName() {
     this.formDataList2[this.selectedItemID - 1].Name = this.editedName;
@@ -461,9 +606,7 @@ export class DetailsComponent implements OnInit {
   editedStatus: string;
   startEditingStatus() {
     this.isEditingStatus = true;
-    this.editedStatus = this.formDataList2[this.selectedItemID - 1].Status;
-    console.log("save", this.editedStatus);
-    this.dataService.setModifiedStatus(this.editedStatus);
+    this.dataService.setModifiedStatus(this.formDataStatus);
   }
   saveEditedStatus() {
     this.formDataList2[this.selectedItemID - 1].Status = this.editedStatus;
@@ -475,9 +618,8 @@ export class DetailsComponent implements OnInit {
   editedCategory: string;
   startEditingCategory() {
     this.isEditingCategory = true;
-    this.editedCategory = this.formDataList2[this.selectedItemID - 1].Category;
-    console.log("save", this.editedCategory);
-    this.dataService.setModifiedCategory(this.editedCategory);
+
+    this.dataService.setModifiedCategory(this.formDataCategory);
   }
 
 
@@ -492,8 +634,8 @@ export class DetailsComponent implements OnInit {
   editedTypes: string;
   startEditingTypes() {
     this.isEditingTypes = true;
-    this.editedTypes = this.formDataList2[this.selectedItemID - 1].Types;
-    console.log("save", this.editedTypes);
+    this.dataService.setModifiedTypes(this.formDataTypes);
+
   
   }
 
@@ -510,9 +652,8 @@ export class DetailsComponent implements OnInit {
   editedCreatedBy: string;
   startEditingCreateBy() {
     this.isEditingCreateby = true;
-    this.editedCreatedBy = this.formDataList2[this.selectedItemID - 1].CreatedBy;
-    console.log("save", this.editedTypes);
-    this.dataService.setModifiedCreatedBy(this.editedCreatedBy);
+   
+    this.dataService.setModifiedCreatedBy(this.formDataCreatedBy);
   }
 
 
@@ -529,39 +670,178 @@ export class DetailsComponent implements OnInit {
   newA: string;
   newD: string;
   newN: number;
+  languageNames: { [key: string]: string } = {
+    'fr': 'French',
+    'es': 'Spanish',
+    'ar': 'Arabic',
+    'zh': 'Chinese',
+    'nl': 'Dutch',
+    'fi': 'Finnish',
+    'de': 'German',
+    'hi': 'Hindi',
+    'hu': 'Hungarian',
+    'id': 'Indonesian',
+    'ga': 'Irish',
+    'it': 'Italian',
+    'ja': 'Japanese',
+    'ko': 'Korean',
+    'pl': 'Polish',
+    'pt': 'Portuguese',
+    'ru': 'Russian',
+    'sv': 'Swedish',
+    'tr': 'Turkish',
+    'uk': 'Ukrainian',
+    'vi': 'Vietnamese',
+    'da': 'Danish',
+    'el': 'Greek',
+    'ms': 'Malay',
+    'sq': 'Albanian'
+  };
+  listtt: string[] = [];
+
+  toggleLanguage(lang: string) {
+    const index = this.selectedLanguages.indexOf(lang);
+    if (index >= 0) {
+      this.selectedLanguages.splice(index, 1);
+    } else {
+      this.selectedLanguages.push(lang);
+      console.log("entityyy", this.selectedLanguages);
+      for (let la of this.selectedLanguages) {
+        const list = this.languageNames[la];
+        this.listtt.push(list);
+        this.dataService.setlist(this.listtt);
+        console.log(this.listtt);
+      }
+    }
+  }
+  entityyyy: string[] = [];
+  getLanguageName(code: string): string {
+    
+    this.entityyyy.push(this.languageNames[code]);
+    console.log("langggg", this.entityyyy);
+    return this.languageNames[code];
+  }
+
+  removeLanguage(lang: string) {
+    const index = this.selectedLanguages.indexOf(lang);
+    if (index >= 0) {
+      this.selectedLanguages.splice(index, 1);
+    }
+  }
+
+
+  saveChanges1() {
+    // Stockez les nouvelles données dans le service
+    this.dataService.newName = this.formDataName;
+    console.log("new", this.formDataName);
+    this.dataService.newS = this.formDataStatus;
+    this.dataService.newA = this.formDataCategory;
+    this.dataService.newR = this.formDataTypes;
+
+    // Naviguez vers une autre page
+    this.router.navigate(['/static']);
+  }
+  change: boolean = false;
+  newCrea: string;
   saveChanges() {
-    if (this.formDataName == undefined) {
-      this.newName = this.oldName;
-      console.log("apres", this.newName);
+    this.change = true;
+    this.dataService.setB(this.change);
+    const id = this.selectedItemID;
+    this.dataService.setId(id);
+    console.log("id", id);
+   this.change=true
+    this.newName = this.formDataName;
+    if (this.oldName != this.newName) {
+      console.log("change");
+      const datachangeN: Change={
+       History : "modifiaction Name",
+        Name: this.newName,
+        Changer: this.formDataCreatedBy,
+        date: new Date().toLocaleDateString('fr-FR', {
+          hour12: false,
+          timeZone: 'UTC'
+        })
+      }
+      console.log("change", datachangeN);
+      this.historyList.push(datachangeN);
+      //this.dataService.sendChangeData(datachange);
     } else {
-      this.newName = this.formDataName;
+      console.log("notchange");
+    }
       console.log("apres", this.newName);
-    };
-    if (this.formDataStatus == undefined) {
-      this.newS = this.oldS;
-      console.log("apres", this.newS);
-    } else {
+    this.dataService.setNewName(this.newName);
+   
       this.newS = this.formDataStatus;
-      console.log("apres", this.newS);
-    };
-    if (this.formDataCategory == undefined) {
-      this.newA = this.oldC;
-      console.log("apres", this.newA);
-    } else {
+    console.log("apres", this.newS);
+    if (this.newS != this.oldS) {
+      console.log("change");
+      const datachangeS: Change = {
+        History: "modifiaction Status",
+        Name: this.newName,
+        Changer: this.formDataCreatedBy,
+        date: new Date().toLocaleDateString('fr-FR', {
+          hour12: false,
+          timeZone: 'UTC'
+        })
+      }
+      console.log("change", datachangeS);
+      this.historyList.push(datachangeS);
+      //this.dataService.sendChangeData(datachange);
+    }
+    
+   
       this.newA = this.formDataCategory;
-      console.log("apres", this.newA);
-    };
-    if (this.formDataTypes == undefined) {
-      this.newR = this.oldT;
-      console.log("apres", this.newR);
-    } else {
+    console.log("apres", this.newA);
+    if (this.newA != this.oldC) {
+      console.log("change");
+      const datachangeC: Change = {
+        History: "modifiaction Category",
+        Name: this.newName,
+        Changer: this.formDataCreatedBy,
+        date: new Date().toLocaleDateString('fr-FR', {
+          hour12: false,
+          timeZone: 'UTC'
+        })
+      }
+      console.log("change", datachangeC);
+      this.historyList.push(datachangeC);
+      this.dataService.sendChangeData(datachangeC);
+    }
+
+   
+    this.dataService.setNewCategory(this.newA);
       this.newR = this.formDataTypes;
-      console.log("apres", this.newR);
-    };
+    console.log("apres", this.newR);
+    if (this.newR != this.oldT) {
+      console.log("change");
+      const datachangeT: Change = {
+        History: "modifiaction Types",
+        Name: this.newName,
+        Changer: this.formDataCreatedBy,
+        date: new Date().toLocaleDateString('fr-FR', {
+          hour12: false,
+          timeZone: 'UTC'
+        })
+      }
+      console.log("change", datachangeT);
+      this.historyList.push(datachangeT);
+      //this.dataService.sendChangeData(datachange);
+    }
+
+
+
+    this.dataService.setNewTypes(this.newR);
+    this.newCrea = this.formDataCreatedBy;
+    this.dataService.setNewC(this.newCrea);
+   
 
     this.router.navigate(['/static']);
 
     console.log("old", this.oldName);
+    
+
+
   }
+
 }
     

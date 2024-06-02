@@ -17,7 +17,7 @@ export const ROUTES: RouteInfo[] = [
   {
     path: '/local-user', title: ' Specific Data', icon: 'ni-bullet-list-67 text-green', class: ''
   },
-
+  { path: '/Profil', title: ' Profile', icon: "fa fa-user text-green" , class: '' },
  
 ]
 

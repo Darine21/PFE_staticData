@@ -38,7 +38,7 @@ import { ReasonDialogComponent } from './pages/validation/reject-dia/reason-dial
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { CreateEntityComponent } from './pages/create-entity/create-entity.component';
-import { JwtInterceptor } from './Auth.gard';
+
 import { AdminLocalComponent } from './pages/admin-local/admin-local.component';
 import { DialogEComponent } from './pages/create-entity/dialog-e/dialog-e.component';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
@@ -49,6 +49,18 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { CustomDatePipe } from './custom-date.pipe';
 //import { I18nService } from './pages/static/details/Translate.service';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { AuthInterceptor } from './Auth.gard';
+import { NotificationComponent } from './pages/static/details/notification/notification.component';
+import { NotificationService } from './pages/static/details/notification.service';
+import { CreationEComponent } from './pages/create-entity/creation-e/creation-e.component';
+import { ConfirmationDialogComponent } from './pages/static/confirmation-dialog/confirmation-dialog.component';
+import { DetailsLocalComponent } from './pages/admin-local/details-local/details-local.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { NotificationSComponent } from './pages/validation/share/notification-s/notification-s.component';
+import { NotificationEComponent } from './pages/create-entity/notification-e/notification-e.component';
+import { ShareVComponent } from './pages/validation/details-v/share-v/share-v.component';
+import { AccountService } from './pages/account/account.service';
 
 
 @NgModule({
@@ -65,21 +77,28 @@ import { CustomDatePipe } from './custom-date.pipe';
     MatDialogModule,
     CollapseModule.forRoot(),
     ReactiveFormsModule,
-    ToastrModule.forRoot(),
+  
     AngularMultiSelectModule,
     MultiSelectModule,
     MatIconModule,
     MatExpansionModule,
-    //MdbTabsModule,
-    //MdbTabModule,
+  
+    MatAutocompleteModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
    AgmCoreModule.forRoot({
      
      apiKey: 'AIzaSyAvcDy5ZYc2ujCS6TTtI3RYX5QmuoV8Ffw'
-   })
-
+   }),
+    ToastrModule.forRoot({
+      positionClass: 'toast-top-center', // Position en haut de la page, centré
+      closeButton: true, // Bouton de fermeture
+      timeOut: 3000, // Durée d'affichage en millisecondes
+      preventDuplicates: true, // Empêcher les duplications
+    }),
+    MatSnackBarModule,
+ 
   ],
   declarations: [
     AppComponent,
@@ -100,18 +119,32 @@ import { CustomDatePipe } from './custom-date.pipe';
     CreateEntityComponent,
     AdminLocalComponent,
     DialogEComponent,
+
     UserProfileComponent,
     DialogSpecComponent,
     MapsComponent,
-    CustomDatePipe
-   
+    CustomDatePipe,
+    NotificationComponent,
+    CreationEComponent,
+    ConfirmationDialogComponent,
+    DetailsLocalComponent,
+    NotificationEComponent,
+    ShareVComponent,
+    NotificationSComponent
     //ValidDiaComponent,
     //ShareDiaComponent,
     //DetailsComponent,
     //DetailsComponent,
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
+  
+    {  
+      provide: HTTP_INTERCEPTORS,
+      useClass: AccountService,
+      multi: true
+    },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    NotificationService
     
   ],
   bootstrap: [AppComponent],

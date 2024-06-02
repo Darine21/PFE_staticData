@@ -5,6 +5,10 @@
   border-bottom: 1px solid black; /* Style de ligne */
   margin-top: 8px; /* Marge en haut de la ligne */
 }
+.languages-dropdown {
+  max-height: 200px; /* Définir la hauteur maximale du menu déroulant */
+  overflow-y: auto; /* Activer le défilement vertical si le contenu dépasse la hauteur maximale */
+}
 
 .collapse navbar-collapse ml-auto{
     overflow-y:hidden;
@@ -12,6 +16,22 @@
 }
 .line.active {
   opacity: 1; /* Lorsque l'élément "Values" est actif, la ligne devient visible */
+}
+.translation-input {
+  width: 60%; /* Ajustez la largeur selon vos besoins */
+  height: 40px; /* Ajustez la hauteur selon vos besoins */
+  padding: 10px; /* Ajoutez du padding pour plus d'espace intérieur */
+  border: 1px solid #ccc; /* Bordure légère */
+  border-radius: 5px; /* Coins arrondis */
+  font-size: 16px; /* Taille de police */
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Ombre légère pour l'effet de profondeur */
+  outline: none; /* Enlever le contour par défaut lors du focus */
+  transition: border-color 0.3s, box-shadow 0.3s; /* Transition douce pour le focus */
+}
+
+.translation-input:focus {
+  border-color: #66afe9; /* Couleur de bordure lors du focus */
+  box-shadow: 0px 0px 8px rgba(102, 175, 233, 0.6); /* Ombre lors du focus */
 }
 
 
@@ -56,7 +76,9 @@
   background-color: silver; /* Couleur de la ligne */
   display: none; /* Par défaut, cachez la ligne */
 }
-
+.page-container {
+  overflow-x: hidden;
+}
 .nav-item.active::after {
   display: block; /* Affichez la ligne lorsque l'élément est actif */
 }
@@ -111,8 +133,10 @@
 .submit-button {
   background-color: #ef8404; /* Red */
   color: #ffffff; /* White */
-  border: none;
+  border-radius: 4px;
+  border-color: #ef8404;
   margin-left: 10px;
+  padding: 7px 8px;
 }
 .editable-content {
   display: inline-block;
@@ -126,3 +150,61 @@
   min-width: 550px; /* Ajustez la largeur selon vos préférences */
   cursor: pointer; /* Ajoute un curseur de type pointeur */
 }
+/* styles.css */
+/* styles.css */
+.translate-btn {
+  margin-left: 10px;
+}
+
+.add-btn {
+  margin-left: 10px;
+}
+
+.translation-input {
+  width: 100px; /* Adjust as needed */
+}
+
+.options-menu {
+  margin-left: 10px;
+}
+.value-input {
+  width: 200px; /* Adjust the width as needed */
+}
+
+.translation-input {
+  width: 150px; /* Adjust the width as needed */
+}
+
+.value-row {
+  display: flex;
+  align-items: center;
+}
+
+.toast-top-center {
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.toast-custom-center {
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+}
+
+.toast-info-custom {
+  background-color: #17a2b8 !important;
+  color: white !important;
+}
+
+.toast-success-custom {
+  background-color: #28a745 !important;
+  color: white !important;
+}
+
+.toast-error-custom {
+  background-color: #dc3545 !important;
+  color: white !important;
+}
+
+

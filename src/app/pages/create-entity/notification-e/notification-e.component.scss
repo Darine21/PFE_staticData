@@ -1,0 +1,11 @@
+.notification {
+  position: fixed;
+  top: 55px; /* Vous pouvez ajuster cette valeur pour modifier la hauteur */
+  right: 20px; /* Placer la notification à droite */
+  background-color: #f49630; /* Vert clair */
+  color: white;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}

@@ -1,66 +1,96 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Register } from '../models/register';
-import { environment } from '../../../environments/environement.developement';
-import { Login } from '../models/login';
-import { User } from '../models/user';
-import { ReplaySubject, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { HttpClient, HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { Observable, throwError, BehaviorSubject } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/environement.developement'; // Assurez-vous que le chemin est correct
+
+export interface User {
+  jwt: string;
+  FirstName: string;
+  LastName: string;
+  RefreshToken: string;
+  RefreshTokenExpiryTime: Date;
+  role: string;
+}
+
+export interface Login {
+  username: string;
+  password: string;
+}
+
+export interface Register {
+  username: string;
+  email: string;
+  password: string;
+}
 
 @Injectable({
   providedIn: 'root'
 })
-export class AccountService {
-  private userSource = new ReplaySubject<User | null>(1);
+export class AccountService implements HttpInterceptor {
+  private userSource = new BehaviorSubject<User | null>(null);
   user$ = this.userSource.asObservable();
 
   constructor(private http: HttpClient, private router: Router) { }
 
-  refreshUser(jwt: string | null) {
-    if (jwt == null) {
-      this.userSource.next(null);
-      return of(undefined);
-    }
-    let headers = new HttpHeaders();
-    headers = headers.set("Authorization", "Bearer " + jwt);
-    return this.http.get<User>(`${environment.appUrl}/api/account/refresh-user-token`, { headers }).pipe(
-      map((user: User) => {
-        if (user) {
-          this.setUser(user);
-        }
-      })
-    );
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    const jwt = this.getJWT();
+    if (jwt) {
+      request = request.clone({
+        setHeaders: {
+          Authorization: `Bearer ${ jwt }`        }
+      });
+
+     }
+return next.handle(request);
   }
 
-  login(model: Login) {
-    return this.http.post<User>(`${environment.appUrl}/api/pages/account/login`, model);
-  }
-
-  logout() {
-    localStorage.removeItem(environment.userKey);
-    this.userSource.next(null);
-    this.router.navigate(['/']);
-  }
-
-  register(model: Register) {
-    return this.http.post(`${environment.appUrl}/api/pages/account/register`, model);
-  }
-
-  getJWT() {
-    if (typeof localStorage !== 'undefined') {
-      const key = localStorage.getItem(environment.userKey);
-      if (key) {
-        const user: User = JSON.parse(key);
-        return user.jwt;
+login(model: Login): Observable < User > {
+  return this.http.post<User>(`${environment.appUrl }/api/pages/account/login`, model).pipe(
+    tap(user => {
+      if (user && user.jwt) {
+        this.storeUser(user);
       }
-    }
-    return null;
-  }
+    }),
+    catchError(error => {
+      console.error('Login error:', error);
+      return throwError(error);
+    })
+  );
+}
 
+register(model: Register): Observable < User > {
+  return this.http.post<User>(`${ environment.appUrl }/api/pages/account/register`, model).pipe(
+    tap(user => {
+      if (user && user.jwt) {
+        this.storeUser(user);
+      }
+    }),
+    catchError(error => {
+      console.error('Registration error:', error);
+      return throwError(error);
+    })
+  );
+}
 
-  private setUser(user: User) {
-    localStorage.setItem(environment.userKey, JSON.stringify(user));
-    this.userSource.next(user);
-  }
+logout() {
+  this.removeUser();
+  this.router.navigate(['/login']);
+}
+
+  private storeUser(user: User) {
+  localStorage.setItem('user', JSON.stringify(user));
+  this.userSource.next(user);
+}
+
+  private removeUser() {
+  localStorage.removeItem('user');
+  this.userSource.next(null);
+}
+
+getJWT(): string | null {
+  const user = localStorage.getItem('user');
+  return user ? JSON.parse(user).jwt : null;
+}
 }

@@ -81,29 +81,34 @@ export class DialogEComponent implements OnInit {
   ngOnInit() {
     this.selectedItemID = this.dataService.getSelectedItemID();
     console.log('selectedItemID:', this.selectedItemID);
-    this.formDataListSubscription = this.dataService.formDataList2$.subscribe(formDataList => {
+    this.formDataListSubscription = this.dataService.formData1$.subscribe(formDataList => {
       this.formDataList2 = formDataList;
       if (formDataList) {
         console.log('Données reçues dans StaticComponent :', formDataList);
         
-        this.formDataName = formDataList[this.selectedItemID - 1].name;
-        this.oldName = formDataList[this.selectedItemID - 1].name;
+        this.formDataName = formDataList[this.selectedItemID - 1][0].name;
+        this.oldName = formDataList[this.selectedItemID - 1][0].name;
         console.log("bellah", this.formDataName);
-        this.formDataResponsible = formDataList[this.selectedItemID - 1].responsible;
-        this.oldRes = formDataList[this.selectedItemID - 1].responsible;
-        this.formDataaddress = formDataList[this.selectedItemID - 1].address;
+        this.formDataResponsible = formDataList[this.selectedItemID - 1][0].responsible;
+        this.oldRes = formDataList[this.selectedItemID - 1][0].responsible;
+        this.formDataaddress = formDataList[this.selectedItemID - 1][0].address;
         this.oldAdd = formDataList[this.selectedItemID - 1].address
-        this.formDataStatus = formDataList[this.selectedItemID - 1].status;
-        this.oldS = formDataList[this.selectedItemID - 1].status;
-        this.formDatanum = formDataList[this.selectedItemID - 1].phoneNumber;
-        this.oldN = formDataList[this.selectedItemID - 1].phoneNumber;
-        this.CreateDate = formDataList[this.selectedItemID - 1].dateCreated;
-        this.oldDate = formDataList[this.selectedItemID - 1].dateCreated;
-        this.formDataCreatedBy = formDataList[this.selectedItemID - 1].descreption;
-        this.oldDes = formDataList[this.selectedItemID - 1].descreption;
-        this.formDataLanguage = formDataList[this.selectedItemID - 1].language;
+        this.formDataStatus = formDataList[this.selectedItemID - 1][0].status;
+        this.oldS = formDataList[this.selectedItemID - 1][0].status;
+        this.formDatanum = formDataList[this.selectedItemID - 1][0].phoneNumber;
+        this.oldN = formDataList[this.selectedItemID - 1][0].phoneNumber;
+        this.CreateDate = formDataList[this.selectedItemID - 1][0].dateCreated;
+        this.oldDate = formDataList[this.selectedItemID - 1][0].dateCreated;
+        this.formDataCreatedBy = formDataList[this.selectedItemID - 1][0].description;
+        this.oldDes = formDataList[this.selectedItemID - 1][0].description;
+        this.formDataLanguage = formDataList[this.selectedItemID - 1][0].null;
         this.showDeleteButton = true;
       }
+    
+        console.log("Langues sélectionnées :", this.formDataLanguage);
+        
+      
+
 });
 
   }
@@ -361,7 +366,7 @@ export class DialogEComponent implements OnInit {
       address: this.newA,
       dateCreated: Datee,
       phoneNumber: this.newN,
-      language: this.formDataLanguage
+      languages: this.formDataLanguage
 
     }
     this.validService.UpdateEntity(this.oldName, entityE).subscribe(

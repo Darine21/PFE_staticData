@@ -12,7 +12,7 @@
     color: #ffc107; /* Couleur de l'icône "Warning" */
   }
 </style>
-<div class="header bg-gradient-danger custom-header" style="height: 53px;">
+<div class="header bg-gradient-danger custom-header" style="height: 53px; ">
   <div class="container-fluid">
     <div class="header-body">
       <!-- Content here -->
@@ -182,18 +182,19 @@
                 <input type="checkbox" [checked]="item.checked" (change)="onCheckboxChange($event.target.checked, item)">
               </td>
               <td class="px-4 py-3 mx-6">{{i + 1}}</td>
-              <td class="px-4 py-3 mx-6" (click)="logName(item.formDataName)">{{item.Name}}</td>
-              <td class="px-4 py-3 mx-6">{{item.Status  }}</td>
-              <td class="px-4 py-3 mx-6">{{item.Category }}</td>
-              <td class="px-4 py-3 mx-6">{{item.Types }}</td>
-              <td class="px-4 py-3 mx-6">{{item.DateCreated}}</td>
-              <td class="px-4 py-3 mx-6">{{item.CreatedBy}}</td>
+              <td class="px-4 py-3 mx-6" (click)="goToDetailsV(i+1)" style="cursor: pointer;">{{item?.Name}}</td>
+              <td class="px-4 py-3 mx-6" >{{item?.Status  }}</td>
+              <td class="px-4 py-3 mx-6">{{item?.Category }}</td>
+              <td class="px-4 py-3 mx-6">{{item?.Types }}</td>
+              <td class="px-4 py-3 mx-6">{{item?.DateCreated}}</td>
+              <td class="px-4 py-3 mx-6">{{item?.CreatedBy}}</td>
           
               <!-- Colonne Actions avec les boutons Valider et Rejeter -->
               <td class="px-4 py-3 mx-4 ml-4">
-                <button *ngIf="!isItemSelected" class="btn btn-success btn-sm" (click)="valider(item)">Valide</button>
-               
-                <button *ngIf="!isItemSelected" class="btn btn-danger btn-sm" (click)="rejeter(item)">Reject</button>
+                <button *ngIf="!isItemSelected" class="btn btn-success btn-sm"  (click)="delete(item.Name, i)"  >delete</button>
+
+                <button *ngIf="!isItemSelected" class="btn btn-danger btn-sm" (click)="goToDetailsV(i+1)">Edit</button>
+                <button *ngIf="showShare " class="btn btn-danger btn-sm" (click)="openShareDialog()">Share</button>
 
 
               </td>

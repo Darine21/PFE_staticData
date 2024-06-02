@@ -6,6 +6,7 @@ import { RegisterComponent } from './register/register.component';
 import { AccountRoutingModule } from './account-routing.module';
 //import { SharedModule } from '../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { AccountService,  } from './account.service';
 
 import { FormsModule } from '@angular/forms';
 
@@ -20,8 +21,8 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     FormsModule,
     AccountRoutingModule,
-    ReactiveFormsModule
-    //SharedModule
+    ReactiveFormsModule,
+  
   ]
 })
 export class AccountModule { }

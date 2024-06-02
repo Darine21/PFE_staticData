@@ -1,4 +1,4 @@
-<div class="modal-header">
+<div *ngIf="!show" class="modal-header">
   <h4 class="modal-title">Enter Rejection Reason</h4>
   <button type="button" class="close" aria-label="Close" (click)="closeDialog()">
     <span aria-hidden="true">&times;</span>

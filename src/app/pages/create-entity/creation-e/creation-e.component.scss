@@ -1,0 +1,128 @@
+/* Ajoutez ces styles pour le conteneur */
+.dialog-container {
+ width:650px;
+  position: absolute;
+ top:10%;
+ left:35%;
+}
+
+/* Ajoutez ces styles pour le multiselect */
+.angular2-multiselect {
+  width: 100% !important; /* Assurez-vous que la largeur du multiselect est à 100% */
+}
+
+.custome-class {
+  width: 100%; /* Assurez-vous que la classe personnalisée a une largeur de 100% */
+}
+
+
+
+.form-group {
+  width: 200%;
+}
+.dialog-title {
+  text-align: center;
+  margin-top: 40px;
+  color: #dc3545; /* Red */
+  font-family: 'Arial', sans-serif;
+  font-size: 28px;
+}
+.white-block {
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 3px;
+  border-radius: 5px;
+  width:500px;
+}
+.col-md-4 {
+  flex: 1;
+  max-width: 100%;
+}
+
+.title-icon {
+  margin-right: 10px;
+}
+
+.dialog-content {
+  padding: 20px;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: center;
+}
+
+.action-button {
+  padding: 10px 20px;
+  margin: 10px;
+}
+
+.button-icon {
+  margin-right: 5px;
+}
+
+.button-container {
+  text-align: end;
+  margin-top: 40px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+
+.submit-button, .cancel-button {
+  width: 120px;
+  height: 40px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.submit-button {
+  background-color: #00A3A3; /* green */
+  color: #ffffff; /* White */
+  border: none;
+}
+
+.cancel-button {
+  background-color: #ef8404; /* Red */
+  color: #ffffff; /* White */
+  border: none;
+  margin-left: 10px;
+}
+
+.input-wrapper {
+  display: flex; /* Utiliser flexbox pour aligner les éléments horizontalement */
+  align-items: center;
+}
+
+.input-name {
+  width: 300px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  outline: none;
+}
+
+.label-name {
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+.input-buttons {
+  /* Utiliser flexbox pour aligner les éléments horizontalement */
+  align-items: center; /* Aligner verticalement les éléments sur l'axe des colonnes */
+  justify-content: center; /* Aligner horizontalement les éléments sur l'axe principal */
+}
+
+.btn-circle {
+  background-color: #00A3A3; /* Changer la couleur du fond */
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin: 0 5px; /* Espacement horizontal entre les boutons */
+  /* Conserver les coins arrondis */
+}
+
+.input-container {
+  margin-bottom: 10px; /* Ajoutez une marge en bas pour créer de l'espace entre chaque champ de valeur */
+}

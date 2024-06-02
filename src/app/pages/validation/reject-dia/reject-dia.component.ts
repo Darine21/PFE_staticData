@@ -62,12 +62,14 @@ export class RejectDiaComponent implements OnInit {
   status1: any;
   onYesClick(): void {
     this.showReasonInput = true;
-    this.staticservice.RejectedStaticData(this.selectedItemName).subscribe(
+    this.staticservice.RejectedStaticData(this.namee).subscribe(
       (response) => {
         console.log('Rejection successful:', response);
         for (let item of this.submittedDataList) {
-          if (item.Name == this.selectedItemName) {
+          if (item.Name == this.namee) {
             item.Status = "Rejected";
+            console.log("itzmR", item);
+            this.dataService.changeItem1(item);
 
            
           } else {
@@ -93,7 +95,7 @@ export class RejectDiaComponent implements OnInit {
       console.log('Reason:', reason);
       this.reason = reason;
       const rejectSD: RejectSD = {
-        Name: this.selectedItemName,
+        Name: this.namee,
         Status: "Rejected",
         DateCreated: new Date(),
         CreatedBy: "name",
@@ -116,7 +118,7 @@ export class RejectDiaComponent implements OnInit {
     }).catch((error) => {
       console.log('Modal closed without entering reason.');
     });
-  
+    this.showFirstDialog = false;
   }
 
   reason: string = '';
@@ -167,12 +169,15 @@ export class RejectDiaComponent implements OnInit {
     // Ici, vous pouvez générer le fichier Excel et l'enregistrer à l'emplacement choisi par l'utilisateur
   }
 
-
+  namee: string;
   selectedItemName: string = '';
   ngOnInit(): void {
     this.selectedItemService.selectedItem$.subscribe(name => {
-      this.selectedItemName = name; // Mettre à jour le selectedItemName lorsque des mises à jour sont émises
+      this.selectedItemName = name;
+      console.log("staticdata", this.selectedItemName);// Mettre à jour le selectedItemName lorsque des mises à jour sont émises
     });
+     this.namee = this.selectedItemService.getsharedata();
+    console.log(this.namee);
     this.submittedDataList = this.dataService.submittedDataList;
     console.log("listtt", this.submittedDataList);
   }

@@ -7,5 +7,5 @@ export interface Entity {
   //numTel : number;
   descreption: string;
   dateCreated: String;
-  language: string[];
+  languages: string[];
 }

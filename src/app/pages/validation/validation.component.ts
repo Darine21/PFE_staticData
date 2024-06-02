@@ -10,6 +10,10 @@ import { DataService } from '../static/data.service';
 import { NavbarService } from '../../components/NavBar.service';
 import { StaticService } from '../static/static.service';
 import { StaticData } from '../models/staticdata';
+import { ShareDialogComponent } from './share/share.component';
+import { ValidService } from './validation.service';
+import { ConfirmationDialogComponent } from '../static/confirmation-dialog/confirmation-dialog.component';
+import { Toast, ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-validation',
   templateUrl: './validation.component.html',
@@ -66,15 +70,58 @@ export class ValidationComponent implements OnInit {
     dataE: any;
     Status: any;
 
-  constructor(private navbarService: NavbarService, private dialog: MatDialog, private route: ActivatedRoute, private selectedItemService: SelectedItemService, private dataService: DataService, private router: Router, private staticservice: StaticService) { }
+  constructor(private staticdata: StaticService,private toastr: ToastrService, private validedata: ValidService, private navbarService: NavbarService, private dialog: MatDialog, private route: ActivatedRoute, private selectedItemService: SelectedItemService, private dataService: DataService, private router: Router, private staticservice: StaticService) { }
   @Output() statusUpdate: EventEmitter<string> = new EventEmitter<string>();
+  openShareDialog() {
 
+    const dialogRef = this.dialog.open(ShareDialogComponent, {
+      width: '600px', // Customize the width as needed
+      autoFocus: false, // Prevent autofocus on the first input
+      panelClass: 'custom-dialog-container' // Custom class for additional styling
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      // Handle after close
+    });
+  }
   logName(name: string) {
     console.log("Name clicked:", name);
   }
- 
-  
 
+  delete(name: string, i: number) {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent);
+    console.log("zzz");
+    this.dataService.confirm$.subscribe(result => {
+
+      if (result) {
+        console.log("view", name);
+        console.log(this.submittedDataList);
+
+
+        this.validedata.DeleteValideStaticData(name).subscribe({
+          next: (response) => {
+            console.log("Response from API:", response);
+            // Remove the item from the list after successful deletion
+            this.submittedDataList.splice(i, 1);
+            console.log("apres", this.submittedDataList);
+            //localStorage.setItem('', JSON.stringify(this.submittedDataList));
+            this.toastr.success('Data deleted successfully!', 'Success');
+          },
+          error: (error) => {
+            
+            console.log("eeeee");
+            console.error("Error deleting data:", error);
+            this.submittedDataList.splice(i, 1);
+            localStorage.setItem('ValidData', JSON.stringify(this.submittedDataList));
+            this.toastr.error('Failed to delete data!', 'Error');
+            this.router.navigate(['/valide']);
+          }
+        });
+      }
+    });
+
+  }
   openDialog(): void {
     this.showRejectDialog = true;
     const dialogRef = this.dialog.open(RejectDiaComponent, {
@@ -92,6 +139,10 @@ export class ValidationComponent implements OnInit {
     this.selectedItemService.updateSelectedItem(name);
   }
   valider(item: any) {
+    this.selectedItemService.changeName(item.Name);
+    console.log("ittem", item);
+    this.selectedItemService.shareitem(item);
+    this.dataService.changeItem(item);
     item.showValidDialog = true;
     console.log("ddd", item.Name);
     this.staticservice.ValidateStaticData(item.Name).subscribe(
@@ -109,7 +160,7 @@ export class ValidationComponent implements OnInit {
     this.StatusList.push("Approval");
     console.log("status", this.StatusList);
     this.navbarService.changeStatus(this.StatusList);
-
+    
     const dialogRef = this.dialog.open(ValidDiaComponent);
 
 
@@ -190,10 +241,26 @@ export class ValidationComponent implements OnInit {
   }
 
   formDataNameList: string[] = [];
+  goToDetailsV(id: number) {
+
+
+    const item = id;
+    console.log("iiii", item);
+    this.dataService.setSelectedItemID(item)
+    this.router.navigate(['/detailsV', id]);
+  }
   goToReject() { this.router.navigate(['/rejected']); }
   goToCardS() { this.router.navigate(['/card-share']); }
+  showShare: boolean = false;
   ngOnInit(): void {
-
+    const storedData = localStorage.getItem('ValidData');
+    if (storedData) {
+      this.submittedDataList = JSON.parse(storedData);
+    }
+    this.selectedItemService.currentvalide.subscribe(name => {
+      this.showShare = name;
+      console.log("name", this.showShare);
+    });
         this.navbarService.reason$.subscribe(reason => {
       this.notif.push(reason);
       console.log('Validation:', this.notif);
@@ -203,7 +270,7 @@ export class ValidationComponent implements OnInit {
    
       this.submittedDataList = this.dataService.submittedDataList;
       console.log("Liste initiale:", this.submittedDataList);
-    
+    localStorage.setItem('ValidData', JSON.stringify(this.submittedDataList));
       this.submittedDataList.forEach(item => {
         item.showRejectDialog = this.showRejectDialog;
         item.showValidDialog = this.showValidDialog;

@@ -1,4 +1,4 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import * as L from 'leaflet';
 import { Entity } from '../models/Entity';
@@ -9,6 +9,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { DataService } from '../static/data.service';
 import { MouseEvent } from '@agm/core';
 import { Language } from '../models/Language';
+import { SelectedItemService } from '../validation/communiation.service';
+import { CreationEComponent } from './creation-e/creation-e.component';
+import { ConfirmationDialogComponent } from '../static/confirmation-dialog/confirmation-dialog.component';
+import { NotificationService } from '../static/details/notification.service';
 
 interface ApiResponse {
   message: string;
@@ -20,7 +24,7 @@ interface ApiResponse {
   templateUrl: './create-entity.component.html',
   styleUrls: ['./create-entity.component.scss']
 })
-export class CreateEntityComponent implements AfterViewInit {
+export class CreateEntityComponent implements OnInit {
   map: any;
   lat: number = 51.673858;
   lng: number = 7.815982;
@@ -36,13 +40,60 @@ export class CreateEntityComponent implements AfterViewInit {
   ];
   selectedLanguages: string[] = []; // Ajoutez cette ligne
   showLanguageSelect: boolean;
+    formDataName: any;
 
   constructor(
     private valideService: ValidService,
     private toastr: ToastrService,
     private dialog: MatDialog,
-    private dataservice: DataService
+    private dataservice: DataService,
+    private validservice: SelectedItemService,
+    private notification: NotificationService
   ) { }
+  filterEmptyItems() {
+    this.formDataList = this.formDataList.filter(item => item && item[0] && item[0].name);
+    localStorage.setItem('entity', JSON.stringify(this.formDataList));
+  }
+  lisste: string[] = [];
+  selectedLanguagesDict: { [key: string]: string[] } = {};
+  ngOnInit(): void {
+    const storedData = localStorage.getItem('entity');
+    if (storedData) {
+      this.formDataList = JSON.parse(storedData);
+      this.filterEmptyItems(); // Filtrer les éléments vides après initialisation
+    }
+
+    this.dataservice.formDataList2$.subscribe(formdata => {
+      if (formdata) {
+        this.formDataList.push(formdata);
+       //localStorage.setItem('entity', JSON.stringify(this.formDataList));
+
+        this.filterEmptyItems(); // Filtrer les éléments vides après ajout
+        console.log("darine", this.formDataList);
+        localStorage.setItem('entity', JSON.stringify(this.formDataList));
+        this.dataservice.updateFormData1(this.formDataList);
+        //this.validservice.updateList1(this.formDataList);
+
+        this.lisst = [];
+        for (let item of this.formDataList) {
+          if (item && item[0] && item[0].name) {
+            //this.dataservice.addToList(item[0].name);
+            this.lisst.push(item[0].name);
+            this.selectedLanguagesDict[item[0].name] = item[0].null.map(lang => lang.itemName);
+            
+          }
+        }
+        console.log("dicc", this.selectedLanguagesDict);
+        console.log("list entity", this.lisst);
+        this.dataservice.updateSelectedLanguagesDict(this.selectedLanguagesDict);
+       
+        this.validservice.updateList(this.lisst);
+        console.log("Dictionnaire des langues sélectionnées :", this.dataservice.getAllSelectedLanguages());
+      }
+    });
+  }
+
+
   dropdownList2 = [
   
       { "id": "en", "itemName": "English" },
@@ -92,52 +143,52 @@ selectedItems2 = [
     displayAllSelectedText: true,
     searchPlaceholderText: 'Search...'
   };
-  ngAfterViewInit(): void {
-    this.initMap();
-  }
-
+ 
+  langue: string[] = [];
   onLanguageSelect(item: any) {
-    console.log('Language selected:', item);
+    this.langue.push(item);
+   
+    console.log('Language selected:', this.langue);
+    this.dataservice.changeLang(this.langue);
   }
 
   onLanguageDeselect(item: any) {
     console.log('Language deselected:', item);
   }
 
-  initMap(): void {
-    this.map = L.map('map').setView([51.505, -0.09], 13);
+  
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(this.map);
+  formDataList:any[] = [];
+create(form: NgForm) {
 
-    const marker = L.marker([51.5, -0.09]).addTo(this.map);
-    marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
+  const formData = form.value;
+  const name = formData.name;
+  const selectedLanguages = formData.language;
+  
+  
+  console.log("name", name);
+  const address = formData.address;
+  console.log("address", address);
+  const descreption = formData.descreption;
+  console.log("descreption", descreption);
+  const status = formData.status;
+  console.log("status", status);
+  const responsable = formData.responsible;
+  console.log("responsable", responsable);
+  const phoneNum = formData.phoneNumber;
+
+  console.log("Lang", selectedLanguages);
+  console.log("num", phoneNum);
+  // Ajouter l'entité et ses langues au dictionnaire
+  if (selectedLanguages) {
+    console.log("Langues sélectionnées :", selectedLanguages);
+    this.dataservice.setSelectedLanguages(name, selectedLanguages.map(lang => lang.itemName));
+  } else {
+    console.log("Aucune langue sélectionnée.");
   }
 
-  formDataList: Entity[] = [];
+  console.log("Dictionnaire des langues sélectionnées :", this.dataservice.getAllSelectedLanguages());
 
-  create(form: NgForm) {
-    const storedData = localStorage.getItem('entity');
-    if (storedData) {
-      this.formDataList = JSON.parse(storedData);
-    }
-    const formData = form.value;
-    console.log("form", formData);
-    const name = formData.name;
-    console.log("name", name);
-    const address = formData.address;
-    console.log("address", address);
-    const descreption = formData.descreption;
-    console.log("descreption", descreption);
-    const status = formData.status;
-    console.log("status", status);
-    const responsable = formData.responsible;
-    console.log("responsable", responsable);
-    const phoneNum = formData.phoneNumber;
-    const selectedLanguages = formData.languages;
-    console.log("Lang", selectedLanguages);
-    console.log("num", phoneNum);
 
     this.formDataList.push(formData);
 
@@ -162,7 +213,7 @@ selectedItems2 = [
       dateCreated: formattedDateTime,
       phoneNumber: phoneNum,
       responsible: formData.responsible,
-      language: selectedLanguages,
+      languages: selectedLanguages,
     };
 
     this.valideService.Addition(entity).subscribe({
@@ -184,24 +235,66 @@ selectedItems2 = [
       this.lisst.push(item.name);
       console.log("list entity", this.lisst);
     }
+    console.log("langggg", this.formDataList[0].languages)
   }
+  showForm = false;
   lisst: string[] = [];
+  show=false
   delete(i: number) {
-    console.log("sss", this.formDataList[i]);
-    this.valideService.DeleteEntity(this.formDataList[i]).subscribe({
-      next: (response) => {
-        console.log("Response from API:", response);
-        this.toastr.success('Entity deleted successfully!', 'Success');
-      },
-      error: (error) => {
-        this.formDataList.splice(i, 1);
-        localStorage.setItem('entity', JSON.stringify(this.formDataList));
-        console.error("Error deleting entity:", error);
-        this.toastr.error('Failed to delete entity!', 'Error');
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent);
+    console.log("zzz");
+    this.show = true;
+    this.dataservice.confirm$.subscribe(result => {
+
+      if (result) {
+        console.log("view", this.formDataList[i]);
+        console.log("view", this.formDataList[i]);
+        this.valideService.DeleteEntity(this.formDataList[i]).subscribe({
+          next: (response) => {
+            console.log("Response from API:", response);
+            this.notification.show('Entity deleted successfully!');
+          },
+          error: (error) => {
+            this.formDataList.splice(i, 1);
+            localStorage.setItem('entity', JSON.stringify(this.formDataList));
+            
+            console.error("Error deleting entity:", error);
+            this.notification.show('Entity deleted successfully!');
+          }
+        });
+
+      }
+    })
+  }
+
+
+
+
+
+
+  
+  openCreateModal() {
+    const modal = document.getElementById('createModal');
+    if (modal) {
+      modal.style.display = 'block';
+    }
+  }
+
+  closeCreateModal() {
+    const modal = document.getElementById('createModal');
+    if (modal) {
+      modal.style.display = 'none';
+    }
+  }
+  opendialogue() {
+    const dialogRef = this.dialog.open(CreationEComponent, {
+      width: '500px'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
       }
     });
   }
-
   openDialog(i: number): void {
     const item = i;
     console.log("dataaa", item);

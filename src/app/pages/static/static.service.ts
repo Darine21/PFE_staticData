@@ -19,9 +19,12 @@ export class StaticService {
       Types: '',
     Category: '',
     Status: 'Inactive/Draft',
-    DateCreated: new  Date(),
+    DateCreated: new Date().toLocaleDateString('fr-FR', {
+      hour12: false,
+      timeZone: 'UTC'
+    }),
     CreatedBy: '',
-    null:[],
+    inputValues:[],
   };
   list: StaticData[];
 
@@ -47,7 +50,9 @@ export class StaticService {
   RejectedStaticData(model: string) {
     return this.http.put(`${environment.appUrl}/api/pages/static/StaticData`, model)
   }
-
+  DeleteSubmit(model: string) {
+    return this.http.delete(`${environment.appUrl}/api/pages/static/StaticData/stat`)
+  } 
 
 }
 

@@ -4,7 +4,7 @@ export interface EntityLocal {
   Types: string;
   Category: string;
   Status: "Inactive/Draft"; // Utiliser une chaîne au lieu d'un type spécifique
-  DateCreated: Date;
+  DateCreated: string;
   CreatedBy: string;
   null: string[];
 }

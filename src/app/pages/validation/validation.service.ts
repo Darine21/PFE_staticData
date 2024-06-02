@@ -20,12 +20,11 @@ export class ValidService {
   formData: ValidSD = {
    
     Name: '',
-    Versions: [],
-    PDF: '',
+   
     Status: 'Approval',
     DateCreated: new Date(),
     CreatedBy: '',
-    Entity: [],
+    values: [],
   };
   FormData: RejectSD = {
     Name: '',
@@ -43,6 +42,9 @@ export class ValidService {
   }
   saveRejectedStaticData(rejectedStaticData: RejectSD) {
     return this.http.post(`${environment.appUrl}/api/pages/static/RejectStaticData/reject`, rejectedStaticData);
+  }
+  DeleteValideStaticData(name: string) {
+    return this.http.delete(`${environment.appUrl}/api/pages/static/ValidStaticData/${name}`);
   }
   saveSharedStaticData(SharedStaticData: SharedSD) {
     //const serializedData = JSON.stringify(SharedStaticData);

@@ -20,6 +20,10 @@ import { CreateEntityComponent } from './pages/create-entity/create-entity.compo
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 import { AdminLocalComponent } from './pages/admin-local/admin-local.component';
 import { MapsComponent } from './pages/maps/maps.component';
+import { DetailsVComponent } from './pages/validation/details-v/details-v.component';
+import { DetailsLocalComponent } from './pages/admin-local/details-local/details-local.component';
+import { AuthGuard } from './pages/account/Auth';
+
 
 const routes: Routes =[
   {
@@ -38,9 +42,12 @@ const routes: Routes =[
   },
   {
     path: 'static',
-    component: StaticComponent, 
+    component: StaticComponent, canActivate: [AuthGuard], data: { role: 'AdminGlobal' } 
   },
-
+  {
+    path:'detailsV/:id',
+    component: DetailsVComponent,
+  },
   {
     path: 'maps',
     component: MapsComponent,
@@ -69,6 +76,7 @@ const routes: Routes =[
     path: 'complaint',
     component: ComplaintComponent,
   },
+
   {
     path: 'select',
     component: SelectMultiComponent,
@@ -76,6 +84,10 @@ const routes: Routes =[
   {
     path: 'valid-dia',
     component: ValidDiaComponent
+  },
+  {
+    path: 'detail-local',
+    component: DetailsLocalComponent
   },
   {
     path: 'card-val',
@@ -87,9 +99,10 @@ const routes: Routes =[
   },
   {
     path: 'valide',
-    component: ValidationComponent,
+    component: ValidationComponent, canActivate: [AuthGuard], data: { role: 'CheckerGlobal' }
   },
   { path: 'details/:id', component: DetailsComponent },
+  { path: 'Profil', component: UserProfileComponent },
   { path: 'reject-dia', component: RejectDiaComponent },
   {
     path: '',

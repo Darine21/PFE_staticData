@@ -11,6 +11,8 @@ import { DataService } from '../static/data.service';
 import { StaticService } from '../static/static.service';
 import { EntityLocal } from '../models/EntityLocal';
 import { ValidService } from '../validation/validation.service';
+import { LocalService } from './local.service';
+import { ConfirmationDialogComponent } from '../static/confirmation-dialog/confirmation-dialog.component';
 @Component({
   selector: 'app-admin-local',
   templateUrl: './admin-local.component.html',
@@ -55,7 +57,7 @@ export class AdminLocalComponent implements OnInit {
     this.items.splice(index, 1);
   }
 
-  constructor(private dialog: MatDialog, private router: Router, private toastr: ToastrService, private dataService: DataService, private staticService: StaticService, private validservice: ValidService) {
+  constructor(private localService:LocalService,private dialog: MatDialog, private router: Router, private toastr: ToastrService, private dataService: DataService, private staticService: StaticService, private validservice: ValidService) {
 
 
   }
@@ -76,7 +78,7 @@ export class AdminLocalComponent implements OnInit {
     const item = id;
     console.log("iiii", item);
     this.dataService.setSelectedItemID(item)
-    this.router.navigate(['/details', id]);
+    this.router.navigate(['/detail-local']);
   }
   // Méthode pour gérer l'action de validation
   valider(item: any) {
@@ -114,12 +116,21 @@ export class AdminLocalComponent implements OnInit {
   formDataTypes: string;
   formDataStatus: string;
   formDataId: number;
-  formDataCreateDate: String;
+  formDataCreateDate: string;
   formDataCreatedBy: string;
   showDeleteButton: Boolean = false;
   formvalues: String;
   List : any [] = [];
   ngOnInit(): void {
+    const id = this.dataService.Newid;
+    const Change = this.dataService.NewB;
+    console.log(Change);
+    const modifiedName = this.dataService.getNewName();
+    const modifiedTypes = this.dataService.getNewType();
+    const modifiedCatecory = this.dataService.getNewCatecory();
+    const modifiedCrea = this.dataService.getNewC();
+    console.log("MT", modifiedTypes);
+    console.log("MN", modifiedName);
     this.list = this.dataService.getList();
     console.log("nomEntity", this.list);
     this.List = this.dataService.getFormDataList();
@@ -148,7 +159,7 @@ export class AdminLocalComponent implements OnInit {
           hour12: false,
           timeZone: 'UTC'
         });
-        this.formDataCreatedBy = 'Local';
+        this.formDataCreatedBy = 'LocalENtity1';
         this.showDeleteButton = true;
         //this.formvalues = formData.null;
         this.listValues.push(formData1.null);
@@ -158,7 +169,7 @@ export class AdminLocalComponent implements OnInit {
         console.log("name&", this.formDataList1);
 
         this.formDataList1.forEach(item => {
-          item.DateCreated = new Date();
+          item.DateCreated = this.formDataCreateDate
           item.Status = "Inactive/Draft";
           item.CreatedBy = this.formDataCreatedBy;
           //item.InputValues = this.listValues;
@@ -180,7 +191,21 @@ export class AdminLocalComponent implements OnInit {
       } else {
         console.log('Aucune donnée dans formData ou formData est null.');
       }
+      this.formDataList1 = this.formDataList1.filter(item => item.Name !== null && item.Name !== undefined && item.Name !== '');
+      console.log("Filtered list", this.formDataList1);
+
+
       console.log("roro", this.formDataList1);
+      if (Change) {
+        this.formDataList1[id - 1].Name = modifiedName;
+        this.formDataList1[id - 1].Types = modifiedTypes;
+        this.formDataList1[id - 1].Category = modifiedCatecory;
+        this.formDataList1[id - 1].CreatedBy = modifiedCrea;
+        console.log(this.formDataList1[id - 1].Name);
+      }
+      localStorage.setItem('entity1', JSON.stringify(this.formDataList1));
+      this.localService.changeDataList(this.formDataList1);
+      
      
     });
 
@@ -225,22 +250,35 @@ export class AdminLocalComponent implements OnInit {
   }
 
   delete(i: number) {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent);
+    console.log("zzz");
+    this.show = true;
+    this.dataService.confirm$.subscribe(result => {
 
-    console.log("satticc", this.formDataList1[i])
-    this.validservice.DeleteDataEntity(this.formDataList1[i]).subscribe({
-      next: (response) => {
-        console.log("Response from API:", response);
-        this.toastr.success('Data deleted successfully!', 'Success');
-      },
-      error: (error) => {
-        this.formDataList.splice(i, 1);
-        localStorage.setItem('entity1', JSON.stringify(this.formDataList1));
-        console.error("Error deleting data:", error);
-        this.toastr.error('Failed to delete data!', 'Error');
+      if (result) {
+        console.log("view", this.formDataList1[i]);
+        console.log("view", this.formDataList1[i]);
+
+        this.validservice.DeleteDataEntity(this.formDataList1[i]).subscribe({
+          next: (response) => {
+            console.log("Response from API:", response);
+            // Remove the item from the list after successful deletion
+            this.formDataList1.splice(i, 1);
+            localStorage.setItem('entity1', JSON.stringify(this.formDataList1));
+            this.toastr.success('Data deleted successfully!', 'Success');
+          },
+          error: (error) => {
+            console.error("Error deleting data:", error);
+            this.formDataList1.splice(i, 1);
+            localStorage.setItem('entity1', JSON.stringify(this.formDataList1));
+            this.toastr.error('Failed to delete data!', 'Error');
+        
+          }
+        });
       }
     });
-  }
 
+  }
 
 
   generateHTML(): string {

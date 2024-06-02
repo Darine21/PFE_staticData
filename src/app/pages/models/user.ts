@@ -1,6 +1,8 @@
 export interface User{
-    jwt: any;
+    jwt: string;
     FirstName : string;
     LastName : string;
-
+  RefreshToken: string;
+  RefreshTokenExpiryTime: Date;
+  role: string;
 }

@@ -8,6 +8,64 @@
 #map {
   height: 100%; /* Hauteur de la carte par rapport à son conteneur parent */
 }
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Empêche le défilement horizontal */
+}
+
+.container-fluid {
+  max-width: 100%;
+  overflow-x: hidden; /* Empêche le défilement horizontal */
+}
+
+.table-responsive {
+  overflow-x: auto; /* Permet à la table de défiler horizontalement si nécessaire */
+}
+
+.table {
+  width: 100%;
+  table-layout: auto; /* Ajuste automatiquement la largeur des colonnes */
+}
+
+.header {
+  width: 100%;
+  overflow-x: hidden; /* Empêche le défilement horizontal dans l'en-tête */
+}
+
+.form-group, .form-control {
+  width: 100%;
+}
+
+.form-container {
+  padding: 15px;
+}
+
+input, select {
+  width: 100%; /* Assure que les champs de formulaire utilisent la pleine largeur disponible */
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap; /* Permet aux colonnes de revenir à la ligne si elles ne tiennent pas dans une seule ligne */
+}
+
+.col-md-4 {
+  flex: 1;
+  max-width: 100%;
+}
+.cancel-button {
+  background-color: #ef8404; /* Red */
+  color: #ffffff; /* White */
+  border: none;
+  margin-left: 10px;
+  width: 120px;
+  height: 40px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
 /* Style de base pour les boutons */
 .btn-primary {
   background-color: #f27e01; /* Couleur de fond */

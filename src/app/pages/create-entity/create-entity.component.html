@@ -1,5 +1,4 @@
-
-<div class="header bg-gradient-danger custom-header" style="height: 53px;">
+<div class="header bg-gradient-danger custom-header" style="height: 53px; overflow-x:hidden;">
   <div class="container-fluid">
     <div class="header-body">
       <!-- Contenu facultatif de l'en-tête -->
@@ -7,184 +6,138 @@
   </div>
 </div>
 <div style="margin-top:10px;">
-  <i class="fas fa-cube" style=" margin-left: 15px;"></i>
+  <i class="fas fa-cube" style="margin-left: 15px;"></i>
   <span class="nav-text" style="font-size:14px;margin-left: 5px;">Create Entity</span>
-  <!-- Séparateur -->
   <span class="separator"></span>
-  <!-- Texte descriptif -->
   <i class="fas fa-chevron-right navbar-icon"></i>
   <span class="nav-text" style="font-size:14px;">Edit </span>
 </div>
 <div class="container-fluid" style="margin-top:40px;">
-  <div class="row">
-    <!-- Colonne gauche pour le formulaire -->
+  <div class="row" *ngIf="showForm">
     <div class="col-md-12">
       <div class="form-container">
         <form #form="ngForm" autocomplete="off" (submit)="create(form)">
           <div class="row">
-            <div class="col-md-4 px-1" style="margin-left:40px;">
+            <div class="col-md-4 px-1">
               <div class="form-group">
-                <label for="name"> Name OF Entity:</label>
-                <input type="text" class="form-control" name="name" ngModel placeholder="Enter name" style="width:520px;">
+                <label for="name">Name OF Entity:</label>
+                <input type="text" class="form-control" name="name" ngModel placeholder="Enter name" style="width:80%;">
               </div>
             </div>
-
-            <div class="col-md-4 px-1" style="margin-left:150px;">
+            <div class="col-md-4 px-1">
               <div class="form-group">
                 <label for="address"><i class="fas fa-map-marker-alt"></i> Address</label>
-                <input type="text" class="form-control" name="address" ngModel placeholder="Enter address " style="width:560px;">
+                <input type="text" class="form-control" name="address" ngModel placeholder="Enter address" style="width:80%;">
               </div>
             </div>
           </div>
           <div class="row">
-            <div class="col-md-4 px-1" style="margin-left:40px;">
+            <div class="col-md-4 px-1">
               <div class="form-group">
                 <label for="phoneNumber">Phone Number:</label>
-                <div class="input-group" style="width:520px;">
-                  <div class="input-group-prepend">
-                    <select class="form-control" id="countryCode">
-                      <option value="+1">+1 (USA)</option>
-                      <option value="+44">+44 (UK)</option>
-                      <!-- Ajoutez d'autres options pour différents pays avec leurs codes respectifs -->
-                    </select>
-                  </div>
-                  <input type="number" class="form-control" name="phoneNumber" ngModel placeholder="Enter phone number">
-                </div>
+
+
+                <input type="number" class="form-control" name="phoneNumber" ngModel placeholder="Enter phone number" style="width:80%;">
+
               </div>
             </div>
-            <div class="col-md-4 px-1" style="margin-left:150px;">
+            <div class="col-md-4 px-1">
               <div class="form-group">
-                <label for="responsible"> Responsible:</label>
-                <input type="text" class="form-control" name="responsible" ngModel placeholder="Enter responsible person" style="width:560px;">
+                <label for="responsible">Responsible:</label>
+                <input type="text" class="form-control" name="responsible" ngModel placeholder="Enter responsible person" style="width:80%;">
               </div>
             </div>
           </div>
           <div class="row">
-            <div class="col-md-4 px-1" style="margin-left:40px;">
+            <div class="col-md-4 px-1">
               <div class="form-group">
-                <label for="status"> Status:</label>
-                <select class="form-control" name="status" style="width:520px;" ngModel>
+                <label for="status">Status:</label>
+                <select class="form-control" name="status" style="width:80%;" ngModel>
                   <option value="active">Active</option>
                   <option value="inactive">Inactive</option>
                   <option value="pending">Pending</option>
                 </select>
               </div>
             </div>
-            <div class="col-md-4 px-1" style="margin-left:150px;">
+            <div class="col-md-4 px-1">
               <div class="form-group">
-                <label for="descreption">    Description:</label>
-                <input type="text" class="form-control" name="descreption" ngModel placeholder="Enter responsible person" style="width:560px;">
+                <label for="descreption">Description:</label>
+                <input type="text" class="form-control" name="descreption" ngModel placeholder="Enter description" style="width:80%;">
               </div>
             </div>
           </div>
-          <!-- Ajout d'un champ pour la sélection des langues -->
-          <div class="col-md-4 px-1" style="margin-left:25px;">
-            <div class="form-group">
+          <div class="col-md-4 px-1">
+            <div class="form-group" style="margin-left:-18px; width:55%;">
               <label for="languages">Languages:</label>
-              <div class="white-block">
-                <!-- Utilisation d'une classe CSS personnalisée pour créer un bloc blanc -->
-                <angular2-multiselect [data]="dropdownList2" [(ngModel)]="selectedLanguages"
-                                       [settings]="dropdownSettings2"
+              <div class="white-block" name="language">
+                <angular2-multiselect [data]="dropdownList2"
+                                      [(ngModel)]="form.value.languages"
+                                      [settings]="dropdownSettings2"
                                       (onSelect)="onLanguageSelect($event)"
                                       (onDeSelect)="onLanguageDeselect($event)">
                 </angular2-multiselect>
               </div>
             </div>
           </div>
-
-          <div class="form-group text-center" style="margin-top:20px;margin-left:-10px;">
-            <button type="submit" class="btn btn-primary" style="width:150px; font-size:17px"><i class="fas fa-plus" style="margin-right:10px;"></i>Create</button>
+          <div class="form-group text-center" style="margin-top:20px;">
+            <button type="submit" class="btn btn-primary" style="width:150px; font-size:17px">
+              <i class="fas fa-plus" style="margin-right:10px;"></i>Create
+            </button>
           </div>
         </form>
-
-
       </div>
     </div>
   </div>
-
-  <div class="main-content" style="margin-left:-25px ; margin-top:20px;">
-    <div class="container-fluid" style="width:1270px;">
+  <div class="main-content" style="margin-top:20px; width:1340px; margin-left:-65px;">
+    <div class="container-fluid">
       <div class="row">
         <div class="col-md-12">
           <div class="card">
-
-            <h4 class="card-title " style="font-size: 30px; margin-top: 20px; margin-left: 30px; color: #f27e01;">List of Entity</h4>
-
+            <h4 class="card-title" style="font-size: 22px; margin-top: 20px; margin-left: 30px; color: #f27e01; font-family: 'Helvetica, sans-serif'; ">List of Entity</h4>
+            <button class="btn btn-success" (click)="opendialogue()" style="width:135px;margin-left:1080px;margin-top:-60px;">
+              <i class="fas fa-plus" style="margin-right: 5px;"></i>Add Entity
+            </button>
             <div class="card-body">
-              <div class="table-responsive">
-                <table class="table">
-                  <thead class=" text-primary">
-                  <th style="font-size:12px;">
-                    ID
-                  </th>
-                  <th style="font-size:12px;">
-                    Name
-                  </th>
-                  <th style="font-size:12px;">
-                    Status
-                  </th>
-                  <th style="font-size:12px;">
-                    Address
-                  </th>
-                  <th style="font-size:12px;">
-                    Responsible
-                  </th>
-                  <th style="font-size:12px;">
-                    Create-Date
-                  </th>
+              <div class="table-responsive" style="overflow-x:hidden">
+                <table class="table" style="width: 100%;">
+                  <thead class="text-primary">
+                  <th style="font-size:12px;">ID</th>
+                  <th style="font-size:12px;">Name</th>
+                  <th style="font-size:12px;">Status</th>
+                  <th style="font-size:12px;">Address</th>
+                  <th style="font-size:12px;">Responsible</th>
+                  <th style="font-size:12px;">Create-Date</th>
                   <th style="font-size:12px;">Phone Number</th>
                   <th style="font-size:12px;">Description</th>
-                 
                   <th style="font-size:12px;">Languages</th>
                   <th style="font-size:12px;">Actions</th>
-
-
+                  </thead>
                   <tbody>
-                    <tr *ngFor="let item of formDataList; let i=index">
-                      <td>
-                        {{i+1}}
-                      </td>
-                      <td>
-                        {{item.name}}
-                      </td>
-                      <td>
-                        {{item.status}}
-                      </td>
-                      <td>
-                        {{item.address}}
-                      </td>
-                      <td>
-                        {{item.responsible}}
-                      </td>
-                      <td>
-                        {{item.dateCreated}}
-                      </td>
-                      <td>
-                        {{item.phoneNumber}}
-                      </td>
-                      <td>  {{item.descreption}}</td>
-                      <td>
-                        <ul>
-                          <li *ngFor="let lang of item.null">
-                            {{ lang.itemName }}
-                          </li>
-                        </ul>
-                      </td>
-                      <td>
-                        <button class="btn btn-primary" (click)="delete(i)">
-                          <i class="fas fa-trash-alt"></i>
-                        </button>
-
-                        <button class="btn btn-primary" (click)="openDialog(i+1)">
-                          <i class="fas fa-edit"></i>
-                        </button>
-
-                      </td>
-
-
-
-
-                    </tr>
+                    <ng-container *ngFor="let item of formDataList; let i = index">
+                      <tr *ngIf="item[0] && item[0].name">
+                        <td>{{ i + 1 }}</td>
+                        <td>{{ item[0]?.name }}</td>
+                        <td>{{ item[0]?.status }}</td>
+                        <td>{{ item[0]?.address }}</td>
+                        <td>{{ item[0]?.responsible }}</td>
+                        <td>{{ item[0]?.dateCreated }}</td>
+                        <td>{{ item[0]?.phoneNumber }}</td>
+                        <td>{{ item[0]?.description }}</td>
+                        <td>
+                          <ul>
+                            <li *ngFor="let lang of item[0].null">{{ lang?.itemName }}</li>
+                          </ul>
+                        </td>
+                        <td>
+                          <button class="btn btn-primary" (click)="delete(i)">
+                            <i class="fas fa-trash-alt"></i>
+                          </button>
+                          <button class="btn btn-primary" (click)="openDialog(i + 1)">
+                            <i class="fas fa-edit"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    </ng-container>
                   </tbody>
                 </table>
               </div>
@@ -195,16 +148,4 @@
     </div>
   </div>
 
-  <div class="col-md-6" style="margin-top: 80px; ">
-
-    <div class="card" style="width: 1200px;">
-      <div class="card-header" style="color: #f27e01;font-size:15px;">
-        <i class="fas fa-map-marked-alt"></i> View Entity
-      </div>
-      <div class="card-body">
-        <div id="map" class="map-container"></div> <!-- Ajout de la classe map-container -->
-      </div>
-    </div>
-
-  </div>
 </div>

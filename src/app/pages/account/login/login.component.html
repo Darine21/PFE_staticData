@@ -14,6 +14,7 @@
     </svg>
   </div>
 </div>
+
 <!-- Page content -->
 <div class="container mt--8 pb-5">
   <div class="row justify-content-center">
@@ -36,19 +37,16 @@
           <div class="text-center text-muted mb-4">
             <small>Or sign in with credentials</small>
           </div>
-          <form role="form" [formGroup]="loginForm" (ngSubmit)="login()" autocomplete="off">
+          <form [formGroup]="loginForm" (ngSubmit)="login()" autocomplete="off">
             <div class="form-group">
               <div class="input-group input-group-alternative mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="ni ni-email-83"></i></span>
                 </div>
-                <input formControlName="username" type="text" id="userName" class="form-control" [class.is.invalid]="submitted && loginForm.get('username')?.errors" placeholder="Enter your email " required>
+                <input formControlName="username" type="text" id="username" class="form-control" [class.is-invalid]="submitted && loginForm.get('username')?.errors" placeholder="Enter your email" required>
                 <span class="text-danger" *ngIf="submitted && loginForm.get('username')?.hasError('required')">
-                  email is required
+                  Email is required
                 </span>
-                <span class="text-danger" *ngIf="submitted && loginForm.get('email')?.hasError('pattern')">
-                  Invalid address email
-                  </span>
               </div>
             </div>
             <div class="form-group">
@@ -56,25 +54,20 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
                 </div>
-                <input formControlName="password" type="password" id="password" class="form-control" [class.is.invalid]="submitted && loginForm.get('password')?.errors" placeholder="Enter your password" required>
+                <input formControlName="password" type="password" id="password" class="form-control" [class.is-invalid]="submitted && loginForm.get('password')?.errors" placeholder="Enter your password" required>
                 <span class="text-danger" *ngIf="submitted && loginForm.get('password')?.hasError('required')">
                   Password is required
                 </span>
-                <span class="text-danger" *ngIf="submitted && loginForm.get('password')?.hasError('minlength') || loginForm.get('password')?.hasError('maxlength')">
-                  Password must be at least 3 , and maximum 15 characters
-                </span>
-
-
               </div>
             </div>
             <div class="custom-control custom-control-alternative custom-checkbox">
-              <input class="custom-control-input" id=" customCheckLogin" type="checkbox">
-              <label class="custom-control-label" for=" customCheckLogin">
+              <input class="custom-control-input" id="customCheckLogin" type="checkbox">
+              <label class="custom-control-label" for="customCheckLogin">
                 <span class="text-muted">Remember me</span>
               </label>
             </div>
             <div class="text-center">
-              <button type="submit"  class="btn  btn-block custom-btn"  style="background-color: #00B1A5;color:white">Log In</button>
+              <button type="submit" class="btn btn-block custom-btn" style="background-color: #00B1A5; color: white">Log In</button>
             </div>
           </form>
         </div>

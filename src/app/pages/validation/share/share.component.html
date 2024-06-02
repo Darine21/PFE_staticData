@@ -1,36 +1,66 @@
 <div class="dialog-container">
   <div class="dialog-header">
-    <h2 class="mat-dialog-title">
-      <span class="title">Partager</span>
+    <h2 class="dialog-title" style="margin-top: 30px;  ">
+      <span class="title" style="font-size:23px; text-align: center;margin-left:150px">Share Static Data </span>
     </h2>
-    <button mat-button class="close-button" (click)="closeDialog()">X</button>
+    <button class="close-button" (click)="closeDialog()">
+      <i class="fas fa-times"></i>
+    </button>
   </div>
 
   <div class="modal-body">
-<div class="user-body">
-  <div class="avatar-user">
-            <i class="far fa-user-circle"></i>
+    <div class="user-body">
+      <div class="avatar-user">
+        <i class="fa fa-share"></i>
+      </div>
+      <div class="user-information">
+        <span class="user-name"> {{itemName}} Shared</span>
+        <span>language:</span>
+        <div class="inline-list">
+          <span *ngFor="let item of listaaaa"> {{item}}</span>
+        </div>
+        <span class="post-date">{{ date | customDate }}</span>
+      </div>
+    </div>
+
+    <div class="search-field" style="margin-top:30px;">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" placeholder="Search entities" [formControl]="entityCtrl" class="search-input"
+             (click)="toggleEntityList()"> <!-- Ajoutez un événement de clic pour basculer l'affichage de la liste -->
+      <div class="autocomplete-options" *ngIf="showEntityList ">
+        <div *ngFor="let entity of list " class="autocomplete-option" (click)="selectEntity(entity)">
+          {{ entity }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Afficher ou masquer cette section en fonction de selectedEntityVisible -->
+    <!-- Ajouter une section pour le message de notification -->
+    <div *ngIf="notificationMessage" class="notification">
+      <div *ngFor="let notif of notifL">
+        {{ notif }}
+      </div>
+    </div>
   </div>
-   <div class="user_information">
-            <span class="user-name" > user information</span>  
-            <span class="user-name" > <p>{{ date | customDate }}</p>
-</span>         
-   </div>
-</div>
-  <input type="text" placeholder="Write the name of the entity...">
-  <div class="share-centent">
-  <button mat-button class="share-button" color="primary">Share now</button>
+  <div class="share-content" style="margin-left:350px;">
+    <button class="share-button" (click)="share()">Share now</button>
   </div>
-  </div>
-  <h2 class="title-footer h2">Send directly</h2>
+  <h2 >Send directly</h2>
   <div class="recent-entities">
-    <button mat-button class="entity-button">
-      <div class="profile-circle"><i class="far fa-user-circle"></i></div>
-      <span class="entity-text">Entity1</span>
-    </button>
-    <button mat-button class="entity-button">
-      <div class="profile-circle"><i class="far fa-user-circle"></i></div>
-      <span class="entity-text">Entity2</span>
-    </button>
+    <div class="entity-list" *ngFor="let name of list.slice(0, 6)">
+      <div class="entity-item">
+        <div class="avatar">
+          <img src="assets/img/theme/team-4-800x800.jpg" alt="Circle Image" class="img-circle img-no-padding img-responsive">
+        </div>
+        <span class="entity-text" style="cursor: pointer">{{ name }}</span>
+      </div>
+    </div>
   </div>
+
+
+
+
 </div>
+  
+
+

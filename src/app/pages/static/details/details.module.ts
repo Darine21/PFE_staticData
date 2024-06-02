@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
+import { NotificationComponent } from './notification/notification.component';
 //import { ShareDiaComponent } from '../share-dia/share-dia.component';
 
 @NgModule({
@@ -29,6 +30,7 @@ import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
   ],
   exports: [
     DetailsComponent,
+    //NotificationComponent
     //ShareDiaComponent
 
   ]

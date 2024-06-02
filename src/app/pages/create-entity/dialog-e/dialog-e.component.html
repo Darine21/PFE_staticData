@@ -1,4 +1,4 @@
-<div *ngIf="showFirstDialog" class="dialog-container right-dialog" style="position: fixed; top:50%; left: 50%; transform: translate(-50%, -50%); width: 750px; height: auto; max-height: 800px; border-radius: 10px; background-color: #f9f9f9; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); overflow-y: auto;">
+<div *ngIf="showFirstDialog" class="dialog-container right-dialog" style="position: absolute; transform: translate(-50%, -50%); width: 750px; height: auto; max-height: 800px; border-radius: 10px; background-color: #f9f9f9; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); overflow-y: auto;">
   <i class="fas fa-times close-icon" (click)="onClose()" style="position: absolute; top: 20px; right: 20px; color: #888; font-size: 20px; cursor: pointer;"></i>
   <h2 style="text-align: start; margin-left: 30px; margin-top: 20px; margin-bottom: 30px; color: #f27e01; font-size: 36px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); text-align: center; "> Edit {{formDataName}} </h2>
 
@@ -87,21 +87,41 @@
          
         </div>
         </div>
-     
-        <div class="col-lg-12">
-          <div class="mb-3">
-            <label>Creation Date</label>
-            <div class="input-group input-group-alternative mb-3">
-              <div class="input-group-prepend">
-                <button class="btn btn-outline-secondary" (click)="dpCreation.toggle()" type="button">
-                  <i class="fa fa-calendar"></i> <!-- Utilisez une icône de calendrier -->
-                </button>
-              </div>
-              <input class="form-control" placeholder="{{CreateDate}}" name="creationDate" [(ngModel)]="creationDate" ngbDatepicker #dpCreation="ngbDatepicker" style="width:250px">
-            </div>
+    
+    <div class="row">
+      <div class="col-md-4 px-1" style="margin-left:40px;">
+        <label style="margin-top:20px;">Created Date</label>
+        <div class="input-group input-group-alternative mb-3" style="width: 300px;">
+          <div class="input-group-prepend">
+            <button class="btn btn-outline-secondary" (click)="dpCreation.toggle()" type="button">
+              <i class="fa fa-calendar"></i>
+            </button>
           </div>
+          <input class="form-control" placeholder="{{CreateDate}}" name="creationDate" [(ngModel)]="creationDate" ngbDatepicker #dpCreation="ngbDatepicker">
         </div>
+      </div>
 
+
+      <div class="col-md-4 px-1" style="margin-left:90px;">
+        <label class="col-form-label">Languages :</label>
+        <br>
+        <!-- Afficher les langues existantes -->
+        <div *ngFor="let lang of formDataLanguage" class="editable-content" (click)="startEditingDescription()">{{ lang?.itemName }}</div>
+        <!-- Champ de texte pour ajouter une nouvelle langue -->
+        <input *ngIf="isEditingDescription" name="Description" type="text" class="form-control" [(ngModel)]="newLanguage" style="width:250px" placeholder="Add new language">
+        <button type="button" class="btn btn-options" (click)="addInput()">+</button>
+        <button type="button" class="btn btn-options" (click)="removeInput()" *ngIf="inputValues.length > 1">-</button>
+        <!-- Bouton pour activer le mode édition -->
+        <!-- Bouton pour enregistrer les modifications -->
+        <button *ngIf="isEditingDescription" class="btn btn-primary" (click)="saveEditedDescription()">Save</button>
+        <!-- Bouton pour ajouter la nouvelle langue -->
+       
+      </div>
+
+
+
+
+    </div>
 
         <div class="button-container" style="text-align: right; padding-right: 30px; padding-bottom: 20px;">
           <button class="submit-button btn-md" (click)="saveChanges()">Save</button>

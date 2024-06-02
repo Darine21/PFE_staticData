@@ -1,7 +1,11 @@
 .nav-item {
-  margin-right: 10px; /* Ajustez cette valeur selon l'espace désiré */
+  margin-right: 10px;
+   /* Ajustez cette valeur selon l'espace désiré */
 }
-
+body, html {
+  overflow-x: hidden; /* Empêche le défilement horizontal */
+  overflow-y: hidden; /* Empêche le défilement vertical */
+}
 .line {
   border-bottom: 1px solid black; /* Style de ligne */
   margin-top: 8px; /* Marge en haut de la ligne */
@@ -9,7 +13,11 @@
 .table-responsive{
     overflow-x:hidden;
 }
-
+.card-header, .card-body, .card-footer {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+}
 .line.active {
   opacity: 1; /* Lorsque l'élément "Values" est actif, la ligne devient visible */
 }
