@@ -57,6 +57,11 @@ export class CreateEntityComponent implements OnInit {
   lisste: string[] = [];
   selectedLanguagesDict: { [key: string]: string[] } = {};
   ngOnInit(): void {
+    const dicstore = localStorage.getItem('DicE');
+    if (dicstore) {
+      this.selectedLanguagesDict = JSON.parse(dicstore);
+      }
+    
     const storedData = localStorage.getItem('entity');
     if (storedData) {
       this.formDataList = JSON.parse(storedData);
@@ -84,6 +89,7 @@ export class CreateEntityComponent implements OnInit {
           }
         }
         console.log("dicc", this.selectedLanguagesDict);
+        localStorage.setItem('dicE', JSON.stringify(this.selectedLanguagesDict));
         console.log("list entity", this.lisst);
         this.dataservice.updateSelectedLanguagesDict(this.selectedLanguagesDict);
        
@@ -252,14 +258,14 @@ create(form: NgForm) {
         this.valideService.DeleteEntity(this.formDataList[i]).subscribe({
           next: (response) => {
             console.log("Response from API:", response);
-            this.notification.show('Entity deleted successfully!');
+            this.notification.show2('Entity deleted successfully!');
           },
           error: (error) => {
             this.formDataList.splice(i, 1);
             localStorage.setItem('entity', JSON.stringify(this.formDataList));
             
             console.error("Error deleting entity:", error);
-            this.notification.show('Entity deleted successfully!');
+            this.notification.show2('Entity deleted successfully!');
           }
         });
 

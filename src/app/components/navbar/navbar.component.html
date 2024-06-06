@@ -73,29 +73,36 @@
       </ul>
       <ul class="navbar-nav align-items-center ml-auto ml-md-0">
         <li class="nav-item btn-rotate" ngbDropdown placement="bottom-left">
-          <a class="nav-link" ngbDropdownToggle id="navbarDropdownMenuLink" *ngIf="getTitle() =='Static Data'">
+          <a class="nav-link" ngbDropdownToggle id="navbarDropdownMenuLink" *ngIf="getTitle() =='Static Data '">
             <i class="fas fa-envelope" style="color:white; font-size:18px;"></i>
             <span class="badge badge-danger">3</span>
           </a>
+        
           <div ngbDropdownMenu aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu dropdown-menu-right">
-            <div *ngFor="let nom of name; let i=index;" class="notification" ngbDropdownItem>
-              <img src="assets/img/theme/team-1-800x800.jpg" alt="Entity 1" class="entity-thumbnail">
-              <div class="notification-content" *ngIf="status[i] === 'Rejected'">
-                <span class="notification-type rejected"><i class="fas fa-times-circle"></i></span>
-                <p>{{ nom }} has been rejected.</p>
-                <p>{{ notif[i+1] }}</p>
-                <p>{{ status[i] }}</p>
+            <div>
+              <div class="notification" ngbDropdownItem>
+               <span> <i class="fa fa-commenting-o" aria-hidden="true"></i> Request</span>
+                <p>{{message}}</p>
               </div>
-              <div class="notification-content" *ngIf="!(status[i] === 'Rejected')">
-                <span class="notification-type validate">
-                  <i class="fas fa-check-circle text-success"></i>
-                </span>
-                <p>{{ nom }} has been validate.</p>
-              
-                <p>{{ status[i] }}</p>
+              </div>
+              <div *ngFor="let nom of name; let i=index;" class="notification" ngbDropdownItem>
+                <img src="assets/img/theme/team-1-800x800.jpg" alt="Entity 1" class="entity-thumbnail">
+                <div class="notification-content" *ngIf="status[i] === 'Rejected'">
+                  <span class="notification-type rejected"><i class="fas fa-times-circle"></i></span>
+                  <p>{{ nom }} has been rejected.</p>
+                  <p>{{ notif[i+1] }}</p>
+                  <p>{{ status[i] }}</p>
+                </div>
+                <div class="notification-content" *ngIf="(status[i] === 'Approval')">
+                  <span class="notification-type validate">
+                    <i class="fas fa-check-circle text-success"></i>
+                  </span>
+                  <p>{{ nom }} has been validate.</p>
+
+                  <p>{{ status[i] }}</p>
+                </div>
               </div>
             </div>
-          </div>
         </li>
         <li class="nav-item btn-rotate" ngbDropdown placement="bottom-left">
           <a class="nav-link" ngbDropdownToggle id="navbarDropdownMenuLink" *ngIf="getTitle() =='Specific Data'">

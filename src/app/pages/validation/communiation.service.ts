@@ -12,8 +12,14 @@ export class SelectedItemService {
   selectedItemc$ = new BehaviorSubject<string>('');
   private selectedVersionSubject = new BehaviorSubject<any>(null);
   selectedVersion$ = this.selectedVersionSubject.asObservable();
+
+  private selectedShareSubject = new BehaviorSubject<any>(null);
+  selectedShare$ = this.selectedShareSubject.asObservable();
+
+
   private itemNameSource = new BehaviorSubject<string>('');
   currentName = this.itemNameSource.asObservable();
+    submittedDataList: any[];
   updateSelectedItem(name: string): void {
     this.selectedItemSubject.next(name);
   }
@@ -32,6 +38,13 @@ export class SelectedItemService {
   item: any[] = [];
   shareitem(itemm: any) {
     this.item = itemm
+  }
+  setSubmittedDataList(dataList: any[]) {
+    this.submittedDataList = dataList;
+  }
+
+  getSubmittedDataList() {
+    return this.submittedDataList;
   }
   getitem() {
     return this.item
@@ -74,4 +87,16 @@ export class SelectedItemService {
   getsharedata() {
     return this.newname;
   }
+  setItem(key: string, data: any): void {
+    localStorage.setItem(key, JSON.stringify(data));
+    console.log(localStorage);
+  }
+
+  // Récupérer des données depuis le stockage local
+  getItem(key: string): any {
+    const storedData = localStorage.getItem(key);
+    console.log(storedData);
+    return storedData ? JSON.parse(storedData) : null;
+  }
+
 }

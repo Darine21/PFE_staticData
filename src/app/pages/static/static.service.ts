@@ -1,12 +1,13 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Register } from '../models/register';
 import { environment } from '../../../environments/environement.developement';
-import { Login } from '../models/login';
-import { User } from '../models/user';
+
 import { Observable, ReplaySubject, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
+
+import { Entity1 } from '../models/Entity1';
+import { EntityLocal } from '../models/EntityLocal';
 import { StaticData } from '../models/staticdata';
 
 @Injectable({
@@ -52,7 +53,23 @@ export class StaticService {
   }
   DeleteSubmit(model: string) {
     return this.http.delete(`${environment.appUrl}/api/pages/static/StaticData/stat`)
-  } 
+  }
+  AdditionE(name: string, model: EntityLocal) {
+   
+    const requestBody = {
+      name: name,
+      ...model
+    };
+
+    return this.http.post(`${environment.appUrl}/api/pages/entity/Entity1/Addition`, requestBody);
+  }
+  DeleteDataEntity(name: string) {
+    return this.http.delete(`${environment.appUrl}/api/pages/entity/Entity1/${name}`);
+  }
+  ValidateEStaticData(name: string) {
+    return this.http.put(`${environment.appUrl}/api/pages/entity/Entity1/validate`, name );
+  }
+
 
 }
 

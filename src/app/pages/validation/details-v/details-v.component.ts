@@ -9,13 +9,14 @@ import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap/datepicker/ngb-date-st
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../../static/data.service';
 import { SelectedItemService } from '../../validation/communiation.service';
-import { StaticData } from '../../models/staticdata';
+
 import { TranslationService } from '../../static/details/Translate.service';
 import { ToastrService } from 'ngx-toastr';
 import { StaticService } from '../../static/static.service';
 import { NavbarService } from '../../../components/NavBar.service';
 import { ValidDiaComponent } from '../valid-dia/valid-dia.component';
 import { RejectDiaComponent } from '../reject-dia/reject-dia.component';
+import { StaticData } from '../../models/staticdata';
 interface Version {
   id: number;
   // Autres propriétés de votre modèle de données...
@@ -214,6 +215,7 @@ export class DetailsVComponent implements OnInit {
     this.selectedItemService.changeName(this.submittedDataList[this.selectedItemID - 1].Name);  
     console.log("nameee", this.submittedDataList[this.selectedItemID - 1].Name);
     console.log("ittem", this.submittedDataList[this.selectedItemID - 1]);
+    this.selectedItemService.setSubmittedDataList(this.submittedDataList[this.selectedItemID - 1]);
     this.dataService.changeItem(this.submittedDataList[this.selectedItemID - 1]);
     this.submittedDataList[this.selectedItemID - 1].showValidDialog = true;
     console.log("ddd", this.submittedDataList[this.selectedItemID - 1].Name);
@@ -397,7 +399,7 @@ export class DetailsVComponent implements OnInit {
 
         this.showDeleteButton = true;
 
-      this.formvalues = this.submittedDataList[this.selectedItemID - 1].null;
+      this.formvalues = this.submittedDataList[this.selectedItemID - 1].inputValues;
 
         console.log("valuessss", this.formvalues);
 

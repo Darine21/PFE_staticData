@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { DataService } from '../data.service';
+import { NotificationService } from '../details/notification.service';
 
 @Component({
   selector: 'app-confirmation-dialog',
@@ -13,12 +14,13 @@ import { DataService } from '../data.service';
   styleUrls: ['./confirmation-dialog.component.scss']
 })
 export class ConfirmationDialogComponent {
-  constructor(private dataService: DataService) { }
+  constructor(private notification:NotificationService,private dataService: DataService) { }
   show: boolean = true; // Initialisez show à true par défaut
 
   confirm(value: boolean) {
     this.dataService.confirm(value);
-    this.closeDialog(); // Appeler la méthode pour fermer la boîte de dialogue
+    this.closeDialog();
+    this.notification.show1("data deleted");// Appeler la méthode pour fermer la boîte de dialogue
   }
 
   Noconfirm() {

@@ -14,6 +14,7 @@ import { UserProfileComponent } from '../../pages/user-profile/user-profile.comp
 import { AdminLocalComponent } from '../../pages/admin-local/admin-local.component';
 import { DetailsVComponent } from '../../pages/validation/details-v/details-v.component';
 import { DetailsLocalComponent } from '../../pages/admin-local/details-local/details-local.component';
+import { ValidationLocalComponent } from '../../pages/admin-local/validation-local/validation-local.component';
 
 export const AdminLayoutRoutes: Routes = [
   { path: 'static', component: StaticComponent },
@@ -29,6 +30,7 @@ export const AdminLayoutRoutes: Routes = [
   { path: 'local-user', component: AdminLocalComponent },
   { path: 'detailsV/:id', component: DetailsVComponent },
   { path: 'detail-local', component: DetailsLocalComponent },
+  { path: 'Valid-SSD', component: ValidationLocalComponent },
  
 
 ];

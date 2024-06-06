@@ -176,6 +176,7 @@ export class CreationEComponent {
     console.log("langggg", this.formDataList[0].languages)
     this.showFirstDialog = true;
     this.notificationService.show2('Entity created successfully!');
+
   }
   showForm = false;
   lisst: string[] = [];

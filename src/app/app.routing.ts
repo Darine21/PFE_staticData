@@ -23,6 +23,7 @@ import { MapsComponent } from './pages/maps/maps.component';
 import { DetailsVComponent } from './pages/validation/details-v/details-v.component';
 import { DetailsLocalComponent } from './pages/admin-local/details-local/details-local.component';
 import { AuthGuard } from './pages/account/Auth';
+import { ValidationLocalComponent } from './pages/admin-local/validation-local/validation-local.component';
 
 
 const routes: Routes =[
@@ -51,6 +52,10 @@ const routes: Routes =[
   {
     path: 'maps',
     component: MapsComponent,
+  },
+  {
+    path: 'Valid-SSD',
+    component: ValidationLocalComponent,
   },
   {
     path: 'local-user',

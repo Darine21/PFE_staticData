@@ -12,7 +12,7 @@ export class TranslationService {
 
   constructor(private http: HttpClient) { }
 
-  translate(text: string , source:string, target:string): Observable<any> {
+  translate(text: string, source: string, target: string): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/x-www-form-urlencoded',
       'X-RapidAPI-Key': this.apiKey,

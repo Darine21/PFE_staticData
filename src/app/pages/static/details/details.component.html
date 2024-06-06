@@ -66,21 +66,26 @@
                 <tr>
                   <th scope="col" class="px-4 py-3 bg-white text-primary">Name</th>
                   <th scope="col" class="px-4 py-3 bg-white text-primary">History</th>
-              
+
                   <th scope="col" class="px-4 py-3 bg-white text-primary">Date </th>
                   <th scope="col" class="px-4 py-3 bg-white text-primary">Changer</th>
 
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let history of historyList">
-                  <td class="px-4 py-3">{{ history.Name }}</td>
-                  <td class="px-4 py-3">{{ history.History }}</td>
-             
-                  <td class="px-4 py-3">{{ history.date}}</td>
-                  <td class="px-4 py-3">{{ history.Changer }}</td>
-                </tr>
+              <tbody>
+              <tbody>
+                <ng-container *ngFor="let sublist of listH">
+                  <tr *ngFor="let item of sublist">
+                    <td class="px-4 py-3">{{ item.Name }}</td>
+                    <td class="px-4 py-3">{{ item.History }} </td>
+                    <td class="px-4 py-3">{{ item.date }}</td>
+                    <td class="px-4 py-3">{{ item.Changer }}</td>
+                  </tr>
+                </ng-container>
               </tbody>
+             
+
             </table>
           </div>
         </div>

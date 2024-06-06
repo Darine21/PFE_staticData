@@ -1,26 +1,29 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { RejectDiaComponent } from './reject-dia/reject-dia.component';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+
+import { ConfirmationDialogComponent } from '../../static/confirmation-dialog/confirmation-dialog.component';
+
+import { ToastrService } from 'ngx-toastr';
+import { StaticService } from '../../static/static.service';
+
+import { NavbarService } from '../../../components/NavBar.service';
 import { MatDialog } from '@angular/material/dialog';
-import { ValidDiaComponent } from './valid-dia/valid-dia.component';
-import { Console } from 'console';
-import { SelectedItemService } from './communiation.service';
-import Chart from 'chart.js';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DataService } from '../static/data.service';
-import { NavbarService } from '../../components/NavBar.service';
-import { StaticService } from '../static/static.service';
-import { StaticData } from '../models/staticdata';
-import { ShareDialogComponent } from './share/share.component';
-import { ValidService } from './validation.service';
-import { ConfirmationDialogComponent } from '../static/confirmation-dialog/confirmation-dialog.component';
-import { Toast, ToastrService } from 'ngx-toastr';
-import { NotificationService } from '../static/details/notification.service';
+
+import { DataService } from '../../static/data.service';
+import { ShareDialogComponent } from '../../validation/share/share.component';
+import { ValidService } from '../../validation/validation.service';
+import { SelectedItemService } from '../../validation/communiation.service';
+import { RejectDiaComponent } from '../../validation/reject-dia/reject-dia.component';
+import { ValidDiaComponent } from '../../validation/valid-dia/valid-dia.component';
+import { LocalService } from '../local.service';
+
 @Component({
-  selector: 'app-validation',
-  templateUrl: './validation.component.html',
-  styleUrls: ['./validation.component.scss']
+  selector: 'app-validation-local',
+  
+  templateUrl: './validation-local.component.html',
+  styleUrls: ['./validation-local.component.scss']
 })
-export class ValidationComponent implements OnInit {
+export class ValidationLocalComponent {
   data: any[] = [];
   filteredData: any[];
   items: any[] = [
@@ -34,7 +37,7 @@ export class ValidationComponent implements OnInit {
       createdBy: "User 1",
       checked: false // Ajoutez une propriété pour la case à cocher
     }
-   
+
     // Ajoutez plus d'exemples si nécessaire
   ];
   public canvas: any;
@@ -44,7 +47,7 @@ export class ValidationComponent implements OnInit {
   public chartHours;
   showRejectDialog: boolean = false;
   showValidDialog: boolean = false;
- // selectedItemName: string = '';
+  // selectedItemName: string = '';
   showFirstDialog: boolean = false;
   showConfirmationDialog: boolean = true;
   dataName: string = '';
@@ -61,17 +64,17 @@ export class ValidationComponent implements OnInit {
   showDeleteButton: Boolean = false;
   showShareOptions: boolean = false;
   formvalues: string;
-    formData: any;
+  formData: any;
   submittedDataList: any[];
   rejected: boolean = false;
-  reasonsList: { itemId: string, reason: any , status:string }[] = [];
-  reason: string='';
+  reasonsList: { itemId: string, reason: any, status: string }[] = [];
+  reason: string = '';
   notif: any[] = [];
-  StatusList: any[]=[];
-    dataE: any;
-    Status: any;
+  StatusList: any[] = [];
+  dataE: any;
+  Status: any;
 
-  constructor(private notification : NotificationService, private staticdata: StaticService,private toastr: ToastrService, private validedata: ValidService, private navbarService: NavbarService, private dialog: MatDialog, private route: ActivatedRoute, private selectedItemService: SelectedItemService, private dataService: DataService, private router: Router, private staticservice: StaticService) { }
+  constructor(private locale: LocalService , private staticdata: StaticService, private toastr: ToastrService, private validedata: ValidService, private navbarService: NavbarService, private dialog: MatDialog, private route: ActivatedRoute, private selectedItemService: SelectedItemService, private dataService: DataService, private router: Router, private staticservice: StaticService) { }
   @Output() statusUpdate: EventEmitter<string> = new EventEmitter<string>();
   openShareDialog() {
 
@@ -107,16 +110,15 @@ export class ValidationComponent implements OnInit {
             this.submittedDataList.splice(i, 1);
             console.log("apres", this.submittedDataList);
             //localStorage.setItem('', JSON.stringify(this.submittedDataList));
-            this.notification.show1("data deleted");
+            this.toastr.success('Data deleted successfully!', 'Success');
           },
           error: (error) => {
-            
+
             console.log("eeeee");
             console.error("Error deleting data:", error);
             this.submittedDataList.splice(i, 1);
             localStorage.setItem('ValidData', JSON.stringify(this.submittedDataList));
-            this.notification.show1("data deleted");
-  
+            this.toastr.error('Failed to delete data!', 'Error');
             this.router.navigate(['/valide']);
           }
         });
@@ -129,12 +131,12 @@ export class ValidationComponent implements OnInit {
     const dialogRef = this.dialog.open(RejectDiaComponent, {
       width: '500px',
     });
-  
- 
+
+
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
       this.showRejectDialog = false;
-      
+
     });
   }
   updateSelectedItemName(name: string): void {
@@ -152,18 +154,17 @@ export class ValidationComponent implements OnInit {
         console.log('Validation successful:', response);
         item.showValidDialog = false;
         item.Status = 'Approval';
-        this.notification.show1("static data validated");
+
       },
       (error) => {
         console.error('Validation failed:', error);
-        this.notification.show1("static data validated");
       }
     );
-  
+
     this.StatusList.push("Approval");
     console.log("status", this.StatusList);
     this.navbarService.changeStatus(this.StatusList);
-    
+
     const dialogRef = this.dialog.open(ValidDiaComponent);
 
 
@@ -189,21 +190,21 @@ export class ValidationComponent implements OnInit {
     console.log("item2", this.isItemSelected);
   }
 
- 
+
   status1: any;
   rejeter(item: any) {
-    this.isItemSelected=true
+    this.isItemSelected = true
     item.showRejectDialog = true;
     this.StatusList.push("Rejected");
     console.log("status", this.StatusList);
     this.navbarService.changeStatus(this.StatusList);
-    this.reasonsList.push({ itemId: item.Name, reason: this.notif, status:"Rejected" });
-    
+    this.reasonsList.push({ itemId: item.Name, reason: this.notif, status: "Rejected" });
+
     console.log("lisstaaa", this.reasonsList);
     this.updateSubmittedDataList();
 
   }
-  
+
   applyFilter(filterValue: string) {
     filterValue = filterValue.trim(); // Supprimer les espaces vides
     filterValue = filterValue.toLowerCase(); // Mettre en minuscule
@@ -213,29 +214,29 @@ export class ValidationComponent implements OnInit {
       return item.name.toLowerCase().includes(filterValue);
     });
   }
-  updateStatus2(newStatus: string , item:any) {
+  updateStatus2(newStatus: string, item: any) {
     // Parcourir le tableau items
-   
-      // Vérifier si l'élément correspond à celui rejeté
-      if (item.Status === "Inactive/Draft") {
-        // Mettre à jour le statut de l'élément rejeté
-        item.Status = newStatus;
-      }
-  
+
+    // Vérifier si l'élément correspond à celui rejeté
+    if (item.Status === "Inactive/Draft") {
+      // Mettre à jour le statut de l'élément rejeté
+      item.Status = newStatus;
+    }
+
   }
 
-  updateStatus(newStatus: string , item : any) {
+  updateStatus(newStatus: string, item: any) {
 
     console.log("vali", this.showValidDialog);
-      // Vérifier si l'élément correspond à celui rejeté
+    // Vérifier si l'élément correspond à celui rejeté
     if (item.formDataStatus === "Inactive/Draft" || item.formDataStatus === "Approval") {
-        // Mettre à jour le statut de l'élément rejeté
-        item.formDataStatus = newStatus;
+      // Mettre à jour le statut de l'élément rejeté
+      item.formDataStatus = newStatus;
       console.log("New status:", item.formDataStatus);
       this.StatusList.push(item.formDataStatus);
-      console.log("etat",this.StatusList);
-      }
-  
+      console.log("etat", this.StatusList);
+    }
+
   }
   goToValid() { this.router.navigate(['/card-val']); }
   goTShare() {
@@ -256,49 +257,55 @@ export class ValidationComponent implements OnInit {
   goToCardS() { this.router.navigate(['/card-share']); }
   showShare: boolean = false;
   list: any[];
+  Entity: string;
   ngOnInit(): void {
-    const storedData = this.selectedItemService.getItem('submittedDataList');
+    this.locale.currentEntity1.subscribe(entity => {
+      this.Entity = entity;
+      console.log("Entity value in other page:", entity);
+      // Utilisez la valeur de l'entité comme bon vous semble dans cette page
+    });
+    const storedData = this.selectedItemService.getItem(`${this.Entity}`);
     if (storedData) {
       this.submittedDataList = storedData;
     } else {
-      this.submittedDataList = this.dataService.submittedDataList;
+      this.submittedDataList = this.dataService.submittedDataList1;
     }
     this.selectedItemService.currentvalide.subscribe(name => {
       this.showShare = name;
       console.log("name", this.showShare);
     });
-        this.navbarService.reason$.subscribe(reason => {
+    this.navbarService.reason$.subscribe(reason => {
       this.notif.push(reason);
       console.log('Validation:', this.notif);
     });
 
 
-   
-    this.submittedDataList = this.dataService.submittedDataList;
+
+    this.submittedDataList = this.dataService.submittedDataList1;
     this.list = this.submittedDataList;
-    
+
     console.log("Liste initiale:", this.list);
     this.updateSubmittedDataList();
     this.list.forEach(item => {
-        item.showRejectDialog = this.showRejectDialog;
-        item.showValidDialog = this.showValidDialog;
-      });
-  
+      item.showRejectDialog = this.showRejectDialog;
+      item.showValidDialog = this.showValidDialog;
+    });
 
-   // localStorage.setItem('submittedDataList', JSON.stringify(this.submittedDataList));
 
-    for (let i = 0; i <this.submittedDataList.length; i++) {
+    // localStorage.setItem('submittedDataList', JSON.stringify(this.submittedDataList));
+
+    for (let i = 0; i < this.submittedDataList.length; i++) {
       this.formDataName = this.submittedDataList[i].Name;
       this.formDataNameList.push(this.formDataName);
 
-     
+
       console.log("paaaaar", this.formDataName);
     }
-    
-   
+
+
     this.navbarService.changeName(this.formDataNameList);
 
-    
+
     // Récupérez les données transmises depuis la page précédente
     this.formDataName = this.submittedDataList[0].Name;
     console.log("par", this.formDataName);
@@ -306,12 +313,14 @@ export class ValidationComponent implements OnInit {
     this.formDataTypes = this.submittedDataList[0].Types;
     // Ajoutez d'autres propriétés si nécessaire
     console.log("par", this.formDataName);
- 
-  
+
+
   }
   updateSubmittedDataList() {
     this.dataService.submittedDataList = this.submittedDataList;
-    localStorage.setItem('submittedDataList', JSON.stringify(this.submittedDataList));
+    localStorage.setItem(`${this.Entity}`, JSON.stringify(this.submittedDataList));
   }
- }
+}
+
+
 

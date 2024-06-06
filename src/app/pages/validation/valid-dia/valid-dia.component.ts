@@ -14,6 +14,8 @@ import { Entity } from '../../models/Entity';
 import { Language } from '../../models/Language';
 import { Entity1 } from '../../models/Entity1';
 import { ShareVComponent } from '../details-v/share-v/share-v.component';
+import { DataService } from '../../static/data.service';
+import { NotificationService } from '../../static/details/notification.service';
 
 @Component({
   selector: 'app-valid-dia',
@@ -52,13 +54,18 @@ export class ValidDiaComponent implements OnInit {
     selectedVersion: any;
     formattedVersions: string[]=[];
 
-  constructor(private dialogue: StaticService,
+  constructor(private notification:NotificationService ,private dialogue: StaticService, private dataservice: DataService,
     @Inject(MAT_DIALOG_DATA) public data: { entities: Entity[], entityNames: { id: number, itemName: string }[] }, private dialog: MatDialog, private validService: ValidService, private fb: FormBuilder, private toastr: ToastrService, private router: Router, private selectedItemService: SelectedItemService, private dialogRef: MatDialogRef<any>) {
       this.entities.forEach((entity, index) => {
         this.entityNames.push({ id: index + 1, itemName: entity.name });
-      }); }
+      });
+  }
+  userRole: string;
   ngOnInit() {
-    
+    this.dataservice.userRole$.subscribe(role => {
+      this.userRole = role;
+      console.log('User role in other component:', this.userRole);
+    });
 
     this.selectedItemService.currentName.subscribe(name => {
       this.selectedItemName = name;
@@ -119,12 +126,13 @@ export class ValidDiaComponent implements OnInit {
     this.validService.saveValidStaticData(validStaticData).subscribe(
       response => {
         console.log('Validation successful:', response);
-        this.toastr.success('Données enregistrées avec succès.');
+        this.notification.show1('Données enregistrées avec succès.');
       },
       error => {
         // Erreur lors de la requête
         this.toastr.error('Une erreur s\'est produite lors de l\'enregistrement des données.');
         console.error(error);
+        this.notification.show1('Données enregistrées avec succès.');
       });
 
   }
@@ -166,15 +174,22 @@ export class ValidDiaComponent implements OnInit {
       // Handle after close
     });
   }
-
+  submittedDataList: any[] = [];
   goTovalid() {
     this.dataName = '';
     this.showFirstDialog = false;
     this.showSecondDialog = false;
     this.Vshare = true;
+    
     this.selectedItemService.changeshare(this.Vshare);
-    this.openShareDialog();
-    console.log("Vous avez share ou none ");
+    if (this.userRole == "CheckerLocal") {
+      this.router.navigate(['/Valid-SSD']);
+    } else {
+      this.openShareDialog();
+      this.submittedDataList = this.selectedItemService.getSubmittedDataList();
+      console.log("listt", this.submittedDataList);
+      console.log("Vous avez share ou none ");
+    }
   }
   entityNames: { id: number, itemName: string }[] = [];
 

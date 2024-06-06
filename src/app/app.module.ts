@@ -61,6 +61,9 @@ import { NotificationSComponent } from './pages/validation/share/notification-s/
 import { NotificationEComponent } from './pages/create-entity/notification-e/notification-e.component';
 import { ShareVComponent } from './pages/validation/details-v/share-v/share-v.component';
 import { AccountService } from './pages/account/account.service';
+import { ValidationLocalComponent } from './pages/admin-local/validation-local/validation-local.component';
+import { ReasonComponent } from './pages/admin-local/request/reason/reason.component';
+import { RequestComponent } from './pages/admin-local/request/request.component';
 
 
 @NgModule({
@@ -130,7 +133,10 @@ import { AccountService } from './pages/account/account.service';
     DetailsLocalComponent,
     NotificationEComponent,
     ShareVComponent,
-    NotificationSComponent
+    NotificationSComponent,
+    ValidationLocalComponent,
+    ReasonComponent,
+    RequestComponent
     //ValidDiaComponent,
     //ShareDiaComponent,
     //DetailsComponent,

@@ -15,11 +15,17 @@ import { ToastrService } from 'ngx-toastr';
 import { StaticService } from '../../static/static.service';
 import { NotificationService } from '../../static/details/notification.service';
 import { LocalService } from '../local.service';
+import { EntityLocal } from '../../models/EntityLocal';
 
-
+interface Change {
+  History: string;
+  Name: string;
+  Changer: string;
+  date: string;
+}
 @Component({
   selector: 'app-details-local',
- 
+
   templateUrl: './details-local.component.html',
   styleUrls: ['./details-local.component.scss']
 })
@@ -55,7 +61,7 @@ export class DetailsLocalComponent {
   listTrans: string[] = [];
 
 
-  constructor(private localService:LocalService,private notificationService: NotificationService, private cd: ChangeDetectorRef, private route: ActivatedRoute, private translationService: TranslationService, private dialog: MatDialog, private router: Router, private dataService: DataService, private selectedItemService: SelectedItemService, private staticservice: StaticService, private toastr: ToastrService) { }
+  constructor(private locale: LocalService, private localService: LocalService, private notificationService: NotificationService, private cd: ChangeDetectorRef, private route: ActivatedRoute, private translationService: TranslationService, private dialog: MatDialog, private router: Router, private dataService: DataService, private selectedItemService: SelectedItemService, private staticservice: StaticService, private toastr: ToastrService) { }
   checkAndAddValue() {
     // Vérifiez si la valeur saisie correspond à l'une des valeurs prédéfinies
     if (this.predefinedValues.includes(this.newValue)) {
@@ -129,7 +135,7 @@ export class DetailsLocalComponent {
     { id: 3, name: 'Entity 3', selected: false },
     // Ajoutez d'autres entités si nécessaire
   ];
-  
+
   showStatusField: boolean = false;
 
 
@@ -168,7 +174,7 @@ export class DetailsLocalComponent {
   formDataList2: any[];
   translations: { [key: number]: { [key: string]: string } } = {};
   selectedLanguages: string[] = [];
-
+  listH: Change[] = [];
   translateAllTexts(language: string) {
     this.formvalues.forEach((value, index) => {
       this.translateText(value, 'en', language, index);
@@ -232,9 +238,9 @@ export class DetailsLocalComponent {
     console.log('De-Selected Item:', item);
     // Vous pouvez également exécuter une autre logique ici si nécessaire
   }
-
+  Entity: string;
   receivedDataList: any[];
-
+  historyList: Change[] = []; 
   ngOnInit(): void {
     const savedData = localStorage.getItem('formData');
 
@@ -255,7 +261,7 @@ export class DetailsLocalComponent {
     this.selectedItemService.selectedItem$.subscribe(name => {
       this.selectedItemName = name; // Mettre à jour le selectedItemName lorsque des mises à jour sont émises
     });
-  
+ 
     this.inputValues.push(''); // Ajoute une valeur initiale vide
     this.showOptions.push(false);
     this.selectedItemID = this.dataService.getSelectedItemID();
@@ -278,19 +284,25 @@ export class DetailsLocalComponent {
         this.oldC = this.receivedDataList[this.selectedItemID - 1].Category;
         this.formDataTypes = this.receivedDataList[this.selectedItemID - 1].Types;
         this.oldT = this.receivedDataList[this.selectedItemID - 1].Types;
-        this.formDataStatus = 'Inactive/Draft';
+        this.formDataStatus = this.receivedDataList[this.selectedItemID - 1].Status;
+        console.log(this.formDataStatus);
         this.oldS = 'Inactive/Draft';
         this.formDataId = 1;
         this.formDataCreateDate = new Date().toLocaleDateString('fr-FR', {
           hour12: false,
           timeZone: 'UTC'
         });
+        this.locale.currentEntity.subscribe(entity => {
+      this.Entity = entity;
+      console.log("Entity value in other page:", entity);
+      // Utilisez la valeur de l'entité comme bon vous semble dans cette page
+    });
 
-        this.formDataCreatedBy = 'Local';
+        this.formDataCreatedBy = `Local${this.Entity}`;
 
         this.showDeleteButton = true;
 
-        this.formvalues = this.receivedDataList[this.selectedItemID - 1].null;
+        this.formvalues = this.receivedDataList[this.selectedItemID - 1].inputValues;
 
         console.log("valuessss", this.formvalues);
 
@@ -379,9 +391,9 @@ export class DetailsLocalComponent {
 
 
 
- 
 
- 
+
+
 
 
   dialogInputValues: string[] = [];
@@ -449,7 +461,6 @@ export class DetailsLocalComponent {
     // Retourne true si l'élément spécifié est sélectionné, sinon false
     return item === 'Values' && this.isValuesSelected;
   }
-
   toggleNavbar() {
     this.isNavbarCollapsed = !this.isNavbarCollapsed;
   }
@@ -461,21 +472,30 @@ export class DetailsLocalComponent {
   }
 
 
+  showHis: boolean = false
+  selectedSection: string = 'details'; // Par défaut, afficher la section 'details'
+
   selectDetails() {
-    this.showForm = true;
-    this.activeLineIndex = 0;// Afficher le formulaire lorsque vous cliquez sur "Details"
+    this.selectedSection = 'details';
+    this.activeLineIndex = 0;
   }
 
   selectValues() {
-    this.showForm = false;
-    this.activeLineIndex = 1; // Afficher la table lorsque vous cliquez sur "Values"
+    this.selectedSection = 'values';
+    this.activeLineIndex = 1;
+  }
+
+  selectHistory() {
+    this.selectedSection = 'history';
+    this.showHis = true;
+    this.activeLineIndex = 2;
   }
   submitt: boolean = false;
-  submit(): void {
+  submit1(): void {
     console.log('Submitting data...');
     console.log("this", this.selectedItemID);
     this.dataService.changeIDName(this.selectedItemID);
-    const formDataToSend: StaticData = {
+    const formDataToSend: EntityLocal = {
       Name: this.formDataName,
       Status: "Inactive/Draft",
       Category: this.formDataCategory,
@@ -487,8 +507,8 @@ export class DetailsLocalComponent {
     this.submitt = true;
     this.dataService.submitDeletedState(this.submitt);
     this.dataService.changeDataName(formDataToSend.Name);
-
-    this.dataService.addToSubmittedDataList(formDataToSend);
+    console.log("dataaa", formDataToSend);
+    this.dataService.addToSubmittedDataList1(formDataToSend)
     this.notificationService.show('This static data has been submitted for review');
     console.log("notif", this.notificationService.show('This static data has been submitted for review'));
     this.router.navigate(['/local-user']);
@@ -498,7 +518,7 @@ export class DetailsLocalComponent {
 
   goToStatic() {
     this.router.navigate(['/local-user']);
-  
+
 
   }
 
@@ -558,31 +578,6 @@ export class DetailsLocalComponent {
 
   }
 
-
-  saveEditedTypes() {
-    this.formDataList2[this.selectedItemID - 1].Types = this.editedTypes;
-    this.formDataTypes = this.formDataList2[this.selectedItemID - 1].Types,
-      this.isEditingTypes = false;
-    console.log("save1", this.formDataList2[this.selectedItemID - 1].Types);
-    this.dataService.setModifiedTypes(this.editedTypes);
-
-  }
-  isEditingCreateby = false;
-  editedCreatedBy: string;
-  startEditingCreateBy() {
-    this.isEditingCreateby = true;
-
-    this.dataService.setModifiedCreatedBy(this.formDataCreatedBy);
-  }
-
-
-  saveEditedCreateBy() {
-    this.formDataList2[this.selectedItemID - 1].CreatedBy = this.editedCreatedBy;
-    this.formDataCreatedBy = this.formDataList2[this.selectedItemID - 1].CreatedBy,
-      this.isEditingCreateby = false;
-    console.log("save1", this.formDataList2[this.selectedItemID - 1].CreatedBy);
-  }
-
   newName: string;
   newS: string;
   newR: string;
@@ -638,18 +633,6 @@ export class DetailsLocalComponent {
     }
   }
 
-
-  saveChanges1() {
-    // Stockez les nouvelles données dans le service
-    this.dataService.newName = this.formDataName;
-    console.log("new", this.formDataName);
-    this.dataService.newS = this.formDataStatus;
-    this.dataService.newA = this.formDataCategory;
-    this.dataService.newR = this.formDataTypes;
-
-    // Naviguez vers une autre page
-    this.router.navigate(['/static']);
-  }
   change: boolean = false;
   newCrea: string;
   saveChanges() {
@@ -660,19 +643,87 @@ export class DetailsLocalComponent {
     console.log("id", id);
     this.change = true
     this.newName = this.formDataName;
+    if (this.oldName != this.newName) {
+      console.log("change");
+      const datachangeN: Change = {
+        History: "modifiaction Name :",
+        Name: this.newName,
+        Changer: this.formDataCreatedBy,
+        date: new Date().toLocaleDateString('fr-FR', {
+          hour12: false,
+          timeZone: 'UTC'
+        })
+      }
+      console.log("change", datachangeN);
+      this.historyList.push(datachangeN);
+      console.log(this.historyList);
+      this.dataService.sendChangeData(this.historyList);
+    } else {
+      console.log("notchange");
+    }
     console.log("apres", this.newName);
     this.dataService.setNewName(this.newName);
 
     this.newS = this.formDataStatus;
     console.log("apres", this.newS);
+    if (this.newS != this.oldS) {
+      console.log("change");
+      const datachangeS: Change = {
+        History: "modifiaction Status",
+        Name: this.newName,
+        Changer: this.formDataCreatedBy,
+        date: new Date().toLocaleDateString('fr-FR', {
+          hour12: false,
+          timeZone: 'UTC'
+        })
+      }
+      console.log("change", datachangeS);
+      this.historyList.push(datachangeS);
+      this.dataService.sendChangeData(this.historyList);
+    }
 
 
     this.newA = this.formDataCategory;
     console.log("apres", this.newA);
+    if (this.newA != this.oldC) {
+      console.log("change");
+      const datachangeC: Change = {
+        History: "modifiaction Category",
+        Name: this.newName,
+        Changer: this.formDataCreatedBy,
+        date: new Date().toLocaleDateString('fr-FR', {
+          hour12: false,
+          timeZone: 'UTC'
+        })
+      }
+      console.log("change", datachangeC);
+      this.historyList.push(datachangeC);
+      this.dataService.sendChangeData(this.historyList);
+    }
+
 
     this.dataService.setNewCategory(this.newA);
     this.newR = this.formDataTypes;
     console.log("apres", this.newR);
+    if (this.newR != this.oldT) {
+      console.log("change");
+      const datachangeT: Change = {
+        History: "modifiaction Types",
+        Name: this.newName,
+        Changer: this.formDataCreatedBy,
+        date: new Date().toLocaleDateString('fr-FR', {
+          hour12: false,
+          timeZone: 'UTC'
+        })
+      }
+      console.log("change", datachangeT);
+      this.historyList.push(datachangeT);
+      this.dataService.sendChangeData(this.historyList);
+
+    }
+
+
+
     this.dataService.setNewTypes(this.newR);
     this.newCrea = this.formDataCreatedBy;
     this.dataService.setNewC(this.newCrea);
@@ -682,9 +733,9 @@ export class DetailsLocalComponent {
 
     console.log("old", this.oldName);
 
-
+    this.notificationService.show('Save Change');
+    console.log(this.notificationService.show('Save Change'));
 
   }
 
 }
-

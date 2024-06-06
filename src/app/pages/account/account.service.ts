@@ -31,19 +31,20 @@ export interface Register {
 export class AccountService implements HttpInterceptor {
   private userSource = new BehaviorSubject<User | null>(null);
   user$ = this.userSource.asObservable();
-
+  //private apiKey = 'AIzaSyCwqtKSx0NQnzKGBku6hDh5cXwhT62obDs'; 
   constructor(private http: HttpClient, private router: Router) { }
-
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const jwt = this.getJWT();
-    if (jwt) {
-      request = request.clone({
-        setHeaders: {
-          Authorization: `Bearer ${ jwt }`        }
-      });
+    let headers = new HttpHeaders({
+     // 'x-api-key': this.apiKey // Ajoutez l'en-tête de l'API Key
+    });
 
-     }
-return next.handle(request);
+    if (jwt) {
+      headers = headers.append('Authorization', `Bearer ${jwt}`);
+    }
+
+    request = request.clone({ headers });
+    return next.handle(request);
   }
 
 login(model: Login): Observable < User > {
@@ -89,8 +90,8 @@ logout() {
   this.userSource.next(null);
 }
 
-getJWT(): string | null {
-  const user = localStorage.getItem('user');
-  return user ? JSON.parse(user).jwt : null;
-}
+  getJWT(): string | null {
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user).jwt : null;
+  }
 }

@@ -2,7 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogsComponent } from './dialogue/dialogue.component';
 import { Router } from '@angular/router';
-import { StaticData } from '../models/staticdata';
+
 import { FormsModule } from '@angular/forms';
 //import { StaticService } from './static.service';
 import { ToastrService } from 'ngx-toastr';
@@ -11,6 +11,8 @@ import { StaticService } from './static.service';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { LocalService } from '../admin-local/local.service';
 import { combineLatest } from 'rxjs';
+import { StaticData } from '../models/staticdata';
+import { NotificationService } from './details/notification.service';
 
 
 //import { BsModalRef } from 'ngx-bootstarp/modal';
@@ -49,7 +51,7 @@ export class StaticComponent {
 
   errorMessages: any;
   formData: StaticData;
-  Name: any;
+  Name: string;
   Category: any;
   Types: any;
   Status: any;
@@ -74,7 +76,7 @@ export class StaticComponent {
     this.items.splice(index, 1);
   }
 
-  constructor(private localservice: LocalService, private dialog: MatDialog, private router: Router, private toastr: ToastrService, private dataService: DataService, private staticService: StaticService) {
+  constructor(private notificationService: NotificationService, private localservice: LocalService, private dialog: MatDialog, private router: Router, private toastr: ToastrService, private dataService: DataService, private staticService: StaticService) {
 
 
   }
@@ -140,9 +142,16 @@ export class StaticComponent {
   itemm: StaticData;
   list: any[] = [];
   deta: any[] = [];
+  entityy: string;
+  formDataList1: any[]=[]
   ngOnInit(): void {
-
-
+    this.dataService.currentNamee1$.subscribe(name => {
+      this.entityy = name;
+      
+      console.log(this.entityy);
+    })
+    const value = this.entityy;
+  
     const id = this.dataService.Newid;
     const Change = this.dataService.NewB;
     console.log(Change);
@@ -154,7 +163,7 @@ export class StaticComponent {
     console.log("MN", modifiedName);
 
     console.log(id);
-
+    console.log(localStorage);
     this.getNewDataFromService();
     console.log("waw");
     const storedData = localStorage.getItem('StaticData');
@@ -166,38 +175,46 @@ export class StaticComponent {
       this.dataName = name;
       console.log('Received data name:', this.dataName);
     });
-
-    this.dataService.currentIDName.subscribe(name => {
+    
+    console.log("locale", localStorage.value);
+    this.dataService.currentIDName$.subscribe(name => {
       this.Id = name;
+      console.log('Received data ID:', this.Id);
+      console.log(this.formDataList[this.Id - 1].Name);
       this.staticService.DeleteStaticData(this.formDataList[this.Id - 1]).subscribe({
         next: (response) => {
           console.log("Response from API:", response);
-          this.toastr.success('Data deleted successfully!', 'Success');
+          // Remove the item from the list after successful deletion
+          this.formDataList.splice(this.Id -1, 1);
+          localStorage.setItem('StaticData', JSON.stringify(this.formDataList));
+          //this.toastr.success('Data deleted successfully!', 'Success');
         },
         error: (error) => {
-          this.formDataList.splice(this.Id - 1, 1);
-          localStorage.setItem('staticData', JSON.stringify(this.formDataList));
           console.error("Error deleting data:", error);
-          this.toastr.error('Failed to delete data!', 'Error');
+          this.formDataList.splice(this.Id - 1, 1);
+          localStorage.setItem('StaticData', JSON.stringify(this.formDataList));
+          //this.notificationService.show('This static data has been deleted');
+          //this.toastr.error('Failed to delete data!', 'Error');
+          this.router.navigate(['/static']);
         }
       });
+      
 
       console.log("avant", this.formDataList);
       console.log("apres", this.formDataList);
       console.log('Received data ID:', this.Id);
     });
-
-    combineLatest([this.localservice.currentDataList, this.dataService.formData$])
-      .subscribe(([datalist, formData]) => {
-        this.list = datalist;
+ this.dataService.formData$
+   .subscribe(formData => {
+     this.list = formData;
         console.log("specific", this.list);
 
         if (formData) {
           this.showDeleteButton = true;
           console.log("yalaa2", this.formData);
-          this.formDataList.push(formData);
+          this.formDataList1.push(formData);
 
-          console.log("darine", this.formDataList);
+          console.log("darine", this.formDataList1);
           this.index += 1;
           console.log("index", this.index);
 
@@ -212,15 +229,15 @@ export class StaticComponent {
             hour12: false,
             timeZone: 'UTC'
           });
-          this.formDataCreatedBy = 'name';
+          this.formDataCreatedBy = 'global';
           this.showDeleteButton = true;
           this.listValues.push(formData.null);
           console.log("null", this.listValues);
           this.show = true;
           this.items.push(formData);
-          console.log("name&", this.formDataList);
+          console.log("name&", this.formDataList1);
 
-          this.formDataList.forEach(item => {
+          this.formDataList1.forEach(item => {
             item.DateCreated = new Date().toLocaleDateString('fr-FR', {
               hour12: false,
               timeZone: 'UTC'
@@ -231,7 +248,7 @@ export class StaticComponent {
             item.CreatedBy = this.formDataCreatedBy;
           });
 
-          console.log("name22", this.formDataList);
+          console.log("name22", this.formDataList1);
           for (let i in this.formDataList) {
             const name = this.formDataList[i].Name;
             const category = this.formDataList[i].Category;
@@ -240,7 +257,7 @@ export class StaticComponent {
             console.log("category", category);
             console.log("date", date);
           }
-          console.log("roro", this.formDataList);
+          console.log("roro", this.formDataList1);
         }
         if (Change) {
 
@@ -249,22 +266,37 @@ export class StaticComponent {
           this.formDataList[id - 1].Category = modifiedCatecory;
           this.formDataList[id - 1].CreatedBy = modifiedCrea;
           console.log(this.formDataList[id - 1].Name);
-        }
+     }
+     const conbin = this.formDataList.concat(this.formDataList1);
+     const uniqueList1 = Array.from(new Map(conbin.map(item => [item.Name, item])).values());
+
+     // Assigner la liste unique à formDataList
+     this.formDataList = uniqueList1;
+     console.log("th", this.formDataList);
         localStorage.setItem('StaticData', JSON.stringify(this.formDataList));
         this.dataService.updateFormDataList(this.formDataList);
 
-        // Supposez que vos objets ont une propriété 'id' unique
-        const combinedList = this.formDataList.concat(this.list);
-
-        // Utiliser un Map pour éliminer les doublons basés sur l'id
-        const uniqueList = Array.from(new Map(combinedList.map(item => [item.Name, item])).values());
-
-        // Assigner la liste unique à formDataList
-        this.formDataList = uniqueList;
+     console.log(this.formDataList);
 
         localStorage.setItem('StaticData', JSON.stringify(this.formDataList));
         console.log("Combined list:", this.formDataList);
       });
+    const entity1Data = localStorage.getItem(`${this.entityy}`);
+    if (entity1Data) {
+      const entity1List = JSON.parse(entity1Data);
+      const combinedList = this.formDataList.concat(entity1List);
+
+      // Utiliser un Set pour éliminer les doublons basés sur Name
+      const uniqueList = Array.from(new Map(combinedList.map(item => [item.Name, item])).values());
+
+      // Assigner la liste unique à formDataList
+      this.formDataList = uniqueList;
+
+      // Mettre à jour le localStorage
+      localStorage.setItem('StaticData', JSON.stringify(this.formDataList));
+      console.log(localStorage.StaticData)
+      console.log("Final Combined list:", this.formDataList);
+    }
 
     this.filteredDataList = this.formDataList;
 
@@ -390,13 +422,13 @@ export class StaticComponent {
             // Remove the item from the list after successful deletion
             this.formDataList.splice(i, 1);
             localStorage.setItem('StaticData', JSON.stringify(this.formDataList));
-            this.toastr.success('Data deleted successfully!', 'Success');
+            this.notificationService.show1('Data deleted successfully!');
           },
           error: (error) => {
             console.error("Error deleting data:", error);
             this.formDataList.splice(i, 1);
             localStorage.setItem('StaticData', JSON.stringify(this.formDataList));
-            this.toastr.error('Failed to delete data!', 'Error');
+            this.notificationService.show1('Data deleted successfully!');
             this.router.navigate(['/static']);
           }
         });

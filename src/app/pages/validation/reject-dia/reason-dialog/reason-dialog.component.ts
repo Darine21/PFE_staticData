@@ -3,6 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NavbarService } from '../../../../components/NavBar.service';
 import { DataService } from '../../../static/data.service';
 import { Router } from '@angular/router';
+import { NotificationService } from '../../../static/details/notification.service';
 
 
 @Component({
@@ -15,7 +16,7 @@ export class ReasonDialogComponent implements OnInit {
   reason: string = '';
    submittedDataList: any[]=[];
 
-  constructor(public modal: NgbActiveModal, private navbarService: NavbarService, private dataService: DataService, private router: Router) { }
+  constructor(private notification:NotificationService, public modal: NgbActiveModal, private navbarService: NavbarService, private dataService: DataService, private router: Router) { }
   reasons: string[] = [];
 
   saveReason() {
@@ -24,7 +25,8 @@ export class ReasonDialogComponent implements OnInit {
    
     this.modal.close(this.reason);
 
-    this.show = false
+    this.show = false;
+    this.notification.show1("Message sent")
     this.router.navigate(['/valide'])
   }
 

@@ -3,6 +3,7 @@ import { ROUTES } from '../sidebar/sidebar.component';
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { Router } from '@angular/router';
 import { NavbarService } from '../NavBar.service';
+import { DataService } from '../../pages/static/data.service';
 
 @Component({
   selector: 'app-navbar',
@@ -20,8 +21,9 @@ export class NavbarComponent implements OnInit {
   status: string = '';
   notif: any[] = [];
   Status: any[] = [];
-  
-  constructor(location: Location, private element: ElementRef, private router: Router, private navbarService: NavbarService) {
+  message: string;
+
+  constructor(private dataservice: DataService, location: Location, private element: ElementRef, private router: Router, private navbarService: NavbarService) {
     this.location = location;
   }
   ngOnInit() {
@@ -34,12 +36,8 @@ export class NavbarComponent implements OnInit {
       console.log('Raisons mises à jour dans le composant Navbar :', this.notif);
   
     });
-    this.navbarService.getReasons().subscribe(reasons => {
-      this.reasons = reasons; 
-      
-      console.log('Raisons mises à jour dans le composant Navbar :', this.reasons);
-    });
-     
+    this.message = this.dataservice.getMessage()
+    console.log("msg", this.message);
     this.navbarService.currentName.subscribe(name=> {
       this.name = name;
       // Utilisez la raison mise à jour ici, par exemple, pour afficher une notification dans la barre de navigation

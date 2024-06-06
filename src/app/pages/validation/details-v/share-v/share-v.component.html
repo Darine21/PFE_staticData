@@ -1,14 +1,14 @@
 <div *ngIf="showFirstDialog" class="dialog-container right-dialog">
   <i class="fas fa-times close-icon" (click)="onClose()" style="position: absolute;  right: 20px; color: #888; font-size: 15px; cursor: pointer;"></i>
-  <h5 class="dialog-title">
+  <h5 class="dialog-title" style="color: #ef8404;">
 
     Are you sure you want to share <br> {{ selectedItemName }} ?
   </h5>
 
-  <div class="button-container">
+  <div class="button-container" style="margin-left:80px;">
     <button class="btn btn-primary" (click)="goTovalid()">
-      <i class="fa fa-check" aria-hidden="true" style="font-size:12px"></i> OK
+      <i class="fa fa-check" aria-hidden="true" style="font-size:12px"></i> Yes
     </button>
-    <button class="btn btn-danger " (click)="onClose()">Cancel</button>
+    <button class="btn cancel-button" (click)="onClose()">No</button>
   </div>
 </div>

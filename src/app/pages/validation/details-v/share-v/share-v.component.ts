@@ -13,10 +13,11 @@ import { ShareDialogComponent } from '../../share/share.component';
 import { Entity } from '../../../models/Entity';
 import { Language } from '../../../models/Language';
 import { Entity1 } from '../../../models/Entity1';
+import { NotificationService } from '../../../static/details/notification.service';
 
 @Component({
   selector: 'app-share-v',
- 
+
   templateUrl: './share-v.component.html',
   styleUrls: ['./share-v.component.scss']
 })
@@ -50,8 +51,9 @@ export class ShareVComponent {
   @Output() publishVersion: EventEmitter<any> = new EventEmitter<any>();
   selectedVersion: any;
   formattedVersions: string[] = [];
+  submittedDataList: any[]=[];
 
-  constructor(private dialogue: StaticService,
+  constructor(private notification:NotificationService,private dialogue: StaticService,
     @Inject(MAT_DIALOG_DATA) public data: { entities: Entity[], entityNames: { id: number, itemName: string }[] }, private dialog: MatDialog, private validService: ValidService, private fb: FormBuilder, private toastr: ToastrService, private router: Router, private selectedItemService: SelectedItemService, private dialogRef: MatDialogRef<any>) {
     this.entities.forEach((entity, index) => {
       this.entityNames.push({ id: index + 1, itemName: entity.name });
@@ -61,7 +63,8 @@ export class ShareVComponent {
 
   ngOnInit() {
 
-
+    this.submittedDataList = this.selectedItemService.getSubmittedDataList();
+    console.log("listt", this.submittedDataList);
     this.selectedItemService.currentName.subscribe(name => {
       this.selectedItemName = name;
       console.log("nammeee", this.selectedItemName);
@@ -113,7 +116,7 @@ export class ShareVComponent {
 
       Status: "Approval",
       DateCreated: new Date(),
-      CreatedBy: 'name',
+      CreatedBy: 'global',
       values: ['']
     };
 
@@ -121,11 +124,12 @@ export class ShareVComponent {
     this.validService.saveValidStaticData(validStaticData).subscribe(
       response => {
         console.log('Validation successful:', response);
-        this.toastr.success('Données enregistrées avec succès.');
+        this.notification.show1('Données enregistrées avec succès.');
       },
       error => {
         // Erreur lors de la requête
         this.toastr.error('Une erreur s\'est produite lors de l\'enregistrement des données.');
+        this.notification.show1('Données enregistrées avec succès.');
         console.error(error);
       });
 

@@ -39,4 +39,13 @@ export class NavbarService {
   updateReasonData(data: string[]) {
     this._reasonData.next(data);
   }
+  private roleSource = new BehaviorSubject<string>('');  // Default value
+  currentRole = this.roleSource.asObservable();
+
+ 
+
+  changeRole(role: string) {
+    console.log(role);  // Log the role
+    this.roleSource.next(role);
+  }
 }

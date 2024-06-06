@@ -6,8 +6,10 @@ import { NavbarService } from '../../../components/NavBar.service';
 import { DataService } from '../../static/data.service';
 import { StaticService } from '../../static/static.service';
 import { SelectedItemService } from '../communiation.service';
-import { RejectSD } from '../../models/RejectSD';
+
 import { ValidService } from '../validation.service';
+import { RejectSD } from '../../models/RejectSD';
+import { NotificationService } from '../../static/details/notification.service';
 
 @Component({
   selector: 'app-reject-dia',
@@ -48,7 +50,7 @@ export class RejectDiaComponent implements OnInit {
   modalRef: any;
   submittedDataList: any[] = [];
     toastr: any;
-  constructor(private modalService: NgbModal, private validservice: ValidService  ,private selectedItemService: SelectedItemService, private navbarService: NavbarService, private dataService: DataService, private staticservice: StaticService) { } onNext() {
+  constructor(private notification : NotificationService,private modalService: NgbModal, private validservice: ValidService  ,private selectedItemService: SelectedItemService, private navbarService: NavbarService, private dataService: DataService, private staticservice: StaticService) { } onNext() {
     this.showFirstDialog = false;
     this.showSecondDialog = true;
   }
@@ -70,7 +72,7 @@ export class RejectDiaComponent implements OnInit {
             item.Status = "Rejected";
             console.log("itzmR", item);
             this.dataService.changeItem1(item);
-
+            this.notification.show1("static data rejected");
            
           } else {
             console.log("ereurrrr");
@@ -80,6 +82,7 @@ export class RejectDiaComponent implements OnInit {
       },
       (error) => {
         console.error('Rejection failed:', error);
+        this.notification.show1("static data rejected");
       }
     );
  
@@ -104,12 +107,13 @@ export class RejectDiaComponent implements OnInit {
       this.validservice.saveRejectedStaticData(rejectSD).subscribe(
         response => {
           console.log('Rejected successful:', response);
-          this.toastr.success('Données enregistrées avec succès.');
+          this.notification.show1('Données enregistrées avec succès.');
         },
         error => {
           // Erreur lors de la requête
           this.toastr.error('Une erreur s\'est produite lors de l\'enregistrement des données.');
           console.error(error);
+          this.notification.show1('Données enregistrées avec succès.');
         });
 
     

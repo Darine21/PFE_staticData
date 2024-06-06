@@ -1,18 +1,18 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Register } from '../models/register';
+
 import { environment } from '../../../environments/environement.developement';
-import { Login } from '../models/login';
-import { User } from '../models/user';
+
 import { Observable, ReplaySubject, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { StaticData } from '../models/staticdata';
-import { ValidSD } from '../models/ValidSD';
-import { RejectSD } from '../models/RejectSD';
-import { SharedSD } from '../models/SharedSD';
 import { Entity } from '../models/Entity';
+import { SharedSD } from '../models/SharedSD';
+import { RejectSD } from '../models/RejectSD';
+import { ValidSD } from '../models/ValidSD';
+import { StaticData } from '../models/staticdata';
 import { EntityLocal } from '../models/EntityLocal';
+
 @Injectable({
   providedIn: 'root'
 })

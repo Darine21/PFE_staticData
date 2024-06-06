@@ -55,7 +55,7 @@
       <div class="card-body">
         <div class="row">
           <div class="col-auto" (click)="goToReject()">
-            <div class="icon icon-shape bg-danger text-white rounded-circle shadow" >
+            <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
               <i class="fas fa-times-circle"></i>
             </div>
           </div>
@@ -112,7 +112,7 @@
               <i class="fas fa-exclamation-circle"></i>
             </div>
           </div>
-          <div class="col"  >
+          <div class="col">
             <h5 class="card-title text-right" style="font-size: 18px; text-align: center; color: #adb5bd; font-family: 'Roboto';  text-align: center;">Complaint</h5>
             <div class="text-right " style="margin-bottom:10px;">
               <span class="h2 font-weight-bold mb-0 text-warning-card" style="color: #fb6340; margin-right: 12px;">3</span>
@@ -138,7 +138,7 @@
       <div class="card shadow" style="margin-top:40px;">
         <div class="card-header border-0 d-flex justify-content-between align-items-center mt-n2" style="height: 75px; ">
           <!-- Appliquez des classes de taille Bootstrap à l'élément h3 -->
-          <h3 class="mb-0" style="color: #adb5bd; font-family: 'Roboto';font-size:18px;">List of Static Data</h3>
+          <h3 class="mb-0" style="color: #adb5bd; font-family: 'Roboto';font-size:18px;">List of Specific Static Data {{this.Entity}}</h3>
           <div class="d-flex align-items-center ml-auto">
             <div class="col-md">
               <div class="input-group input-group-alternative mb-3">
@@ -168,7 +168,7 @@
               <th scope="col" class="px-4 py-3 bg-white text-primary mx-6">Types</th>
               <th scope="col" class="px-4 py-3 bg-white text-primary mx-6">Create Date</th>
               <th scope="col" class="px-4 py-3 bg-white text-primary mx-6">Created By</th>
-              
+
               <th scope="col" class="px-4 py-3 bg-white text-primary mx-6 ml-6">Actions</th>
               <th scope="col"></th>
             </tr>
@@ -183,26 +183,26 @@
               </td>
               <td class="px-4 py-3 mx-6">{{i + 1}}</td>
               <td class="px-4 py-3 mx-6" (click)="goToDetailsV(i+1)" style="cursor: pointer;">{{item?.Name}}</td>
-              <td class="px-4 py-3 mx-6" >{{item?.Status  }}</td>
+              <td class="px-4 py-3 mx-6">{{item?.Status  }}</td>
               <td class="px-4 py-3 mx-6">{{item?.Category }}</td>
               <td class="px-4 py-3 mx-6">{{item?.Types }}</td>
               <td class="px-4 py-3 mx-6">{{item?.DateCreated}}</td>
               <td class="px-4 py-3 mx-6">{{item?.CreatedBy}}</td>
-          
+
               <!-- Colonne Actions avec les boutons Valider et Rejeter -->
               <td class="px-4 py-3 mx-4 ml-4">
-                <button *ngIf="!isItemSelected" class="btn btn-success btn-sm"  (click)="delete(item.Name, i)"  >delete</button>
+                <button *ngIf="!isItemSelected" class="btn btn-success btn-sm" (click)="delete(item.Name, i)">delete</button>
 
                 <button *ngIf="!isItemSelected" class="btn btn-danger btn-sm" (click)="goToDetailsV(i+1)">Edit</button>
-               
+
 
 
               </td>
               <app-reject-dia *ngIf="isItemSelected && item.showRejectDialog" (statusUpdate)="updateStatus('Rejected', item)"></app-reject-dia>
-                         </tr>
+            </tr>
           </tbody>
         </table>
-       
+
 
       </div>
 

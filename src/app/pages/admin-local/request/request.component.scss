@@ -4,14 +4,13 @@
   border-radius: 10px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  width: 430px;
-  height: 200px;
+  width: 400px;
+  height: auto;
   margin-top: 20px;
   position: fixed;
   top: 30%;
-  left: 55%;
+  left: 50%;
   transform: translate(-50%, -50%);
-  color: #ef8404;
 }
 
 /* Styles for the close icon */
@@ -28,14 +27,13 @@
   text-align: center;
   margin-bottom: 20px;
   font-size: 24px;
-  //color: #ef8404;
+  color: #333;
 }
 
 /* Styles for the buttons container */
 .buttons-container {
   text-align: center;
   margin-top: 20px;
-  margin-left: 80px;
 }
 
 /* Styles for the buttons */

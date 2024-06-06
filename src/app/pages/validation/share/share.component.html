@@ -1,10 +1,11 @@
 <div class="dialog-container">
   <div class="dialog-header">
     <h2 class="dialog-title" style="margin-top: 30px;  ">
-      <span class="title" style="font-size:23px; text-align: center;margin-left:150px">Share Static Data </span>
+      <i class="fas fa-times close-icon" (click)="closeDialog()" style="position: absolute; top: 20px; right: 20px; color: #888; font-size: 20px; cursor: pointer;"></i>
+      <span class="title" style="font-size: 30px; text-align: center; margin-left: 110px; color: #ef8404">Share Static Data </span>
     </h2>
     <button class="close-button" (click)="closeDialog()">
-      <i class="fas fa-times"></i>
+      <i class="fas fa-times close-icon"></i>
     </button>
   </div>
 
@@ -15,7 +16,7 @@
       </div>
       <div class="user-information">
         <span class="user-name"> {{itemName}} Shared</span>
-        <span>language:</span>
+        <span>Language:</span>
         <div class="inline-list">
           <span *ngFor="let item of listaaaa"> {{item}}</span>
         </div>
@@ -45,7 +46,7 @@
   <div class="share-content" style="margin-left:350px;">
     <button class="share-button" (click)="share()">Share now</button>
   </div>
-  <h2 >Send directly</h2>
+  <h2 style="color: #6b7280;margin-left:30px" >Send directly</h2>
   <div class="recent-entities">
     <div class="entity-list" *ngFor="let name of list.slice(0, 6)">
       <div class="entity-item">

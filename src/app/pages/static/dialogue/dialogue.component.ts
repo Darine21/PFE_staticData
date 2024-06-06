@@ -9,6 +9,7 @@ import { DataService } from '../data.service';
 import { StaticService } from '../static.service';
 import { TranslationService } from '../details/Translate.service';
 import { Router } from '@angular/router';
+import { NotificationService } from '../details/notification.service';
 
 @Component({
   selector: 'app-dialogs',
@@ -39,7 +40,7 @@ export class DialogsComponent {
   singleValue: string = '';
   Data: any[] = [];
     dataSuccess: boolean;
-  constructor(private dialogRef: MatDialogRef<DialogsComponent>,private router: Router,private cd: ChangeDetectorRef,private translationService: TranslationService,  private staticService: StaticService, private fb: FormBuilder, private toastr: ToastrService, private dataService: DataService) {
+  constructor(private notification:NotificationService ,private dialogRef: MatDialogRef<DialogsComponent>,private router: Router,private cd: ChangeDetectorRef,private translationService: TranslationService,  private staticService: StaticService, private fb: FormBuilder, private toastr: ToastrService, private dataService: DataService) {
 
   }
  
@@ -82,7 +83,7 @@ export class DialogsComponent {
     console.log("eeeeee", formData);
     this.inputValues = this.copylist
     formData.inputValues = [...this.inputValues, ...(this.bulkValues ? this.bulkValues.split(/\r?\n/) : [])];
-    
+    const val = "global"
     console.log("back", formData);
     const staticData: StaticData = {
       Name: formData.Name,
@@ -93,7 +94,7 @@ export class DialogsComponent {
         hour12: false,
         timeZone: 'UTC'
       }), // Ajoutez la date de création actuelle
-      CreatedBy: 'username', 
+      CreatedBy: val, 
       inputValues: formData.inputValues
      
     };
@@ -104,12 +105,13 @@ export class DialogsComponent {
       
         console.log("Response from API:", response);
        
-        this.toastr.success('Data added successfully!', 'Success');
+        this.notification.show1('Data added successfully!');
         this.dialogRef.close();
       },
       error: (error) => {
       
         console.error("Error adding data:", error);
+        this.notification.show1('Data added successfully!');
    
         this.toastr.error('Failed to add data!', 'Error');
       }

@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { StaticData } from '../models/staticdata';
-import { Entity } from '../models/Entity';
+
+
 import { MatDialogRef } from '@angular/material/dialog';
+import { Entity } from '../models/Entity';
+import { StaticData } from '../models/staticdata';
+import { EntityLocal } from '../models/EntityLocal';
 
 
 @Injectable({
@@ -18,6 +21,7 @@ export class DataService {
   dataSubmitted$: Observable<any> = this.dataSubmittedSubject.asObservable();
   formData: any;
   submittedDataList: StaticData[] = [];
+  submittedDataList1: EntityLocal[]=[]
   private formDataListSubject = new BehaviorSubject<StaticData[]>([]);
   //formDataList$ = this.formDataListSubject.asObservable();
     selectedItemID: number;
@@ -43,6 +47,7 @@ export class DataService {
   getList(): string[] {
     return this.list;
   }
+
   private formDataSubject4 = new BehaviorSubject<StaticData | null>(null);
   formData4$ = this.formDataSubject.asObservable();
 
@@ -57,9 +62,14 @@ export class DataService {
    private dataNameSource = new BehaviorSubject<string>(null);
   currentDataName = this.dataNameSource.asObservable();
   private dataIDSource = new BehaviorSubject<number>(null);
-  currentIDName = this.dataIDSource.asObservable();
+  currentIDName$ = this.dataIDSource.asObservable();
+  private dataSource = new BehaviorSubject<string>(null);
+  currentNamee$ = this.dataSource.asObservable();
   changeIDName(name: number) {
     this.dataIDSource.next(name);
+  }
+  ChangeName(name: string) {
+    this.dataSource.next(name)
   }
   private confirmSubject = new Subject<boolean>();
 
@@ -70,6 +80,26 @@ export class DataService {
   }
   changeDataName(name: string) {
     this.dataNameSource.next(name);
+  }
+  private dataSource2 = new BehaviorSubject<string>(null);
+  currentNamee1$ = this.dataSource2.asObservable();
+  getEntity(name: string) {
+    this.dataSource2.next(name);
+  }
+  message:string
+  setMessage(name: string) {
+    this.message = name;
+  }
+  getMessage() {
+    return this.message;
+  }
+
+  private userRoleSubject = new BehaviorSubject<string>(null);
+  userRole$ = this.userRoleSubject.asObservable();
+
+  // Méthode pour mettre à jour le rôle de l'utilisateur
+  updateUserRole(role: string) {
+    this.userRoleSubject.next(role);
   }
   transferredItemSubject: Subject<any> = new Subject<any>();
   transferItem(item: any) {
@@ -262,6 +292,10 @@ export class DataService {
   addToSubmittedDataList(formData: StaticData) {
     this.submittedDataList.push(formData);
     console.log("lisssttttt", this.submittedDataList);
+  }
+  addToSubmittedDataList1(formData: EntityLocal) {
+    this.submittedDataList1.push(formData);
+    console.log("lisssttttt", this.submittedDataList1);
   }
   setSelectedItemID(id: number): void {
     this.selectedItemID = id;

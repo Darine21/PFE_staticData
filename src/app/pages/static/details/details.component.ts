@@ -9,11 +9,12 @@ import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap/datepicker/ngb-date-st
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../data.service';
 import { SelectedItemService } from '../../validation/communiation.service';
-import { StaticData } from '../../models/staticdata';
+
 import { TranslationService } from './Translate.service';
 import { ToastrService } from 'ngx-toastr';
 import { StaticService } from '../static.service';
 import { NotificationService } from './notification.service';
+import { StaticData } from '../../models/staticdata';
 
 
 //import { ShareDiaComponent } from '../share-dia/share-dia.component';
@@ -210,7 +211,7 @@ export class DetailsComponent implements OnInit {
   formDataList2: any[];
   translations: { [key: number]: { [key: string]: string } } = {};
   selectedLanguages: string[] = [];
-
+  listH: Change[] = [];
   translateAllTexts(language: string) {
     this.formvalues.forEach((value, index) => {
       this.translateText(value, 'en', language, index);
@@ -274,7 +275,7 @@ export class DetailsComponent implements OnInit {
     console.log('De-Selected Item:', item);
     // Vous pouvez également exécuter une autre logique ici si nécessaire
   }
-  historyList: any[] = []; 
+  historyList: Change[] = []; 
 
   
  ngOnInit(): void {
@@ -332,8 +333,8 @@ export class DetailsComponent implements OnInit {
           hour12: false,
           timeZone: 'UTC'
         });
-     
-        this.formDataCreatedBy = 'name';
+
+        this.formDataCreatedBy = formDataList[this.selectedItemID - 1].CreatedBy;
 
         this.showDeleteButton = true;
     
@@ -351,18 +352,14 @@ export class DetailsComponent implements OnInit {
         }
     // Initialise showOptions pour la première valeur
     });
-
-   this.dataService.changeData$.subscribe(dataa => {
-
-     this.deta = dataa;
-     console.log("dataaaa", this.deta);
-     this.historyList.push({ ...this.deta });
-
-
-     console.log(this.historyList);
-
-
-   });
+   this.dataService.changeData$.subscribe(data => {
+     //this.listH = data;
+     this.listH.push(data);
+     console.log(this.listH);
+     for (let item of this.listH) {
+       console.log("item", item);
+     }
+   })
    
    this.dropdownList1 = [
      { item_id: 'fr', item_text: 'French' },
@@ -754,7 +751,7 @@ export class DetailsComponent implements OnInit {
     if (this.oldName != this.newName) {
       console.log("change");
       const datachangeN: Change={
-       History : "modifiaction Name",
+       History : "modifiaction Name :",
         Name: this.newName,
         Changer: this.formDataCreatedBy,
         date: new Date().toLocaleDateString('fr-FR', {
@@ -764,7 +761,8 @@ export class DetailsComponent implements OnInit {
       }
       console.log("change", datachangeN);
       this.historyList.push(datachangeN);
-      //this.dataService.sendChangeData(datachange);
+      console.log(this.historyList);
+      this.dataService.sendChangeData(this.historyList);
     } else {
       console.log("notchange");
     }
@@ -786,7 +784,7 @@ export class DetailsComponent implements OnInit {
       }
       console.log("change", datachangeS);
       this.historyList.push(datachangeS);
-      //this.dataService.sendChangeData(datachange);
+      this.dataService.sendChangeData(this.historyList);
     }
     
    
@@ -805,7 +803,7 @@ export class DetailsComponent implements OnInit {
       }
       console.log("change", datachangeC);
       this.historyList.push(datachangeC);
-      this.dataService.sendChangeData(datachangeC);
+      this.dataService.sendChangeData(this.historyList);
     }
 
    
@@ -825,7 +823,8 @@ export class DetailsComponent implements OnInit {
       }
       console.log("change", datachangeT);
       this.historyList.push(datachangeT);
-      //this.dataService.sendChangeData(datachange);
+      this.dataService.sendChangeData(this.historyList);
+      
     }
 
 
@@ -838,8 +837,9 @@ export class DetailsComponent implements OnInit {
     this.router.navigate(['/static']);
 
     console.log("old", this.oldName);
-    
 
+    this.notificationService.show('Save Change');
+    console.log(this.notificationService.show('Save Change'));
 
   }
 

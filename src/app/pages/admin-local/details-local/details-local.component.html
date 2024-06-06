@@ -36,8 +36,8 @@
             <a class="nav-link">Values</a>
 
           </li>
-          <li class="nav-item mx-5" (click)="moveLine(2)">
-            <a class="nav-link" href="#/history">History</a>
+          <li class="nav-item mx-5" (click)="selectHistory()" [ngClass]="{'active': activeLineIndex === 2}">
+            <a class="nav-link">History</a>
 
           </li>
         </ul>
@@ -53,7 +53,47 @@
     <!-- Container wrapper -->
   </nav>
   <div style="margin-bottom: 20px;"></div>
-  <div class="text-left">
+  <div *ngIf="selectedSection === 'history' " class="container-fluid mt-4 mb-4">
+    <div class="row">
+      <div class="col">
+        <div class="card shadow">
+          <div class="card-header border-0 d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">History of "{{formDataName}}"</h3>
+          </div>
+          <div class="table-responsive">
+            <table class="table align-items-center table-flush custom-table bg-white">
+              <thead>
+                <tr>
+                  <th scope="col" class="px-4 py-3 bg-white text-primary">Name</th>
+                  <th scope="col" class="px-4 py-3 bg-white text-primary">History</th>
+
+                  <th scope="col" class="px-4 py-3 bg-white text-primary">Date </th>
+                  <th scope="col" class="px-4 py-3 bg-white text-primary">Changer</th>
+
+                </tr>
+              </thead>
+              <tbody>
+              <tbody>
+              <tbody>
+                <ng-container *ngFor="let sublist of listH">
+                  <tr *ngFor="let item of sublist">
+                    <td class="px-4 py-3">{{ item.Name }}</td>
+                    <td class="px-4 py-3">{{ item.History }} </td>
+                    <td class="px-4 py-3">{{ item.date }}</td>
+                    <td class="px-4 py-3">{{ item.Changer }}</td>
+                  </tr>
+                </ng-container>
+              </tbody>
+
+
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="margin-bottom: 20px;"></div>
+  <div class="text-left" *ngIf="!(selectedSection === 'history') ">
     <div class="container-fluid">
       <div class="row justify-content-center align-items-center">
         <div class="col-lg-12">
@@ -61,19 +101,21 @@
           <div class="card card-user">
             <div class="card-header">
               <h4 class="card-title" style="color: #fb6340 ; font-size:17px;">Edit Static Data "{{formDataName}}" </h4>
+
               <div class="row">
                 <div class="col-md-12">
                   <div class="d-flex justify-content-end align-items-end">
-                    <button type="submit" class="btn btn-primary  btn-md mx-2 w-40" (click)="goToStatic(); saveChanges()">Save</button>
-                    <button class="submit-button btn-md mx-2 w-40" (click)="submit()">Submit</button>
+                    <button type="submit" class="btn btn-primary  btn-md mx-2 w-40" (click)="saveChanges()">Save</button>
+                    <button class="submit-button btn-md mx-2 w-40" (click)="submit1()">Submit</button>
 
                   </div>
                 </div>
               </div>
             </div>
 
+
             <div class="card-body">
-              <div *ngIf="showForm" style="overflow-x:hidden;">
+              <div *ngIf="selectedSection === 'details' " style="overflow-x:hidden;">
                 <form (ngSubmit)="submit()">
                   <div id="detailsContent">
 
@@ -90,7 +132,7 @@
                       <div class="col-md-6 pr-1">
                         <div class="form-group">
                           <label>Status</label>
-                          <input type="text" class="editable-content" placeholder="Lorem by " value="Inactive">
+                          <input type="text" class="editable-content" placeholder="Lorem by " value={{formDataStatus}}>
                         </div>
                       </div>
 
@@ -174,76 +216,77 @@
               </div>
             </div>
 
-            <div *ngIf="!showForm" style="overflow-x:hidden">
+
+
+
+            <div *ngIf="selectedSection === 'values'" style="overflow-x:hidden">
               <!-- Bouton pour traduire toutes les valeurs -->
               <div ngbDropdown class="options-menu col-md-6 pr-1">
-                <button class="btn btn-primary translate-btn" id="dropdownButtonAll" ngbDropdownToggle style="margin-left:1000px">
+                <button class="btn btn-primary translate-btn" id="dropdownButtonAll" ngbDropdownToggle style="margin-left:1000px; ">
                   <i class="fas fa-plus"></i> Languages
                 </button>
-                <div ngbDropdownMenu aria-labelledby="dropdownButtonAll" class="dropdown-menu dropdown-menu-right">
+                <div ngbDropdownMenu aria-labelledby="dropdownButtonAll" class="dropdown-menu dropdown-menu-right languages-dropdown">
                   <button class="dropdown-item" (click)="toggleLanguage('fr'); translateAllTexts('fr')">French</button>
                   <button class="dropdown-item" (click)="toggleLanguage('es'); translateAllTexts('es')">Spanish</button>
                   <button class="dropdown-item" (click)="toggleLanguage('ar'); translateAllTexts('ar')">Arabic</button>
                   <button class="dropdown-item" (click)="toggleLanguage('zh'); translateAllTexts('zh')">Chinese</button>
                   <button class="dropdown-item" (click)="toggleLanguage('nl'); translateAllTexts('nl')">Dutch</button>
-
-                  <button class="dropdown-item" (click)="toggleLanguage('fi');translateAllTexts('fi')">Finnish</button>
-                  <button class="dropdown-item" (click)="toggleLanguage('de');translateAllTexts('de')">German</button>
-                  <button class="dropdown-item" (click)="toggleLanguage('hi')">Hindi</button>
-                  <button class="dropdown-item" (click)="toggleLanguage('hu')">Hungarian</button>
-                  <button class="dropdown-item" (click)="toggleLanguage('id')">Indonesian</button>
-                  <button class="dropdown-item" (click)="toggleLanguage('ga')">Irish</button>
-                  <button class="dropdown-item" (click)="toggleLanguage('it')">Italian</button>
-                  <button class="dropdown-item" (click)="toggleLanguage('ja')">Japanese</button>
-                  <button class="dropdown-item" (click)="toggleLanguage('ko')">Korean</button>
-                  <button class="dropdown-item" (click)="toggleLanguage('pl')">Polish</button>
-                  <button class="dropdown-item" (click)="toggleLanguage('pt')">Portuguese</button>
-                  <button class="dropdown-item" (click)="toggleLanguage('ru')">Russian</button>
-                  <button class="dropdown-item" (click)="toggleLanguage('sv')">Swedish</button>
-                  <button class="dropdown-item" (click)="toggleLanguage('tr')">Turkish</button>
-                  <button class="dropdown-item" (click)="toggleLanguage('uk')">Ukrainian</button>
-                  <button class="dropdown-item" (click)="toggleLanguage('vi')">Vietnamese</button>
-                  <button class="dropdown-item" (click)="toggleLanguage('da')">Danish</button>
-                  <button class="dropdown-item" (click)="toggleLanguage('el')">Greek</button>
-                  <button class="dropdown-item" (click)="toggleLanguage('ms')">Malay</button>
-                  <button class="dropdown-item" (click)="toggleLanguage('sq')">Albanian</button>
+                  <button class="dropdown-item" (click)="toggleLanguage('fi'); translateAllTexts('fi')">Finnish</button>
+                  <button class="dropdown-item" (click)="toggleLanguage('de'); translateAllTexts('de')">German</button>
+                  <button class="dropdown-item" (click)="toggleLanguage('hi'); translateAllTexts('hi')">Hindi</button>
+                  <button class="dropdown-item" (click)="toggleLanguage('hu'); translateAllTexts('hu')">Hungarian</button>
+                  <button class="dropdown-item" (click)="toggleLanguage('id'); translateAllTexts('id')">Indonesian</button>
+                  <button class="dropdown-item" (click)="toggleLanguage('ga'); translateAllTexts('ga')">Irish</button>
+                  <button class="dropdown-item" (click)="toggleLanguage('it'); translateAllTexts('it')">Italian</button>
+                  <button class="dropdown-item" (click)="toggleLanguage('ja'); translateAllTexts('ja')">Japanese</button>
+                  <button class="dropdown-item" (click)="toggleLanguage('ko'); translateAllTexts('ko')">Korean</button>
+                  <button class="dropdown-item" (click)="toggleLanguage('pl'); translateAllTexts('pl')">Polish</button>
+                  <button class="dropdown-item" (click)="toggleLanguage('pt'); translateAllTexts('pt')">Portuguese</button>
+                  <button class="dropdown-item" (click)="toggleLanguage('ru'); translateAllTexts('ru')">Russian</button>
+                  <button class="dropdown-item" (click)="toggleLanguage('sv'); translateAllTexts('sv')">Swedish</button>
+                  <button class="dropdown-item" (click)="toggleLanguage('tr') ;translateAllTexts('tr')">Turkish</button>
+                  <button class="dropdown-item" (click)="toggleLanguage('uk'); translateAllTexts('uk')">Ukrainian</button>
+                  <button class="dropdown-item" (click)="toggleLanguage('vi'); translateAllTexts('vi')">Vietnamese</button>
+                  <button class="dropdown-item" (click)="toggleLanguage('da'); translateAllTexts('da')">Danish</button>
+                  <button class="dropdown-item" (click)="toggleLanguage('el'); translateAllTexts('el')">Greek</button>
+                  <button class="dropdown-item" (click)="toggleLanguage('ms'); translateAllTexts('ms')">Malay</button>
+                  <button class="dropdown-item" (click)="toggleLanguage('sq'); translateAllTexts('sq')">Albanian</button>
 
                 </div>
               </div>
 
               <!-- Affichage des langues sélectionnées -->
-              <div class="selected-languages" style="margin-left:10px; margin-top: 10px;">
-                Selected Languages :
-                <span *ngFor="let lang of selectedLanguages" class="selected-language">
-                  {{ getLanguageName(lang) }} <button class="btn btn-outline-success btn-sm" (click)="removeLanguage(lang)">×</button>
-                </span>
-              </div>
-
               <!-- Affichage des valeurs -->
-              <div class="values-container" style="margin-left:10px; margin-top: 10px;">
-                <div *ngFor="let value of formvalues; let i = index" class="value-row d-flex align-items-center mb-3">
-                  <div class="form-group mr-2">
-                    <label for="valueInput{{ i }}">Value {{ i + 1 }}</label>
-                    <input type="text" class="form-control value-input" id="valueInput{{ i }}" [(ngModel)]="formvalues[i]" placeholder="Enter value">
-                  </div>
-                  <div class="translations d-flex flex-wrap">
-                    <div *ngFor="let lang of selectedLanguages" class="translation mr-2">
-                      <label for="translationInput{{ i }}_{{ lang }}">{{ getLanguageName(lang) }}</label>
-                      <input type="text" class="form-control translation-input" id="translationInput{{ i }}_{{ lang }}" [(ngModel)]="translations[i][lang]" *ngIf="translations[i] && translations[i][lang]" placeholder="Translation" style=" margin-bottom:24px;">
-                    </div>
-                  </div>
-                  <div class="options-menu d-flex " style="margin-top:8px;">
-                    <button class="btn btn-outline-danger btn-sm " (click)="removeInput(i)">
-                      <i class="fas fa-trash-alt"></i> Remove
-                    </button>
-                    <button class="btn btn-outline-success" (click)="addInput()">
-                      <i class="fas fa-plus"></i> Add
-                    </button>
-                  </div>
-                </div>
+              <div class="table-responsive" style="margin-left:10px; margin-top:20px;">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Value</th>
+                      <th *ngFor="let lang of selectedLanguages">{{ getLanguageName(lang) }}</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let value of formvalues; let i = index">
+                      <td>
+                        <input type="text" class="form-control" [(ngModel)]="formvalues[i]" placeholder="Enter value">
+                      </td>
+                      <td *ngFor="let lang of selectedLanguages">
+                        <input type="text" class="form-control" [(ngModel)]="translations[i][lang]" placeholder="Translation">
+                      </td>
+                      <td>
+                        <button class="btn btn-outline-danger btn-sm" (click)="removeInput(i)">
+                          <i class="fas fa-trash-alt"></i> Remove
+                        </button>
+                        <button class="btn btn-outline-success btn-sm" (click)="addInput()">
+                          <i class="fas fa-plus"></i> Add
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
-
 
 
           </div>

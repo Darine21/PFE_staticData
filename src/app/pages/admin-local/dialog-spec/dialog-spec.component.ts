@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { StaticData } from '../../models/staticdata';
+
 //import { StaticService } from '../static.service';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -10,6 +10,7 @@ import { StaticService } from '../../static/static.service';
 import { TranslationService } from '../../static/details/Translate.service';
 import { Router } from '@angular/router';
 import { DialogsComponent } from '../../static/dialogue/dialogue.component';
+import { EntityLocal } from '../../models/EntityLocal';
 @Component({
   selector: 'app-dialog-spec',
   templateUrl: './dialog-spec.component.html',
@@ -75,12 +76,13 @@ export class DialogSpecComponent implements OnInit {
   }
   onSubmit(form: NgForm) {
     const formData = form.value;
+   
     console.log("eeeeee", formData);
-
-    formData.null = [...this.inputValues, ...(this.bulkValues ? this.bulkValues.split(/\r?\n/) : [])];
-
+    this.inputValues = this.copylist
+    formData.inputValues = [...this.inputValues, ...(this.bulkValues ? this.bulkValues.split(/\r?\n/) : [])];
     console.log("back", formData);
-    const staticData: StaticData = {
+    const val = `Local`
+    const staticData: EntityLocal = {
       Name: formData.Name,
       Types: formData.Types,
       Category: formData.Category,
@@ -88,12 +90,12 @@ export class DialogSpecComponent implements OnInit {
       DateCreated: new Date().toLocaleDateString('fr-FR', {
         hour12: false,
         timeZone: 'UTC'
-      }), // Ajoutez la date de création actuelle
-      CreatedBy: 'username',
-      inputValues: formData.null
+      }), 
+      CreatedBy:val ,
+      inputValues: formData.inputValues
     };
     console.log(formData.Name);
-    this.staticService.Addition(staticData).subscribe({
+    this.staticService.AdditionE(formData.Name,staticData).subscribe({
       next: (response) => {
 
         console.log("Response from API:", response);
@@ -229,12 +231,14 @@ export class DialogSpecComponent implements OnInit {
 
 
 
+  copylist: string[] = [''];
   updateInputValue(newValue: string, index: number,) {
-    this.inputValues[index] = newValue;
+    //this.inputValues[index] = newValue;
+    this.copylist[index] = newValue;
+
 
     console.log("ee", newValue);// Stocker la valeur saisie dans une variable du composant
   }
-
   // Mettre à jour formData ici si nécessaire
 
 

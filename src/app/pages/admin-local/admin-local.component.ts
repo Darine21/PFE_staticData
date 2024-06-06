@@ -3,16 +3,19 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogSpecComponent } from '../admin-local/dialog-spec/dialog-spec.component';
 import { Router } from '@angular/router';
-import { StaticData } from '../models/staticdata';
+
 import { FormsModule } from '@angular/forms';
 //import { StaticService } from './static.service';
 import { ToastrService } from 'ngx-toastr';
 import { DataService } from '../static/data.service';
 import { StaticService } from '../static/static.service';
-import { EntityLocal } from '../models/EntityLocal';
+
 import { ValidService } from '../validation/validation.service';
 import { LocalService } from './local.service';
 import { ConfirmationDialogComponent } from '../static/confirmation-dialog/confirmation-dialog.component';
+import { EntityLocal } from '../models/EntityLocal';
+import { StaticData } from '../models/staticdata';
+import { RequestComponent } from './request/request.component';
 @Component({
   selector: 'app-admin-local',
   templateUrl: './admin-local.component.html',
@@ -51,19 +54,31 @@ export class AdminLocalComponent implements OnInit {
   listValues: string[] = [];
     formData1: any;
     list: string[]=[];
+    Id: number;
 
 
   deleteItem(index: number) {
     this.items.splice(index, 1);
   }
 
-  constructor(private localService:LocalService,private dialog: MatDialog, private router: Router, private toastr: ToastrService, private dataService: DataService, private staticService: StaticService, private validservice: ValidService) {
+  constructor(private locale:LocalService,private localService:LocalService,private dialog: MatDialog, private router: Router, private toastr: ToastrService, private dataService: DataService, private staticService: StaticService, private validservice: ValidService) {
 
 
   }
 
 
+  openrequest() {
+    const dialogRef = this.dialog.open(RequestComponent, {
+      width: '600px', // Customize the width as needed
+    // Custom class for additional styling
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      // Handle after close
+    });
+
+  }
 
 
   // Méthode pour gérer le changement de la case à cocher
@@ -73,12 +88,16 @@ export class AdminLocalComponent implements OnInit {
     this.isItemSelected = this.items.some(item => item.checked);
   }
   goToDetails(id: number) {
-
-
+    console.log(this.formDataList1);
+    console.log("ver", this.formDataList1[id-1].Status);
     const item = id;
-    console.log("iiii", item);
-    this.dataService.setSelectedItemID(item)
-    this.router.navigate(['/detail-local']);
+    if (this.formDataList1[id-1].Status == "Approval") {
+      this.openrequest();
+    } else {
+      console.log("iiii", item);
+      this.dataService.setSelectedItemID(item)
+      this.router.navigate(['/detail-local']);
+    }
   }
   // Méthode pour gérer l'action de validation
   valider(item: any) {
@@ -120,11 +139,53 @@ export class AdminLocalComponent implements OnInit {
   formDataCreatedBy: string;
   showDeleteButton: Boolean = false;
   formvalues: String;
-  List : any [] = [];
+  List: any[] = [];
+  ajoutList: any[] = [];
+  Entity: string;
+  formDataList2:any[]=[]
   ngOnInit(): void {
+    this.locale.currentEntity.subscribe(entity => {
+      this.Entity = entity;
+      console.log("Entity value in other page:", entity);
+      // Utilisez la valeur de l'entité comme bon vous semble dans cette page
+    });
+    this.dataService.getEntity(this.Entity);
+    const Name = "enti"
+    console.log("local", localStorage.share);
+
+
     const id = this.dataService.Newid;
     const Change = this.dataService.NewB;
     console.log(Change);
+    this.dataService.currentIDName$.subscribe(name => {
+      this.Id = name;
+      const val = this.Id -1 ;
+      console.log('Received data ID:', val);
+      console.log("name", this.formDataList1[this.Id - 1].Name)
+      this.staticService.DeleteDataEntity(this.formDataList1[this.Id - 1].Name).subscribe({
+        next: (response) => {
+          console.log("Response from API:", response);
+          // Remove the item from the list after successful deletion
+          this.formDataList1.splice(val, 1);
+          localStorage.setItem(`${this.Entity}`, JSON.stringify(this.formDataList1));
+          //this.toastr.success('Data deleted successfully!', 'Success');
+        },
+        error: (error) => {
+          console.error("Error deleting data:", error);
+          this.formDataList1.splice(val, 1);
+          console.log("delete", this.formDataList1);
+          localStorage.setItem(`${this.Entity}`, JSON.stringify(this.formDataList1));
+
+          this.router.navigate(['/local-user']);
+        }
+      });
+
+
+      console.log("avant", this.formDataList1);
+      console.log("apres", this.formDataList1);
+      console.log('Received data ID:', this.Id);
+    });
+
     const modifiedName = this.dataService.getNewName();
     const modifiedTypes = this.dataService.getNewType();
     const modifiedCatecory = this.dataService.getNewCatecory();
@@ -134,7 +195,7 @@ export class AdminLocalComponent implements OnInit {
     this.list = this.dataService.getList();
     console.log("nomEntity", this.list);
     this.List = this.dataService.getFormDataList();
-    const storedData = localStorage.getItem('entity1');
+    const storedData = localStorage.getItem(`${this.Entity}`);
 
     if (storedData) {
       this.formDataList1 = JSON.parse(storedData);
@@ -144,9 +205,9 @@ export class AdminLocalComponent implements OnInit {
 
         this.showDeleteButton = true
         console.log("yalaa2", this.formData);
-        this.formDataList1.push(formData1);
-       
-        console.log("darine", this.formDataList1);
+        this.formDataList2.push(formData1);
+
+        console.log("darine", this.formDataList2);
         this.index += 1;
         console.log("index", this.index);
 
@@ -159,16 +220,18 @@ export class AdminLocalComponent implements OnInit {
           hour12: false,
           timeZone: 'UTC'
         });
-        this.formDataCreatedBy = 'LocalENtity1';
+
+        this.formDataCreatedBy = `Local ${this.Entity}`;
+
         this.showDeleteButton = true;
         //this.formvalues = formData.null;
         this.listValues.push(formData1.null);
         console.log("null", this.listValues);
         this.show = true;
         this.items.push(formData1);
-        console.log("name&", this.formDataList1);
+        console.log("name&", this.formDataList2);
 
-        this.formDataList1.forEach(item => {
+        this.formDataList2.forEach(item => {
           item.DateCreated = this.formDataCreateDate
           item.Status = "Inactive/Draft";
           item.CreatedBy = this.formDataCreatedBy;
@@ -176,7 +239,7 @@ export class AdminLocalComponent implements OnInit {
           //console.log("wwwwwoooo", item.InputValues);
           // Ajoutez la variable `rejected` à chaque objet
         });
-        console.log("name22", this.formDataList1);
+        console.log("name22", this.formDataList2);
         for (let i in this.formDataList) {
           const name = this.formDataList[i].Name;
           const category = this.formDataList[i].Category
@@ -185,16 +248,31 @@ export class AdminLocalComponent implements OnInit {
           console.log("category", category);
           console.log("date", date)
         }
-        
+
         //this.dataService.updateFormDataList(thSis.formDataList);
-        localStorage.setItem('entity1', JSON.stringify(this.formDataList1));
+        //localStorage.setItem(`${this.Entity}`, JSON.stringify(this.formDataList2));
       } else {
         console.log('Aucune donnée dans formData ou formData est null.');
       }
-      this.formDataList1 = this.formDataList1.filter(item => item.Name !== null && item.Name !== undefined && item.Name !== '');
-      console.log("Filtered list", this.formDataList1);
 
+      const conbin = this.formDataList1.concat(this.formDataList2);
+      const uniqueList1 = Array.from(new Map(conbin.map(item => [item.Name, item])).values());
 
+      // Assigner la liste unique à formDataList
+      this.formDataList1 = uniqueList1;
+      console.log("th", this.formDataList1);
+      localStorage.setItem(`${this.Entity}`, JSON.stringify(this.formDataList1));
+      this.dataService.updateFormDataList(this.formDataList);
+
+      console.log(this.formDataList1);
+
+      localStorage.setItem(`${this.Entity}`, JSON.stringify(this.formDataList1));
+      console.log("Combined list:", this.formDataList);
+    });
+
+ 
+
+    this.formDataList1 = this.formDataList1.filter(item => item.Name);
       console.log("roro", this.formDataList1);
       if (Change) {
         this.formDataList1[id - 1].Name = modifiedName;
@@ -203,15 +281,84 @@ export class AdminLocalComponent implements OnInit {
         this.formDataList1[id - 1].CreatedBy = modifiedCrea;
         console.log(this.formDataList1[id - 1].Name);
       }
-      localStorage.setItem('entity1', JSON.stringify(this.formDataList1));
+      localStorage.setItem(`${this.Entity}`, JSON.stringify(this.formDataList1));
+      const value = this.Entity;
+
+
+
+
       this.localService.changeDataList(this.formDataList1);
-      
+      console.log("local", localStorage.value);
+   
+
+      const jsonString = localStorage.share;
+
+
+      const dictionnaire = JSON.parse(jsonString);
+      const nouveauDictionnaire = {};
+
+      // Parcourir chaque clé du dictionnaire et construire un nouvel objet avec la structure souhaitée
+      for (const cle in dictionnaire) {
+        const nouvelleCle = cle.charAt(0) + cle.slice(1); // Mettre en majuscule la première lettre de la clé
+        nouveauDictionnaire[nouvelleCle] = dictionnaire[cle];
+      }
+
+      console.log(nouveauDictionnaire);
+      const keys = Object.keys(nouveauDictionnaire);
+      for (let k of keys) {
+        if (k == this.Entity) {
+          this.ajoutList.push(nouveauDictionnaire[k]);
+        }
+        console.log("ajo", this.ajoutList);
+      }
+      const combinedList = this.formDataList1.concat(this.ajoutList);
+
+      // Utiliser un Set pour éliminer les doublons basés sur Name
+      const uniqueList = Array.from(new Map(combinedList.map(item => [item.Name, item])).values());
+
+      // Assigner la liste unique à formDataList
+      this.formDataList1 = uniqueList;
+
+      // Mettre à jour le localStorage
+      localStorage.setItem(`${this.Entity}`, JSON.stringify(this.formDataList1));
+      console.log("Final Combined list:", this.formDataList1);
      
+   
+
+
+
+
+  }
+  Reflesh() {
+    this.dataService.currentItem.subscribe(item => {
+      if (item) {
+        const index = this.formDataList1.findIndex(data => data.Name === item.Name && data.Category === item.Category && data.Types === item.Types);
+        if (index !== -1) {
+          if (this.formDataList1[index].Status !== 'Approval') {
+            this.formDataList1[index].Status = 'Approval';
+          }
+        } else {
+          item.Status = 'Approval';
+          this.formDataList1.push(item);
+        }
+        localStorage.setItem(`${this.Entity}`, JSON.stringify(this.formDataList1));
+      }
     });
 
-
-
-
+    this.dataService.currentItem1.subscribe(item => {
+      if (item) {
+        const index = this.formDataList1.findIndex(data => data.Name === item.Name && data.Category === item.Category && data.Types === item.Types);
+        if (index !== -1) {
+          if (this.formDataList1[index].Status !== 'Rejected') {
+            this.formDataList1[index].Status = 'Rejected';
+          }
+        } else {
+          item.Status = 'Rejected';
+          this.formDataList1.push(item);
+        }
+        localStorage.setItem(`${this.Entity}`, JSON.stringify(this.formDataList1));
+      }
+    });
   }
   Update(i: number) {
 
@@ -262,16 +409,15 @@ export class AdminLocalComponent implements OnInit {
         this.validservice.DeleteDataEntity(this.formDataList1[i]).subscribe({
           next: (response) => {
             console.log("Response from API:", response);
-            // Remove the item from the list after successful deletion
             this.formDataList1.splice(i, 1);
             localStorage.setItem('entity1', JSON.stringify(this.formDataList1));
-            this.toastr.success('Data deleted successfully!', 'Success');
+         
           },
           error: (error) => {
             console.error("Error deleting data:", error);
             this.formDataList1.splice(i, 1);
             localStorage.setItem('entity1', JSON.stringify(this.formDataList1));
-            this.toastr.error('Failed to delete data!', 'Error');
+     
         
           }
         });

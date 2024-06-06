@@ -1,6 +1,6 @@
 .dialog-container {
-  width: 500px;
-  height: 600px;
+  width: 520px;
+  height: 630px;
   max-height:700px;
   border-radius: 10px;
   background-color: white;
@@ -16,7 +16,7 @@
 .dialog-header {
   //display: flex;
   justify-content: space-between;
-  align-items: center;
+  //align-items: center;
   margin-bottom: 20px;
 }
 
@@ -113,6 +113,7 @@
   padding: 8px 10px;
   border-radius: 4px;
   cursor: pointer;
+  margin-left:60px;
 }
 
 .share-button:hover {

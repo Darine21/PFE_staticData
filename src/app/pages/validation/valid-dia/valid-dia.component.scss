@@ -1,65 +1,81 @@
+/* Styles for the dialog container */
 .dialog-container {
-  width: 450px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 430px;
   height: 200px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border-radius: 6px;
-  background-color: white;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-  position: fixed; /* Fixes the dialog to the viewport */
-  top: 30%; /* Centers the dialog vertically */
-  left: 58%; /* Centers the dialog horizontally */
-  transform: translate(-50%, -50%); /* Adjusts for exact centering */
-  z-index: 1000; /* Ensures the dialog is above other content */
+  margin-top: 20px;
+  position: fixed;
+  top: 30%;
+  left: 55%;
+  transform: translate(-50%, -50%);
+  color: #ef8404;
 }
 
+/* Styles for the close icon */
 .close-icon {
   position: absolute;
   top: 10px;
-  right: 20px;
-  color: #888;
-  font-size: 15px;
+  right: 10px;
   cursor: pointer;
+  color: #888;
+}
+
+/* Styles for the title */
+.dialog-title {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 22px;
+  color: #e4830ded;
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+/* Styles for the buttons container */
+.buttons-container {
+  text-align: center;
+  margin-top: 20px;
+  margin-left:80px;
+}
+
+/* Styles for the buttons */
+/* Styles for the buttons */
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 10px;
+  transition: all 0.3s ease;
+  font-size: 16px;
+}
+
+.btn-primary {
+  background-color: #00A3A3; /* Green */
+  color: white;
+}
+
+.btn-secondary {
+  background-color: #008CBA; /* Blue */
+  color: white;
+}
+
+.btn-primary:hover, .btn-secondary:hover {
+  opacity: 0.8;
 }
 
 .dialog-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333; /* Couleur du texte */
+  margin-bottom: 20px;
   text-align: center;
-  font-family: 'Pacifico', cursive;
-  font-size: 25px;
-  color: #fb7050;
-  margin: 30px 0 20px 0;
 }
 
-.title-text {
-  display: inline-block;
-  text-align: center;
-  word-wrap: break-word;
-}
-
-.button-container {
-  display: flex;
-  gap: 10px;
-}
-
-.btn {
-  padding: 8px 16px;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
+.cancel-button {
+  background-color: #ef8404; /* Red */
+  color: #ffffff; /* White */
   border: none;
-}
-
-
-
-.btn-primary:hover {
-  background-color: #0056b3;
-}
-
-
-
-.btn-danger:hover {
-  background-color: darkred;
+  margin-left: 10px;
 }
